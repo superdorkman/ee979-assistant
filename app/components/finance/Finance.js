@@ -1,22 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { Container, Nav, Content } from './Finance.styled';
+import { Container, Nav, Content, Filter } from './Finance.styled';
 import Button from '../libs/button/Button';
 import SectionHeader from '../common/section-header/SectionHeader';
 
-const { ipcRenderer } = window.require('electron');
+import Select from '../libs/select/Select';
 
-const images = 'https://ee979.oss-cn-hangzhou.aliyuncs.com/4585/e589a06df77eddf5d533d422b52aadf71160aaae;https://ee979.oss-cn-hangzhou.aliyuncs.com/4585/a1862ecdb52e87ac51e38842bde1bb838ac48b0e;https://ee979.oss-cn-hangzhou.aliyuncs.com/4585/4a1ce8d96be5bcae87138dd349277823b0fadb0f;https://ee979.oss-cn-hangzhou.aliyuncs.com/4585/d5aadff51714ef5a5286a365f7083a83fc8ce4d4;https://ee979.oss-cn-hangzhou.aliyuncs.com/4585/b7f60ecae7b7711332d5666123fc007c7b6c01f1;https://ee979.oss-cn-hangzhou.aliyuncs.com/4585/15ff449cd2a0f79cc3f';
+const recordTypes = ['所有记录', '充值记录', '提现记录', '支付记录', '退款记录', '收款记录'];
 
 export class Finace extends Component {
 
+  state = {
+    selectedRecord: '所有记录',
+  }
+
   handleClick = () => {
-    console.log('open dialog');
-    ipcRenderer.send('gallary:open', images.split(';'));
+  }
+
+  handleSelect = (option, index, ki) => {
+    this.setState({ selectedRecord: option });
   }
 
   render() {
+    const { selectedRecord } = this.state;
+
     return (
       <Container>
         <Nav>
@@ -25,6 +33,9 @@ export class Finace extends Component {
         </Nav>
         <Content>
           <SectionHeader title="提现管理" />
+          <Filter>
+            <Select selected={selectedRecord} options={recordTypes} onSelect={this.handleSelect} />
+          </Filter>
         </Content>
       </Container>
     )

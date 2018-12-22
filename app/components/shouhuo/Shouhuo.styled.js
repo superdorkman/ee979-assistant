@@ -25,6 +25,8 @@ export const Content = styled.div`
 `;
 
 export const Filter = styled.div`
+  display: flex;
+  align-items: center;
   padding: 10px 0;
   border-bottom: 1px solid #ececec;
 `;

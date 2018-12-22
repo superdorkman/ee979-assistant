@@ -23,3 +23,9 @@ export const Content = styled.div`
   border-radius: 5px;
   background-color: #fff;
 `;
+
+export const Filter = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+`;

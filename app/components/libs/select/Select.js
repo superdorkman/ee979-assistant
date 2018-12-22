@@ -7,7 +7,6 @@ class Select extends Component {
 
   state = {
     isSelecting: false,
-    selected: '',
   }
 
   toggleSelecting = () => {
@@ -16,9 +15,10 @@ class Select extends Component {
 
   onOptionClick(option, idx) {
     this.setState({
-      selected: option,
       isSelecting: false,
-    })
+    });
+
+    this.props.onSelect(option, idx, this.props.ki);
   }
 
   handleClickOutside = () => {
@@ -27,8 +27,7 @@ class Select extends Component {
   }
 
   renderItems() {
-    const { options } = this.props;
-    const { selected } = this.state;
+    const { options, selected } = this.props;
     return options.map((option, idx) => (
       <Option key={option} active={option === selected}
         onClick={() => this.onOptionClick(option, idx)}>
@@ -51,11 +50,20 @@ class Select extends Component {
       display: isSelecting ? "block" : "none"
     };
 
+    let klass = 'select-wrap';
+    if (isSelecting) {
+      klass += ' active';
+    } 
+
+    if (selected) {
+      klass += ' selected';
+    }
+
     return (
       <Container 
       onClickOutside={this.handleClickOutside} 
       style={style}>
-        <div className={isSelecting ? 'select-wrap active' : 'select-wrap'} 
+        <div className={klass} 
           onClick={this.toggleSelecting}>
           {selected || label }
           {!disabled && <div className="arrow"><ChevronDown /></div>}

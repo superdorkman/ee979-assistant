@@ -14,6 +14,30 @@ import Warehouse from '../components/warehouse/Warehouse';
 import bg from '../assets/images/bg.png';
 import Toolbar from '../components/toolbar/Toolbar';
 
+import axios from 'axios';
+
+import { API_URL } from '../constants/url';
+
+axios.defaults.baseURL = API_URL;
+
+axios.interceptors.request.use((config) => {
+  const session = JSON.parse(sessionStorage.getItem("session"));
+  if (!session) return config;
+  let { id } = session;
+  if (!id || config.url.indexOf('access_token') > -1) return config;
+  // console.log('config.url pre', config.url)
+  if (config.url.indexOf('?') > -1) {
+    if (config.url.indexOf('access_token') > -1) {
+      config.url = config.url.replace(/access_token=(\w*)/g, '');
+    }
+    config.url = `${config.url}&access_token=${id}`;
+  } else {
+    config.url = `${config.url}?access_token=${id}`;
+  }
+  // console.log('config.url post', config.url)
+  return config;
+});
+
 class Home extends Component {
 
   state = {
