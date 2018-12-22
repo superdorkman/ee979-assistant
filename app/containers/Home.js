@@ -12,6 +12,7 @@ import Orders from '../components/orders/Orders';
 import Warehouse from '../components/warehouse/Warehouse';
 
 import bg from '../assets/images/bg.png';
+import Toolbar from '../components/toolbar/Toolbar';
 
 class Home extends Component {
 
@@ -22,14 +23,17 @@ class Home extends Component {
       <Fragment>
         <Sidebar />
         <Container>
-          <Switch>
-            <Route exact path={`${match.url}/`} component={Center} />
-            <Route exact path='/finance' component={Finance} />
-            <Route exact path='/chuhuo' component={Chuhuo} />
-            <Route exact path='/orders' component={Orders} />
-            <Route exact path='/shouhuo' component={Shouhuo} />
-            <Route exact path='/warehouse' component={Warehouse} />
-          </Switch>
+          <Toolbar />
+          <Main>
+            <Switch>
+              <Route exact path={`${match.url}/`} component={Center} />
+              <Route exact path='/finance' component={Finance} />
+              <Route exact path='/chuhuo' component={Chuhuo} />
+              <Route exact path='/orders' component={Orders} />
+              <Route exact path='/shouhuo' component={Shouhuo} />
+              <Route exact path='/warehouse' component={Warehouse} />
+            </Switch>
+          </Main>
         </Container>
       </Fragment>
     );
@@ -39,9 +43,13 @@ class Home extends Component {
 
 const Container = styled.div`
   display: flex;
-  justify-content: center;
-  padding: 20px;
+  flex-direction: column;
   flex: 1;
+`;
+
+const Main = styled.main`
+  flex: 1;
+  padding: 20px;
   background-image: url(${bg});
   background-color: #fff;
   background-repeat: no-repeat;

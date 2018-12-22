@@ -6,6 +6,7 @@ export const Container = styled.div`
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 5px;
+  margin: 0 auto;
 
   .today-total {
     display: flex;
