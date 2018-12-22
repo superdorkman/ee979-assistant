@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
+import infoBottom from '../../assets/images/info-bottom.png';
+
 export const Container = styled.div`
+  position: relative;
   width: 182px;
   min-width: 182px;
   height: 100%;
@@ -47,4 +50,15 @@ export const Menus = styled.ul`
     }
     
   }
+`;
+
+export const Logo = styled.div`
+  position: absolute;
+  bottom: 50px;
+  width: 111px;
+  height: 39px;
+  background-image: url(${infoBottom});
+  margin: 0 auto;
+  left: 50%;
+  transform: translateX(-50%);
 `;

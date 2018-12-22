@@ -16,22 +16,31 @@ import Toolbar from '../components/toolbar/Toolbar';
 
 class Home extends Component {
 
+  state = {
+    title: '助手中心',
+  }
+
+  handleNav = (menu) => {
+    this.setState({ title: menu.label });
+  }
+
   render() {
     const { match } = this.props;
+    const { title } = this.state;
 
     return (
       <Fragment>
-        <Sidebar />
+        <Sidebar nav={this.handleNav} title={title} />
         <Container>
-          <Toolbar />
-          <Main>
+          <Toolbar title={title} />
+          <Main> 
             <Switch>
-              <Route exact path={`${match.url}/`} component={Center} />
-              <Route exact path='/finance' component={Finance} />
-              <Route exact path='/chuhuo' component={Chuhuo} />
-              <Route exact path='/orders' component={Orders} />
-              <Route exact path='/shouhuo' component={Shouhuo} />
-              <Route exact path='/warehouse' component={Warehouse} />
+              <Route exact path={`${match.url}`} component={Center} />
+              <Route exact path={`${match.url}finance`} component={Finance} />
+              <Route exact path={`${match.url}chuhuo`} component={Chuhuo} />
+              <Route exact path={`${match.url}orders`} component={Orders} />
+              <Route exact path={`${match.url}shouhuo`} component={Shouhuo} />
+              <Route exact path={`${match.url}warehouse`} component={Warehouse} />
             </Switch>
           </Main>
         </Container>

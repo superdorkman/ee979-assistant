@@ -8,11 +8,11 @@ import PrivateRoute from './components/common/private/PrivateRoute';
 import Gallary from './components/gallary/Gallary';
 
 export default () => (
-  <App>
+  // <App>
     <Switch>
       <Route path="/login" component={Login} />
       <Route path="/gallary" component={Gallary} />
       <PrivateRoute path="/" component={HomeStack} />
     </Switch>
-  </App>
+  // </App>
 );

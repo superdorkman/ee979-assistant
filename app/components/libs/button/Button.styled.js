@@ -20,4 +20,9 @@ export const Container = styled.button`
     background-image: linear-gradient(#7f6eff, #533eed);
     color: #fff;
   }
+
+  &.gray {
+    background-color: #e2e2e2;
+    color: #000;
+  }
 `;

@@ -14,9 +14,11 @@ class Toolbar extends Component {
   }
 
   render() {
+    const { title } = this.props;
+
     return (
       <Container>
-        <span>按时发顺丰</span>
+        <span>{title}</span>
         <Ctrls>
           <li onClick={() => this.handleCtrlClick('extract')}>
             <Line />

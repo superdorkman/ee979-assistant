@@ -17,14 +17,6 @@ export default class Root extends Component {
         <ConnectedRouter history={history}>
           <Routes />
         </ConnectedRouter>
-        {/* <Router>
-          <Route render={({ location }) => (
-            <Switch location={location}>
-              <Route path="/login" component={Login} />
-              <PrivateRoute path="/" component={HomeStack} />
-            </Switch>
-            )} />
-        </Router> */}
       </Provider>
     );
   }

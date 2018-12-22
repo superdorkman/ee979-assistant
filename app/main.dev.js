@@ -19,6 +19,16 @@ app.on('will-quit', () => {
   globalShortcut.unregisterAll()
 })
 
+app.on('browser-window-blur', () => {
+  globalShortcut.unregister('f5')
+});
+
+app.on('browser-window-focus', () => {
+  globalShortcut.register('F5', () => {
+    win.loadURL(startUrl);
+  });
+});
+
 app.on('window-all-closed', () => {
   // app.quit();
 });
@@ -38,7 +48,6 @@ function createLoginWin() {
   );
 
   globalShortcut.register('F5', () => {
-    // console.log('f5 pressed');
     win.loadURL(startUrl);
   });
 
