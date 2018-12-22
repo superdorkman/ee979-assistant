@@ -1,21 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { Container, Nav, Content } from './Shouhuo.styled';
+import { Container, Nav, Content, Filter } from './Shouhuo.styled';
 import Button from '../libs/button/Button';
 import SectionHeader from '../common/section-header/SectionHeader';
 
+import Select from '../libs/select/Select';
+
 export class Shouhuo extends Component {
 
+  state = {
+    selectedArea: ''
+  }
+
   render() {
+    const { areaNames } = this.props;
+    const { selectedArea } = this.state;
+
     return (
       <Container>
         <Nav>
-          <Button theme="yellow">收货配置</Button> 
-          <Button theme="blue">收货商走势</Button> 
+          <Button theme="blue">收货配置</Button> 
+          <Button theme="gray">收货商走势</Button> 
         </Nav>
         <Content>
-          <SectionHeader title="提现管理" />
+          <SectionHeader title="收货配置" />
+          <Filter>
+            <Select selected={selectedArea} label="游戏名" options={areaNames} />
+          </Filter>
         </Content>
       </Container>
     )
@@ -23,11 +35,11 @@ export class Shouhuo extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  
+  areaNames: state.game.areaNames,
 })
 
 const mapDispatchToProps = {
   
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Shouhuo)
+export default connect(mapStateToProps, mapDispatchToProps)(Shouhuo);

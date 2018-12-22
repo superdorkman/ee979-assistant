@@ -23,3 +23,8 @@ export const Content = styled.div`
   border-radius: 5px;
   background-color: #fff;
 `;
+
+export const Filter = styled.div`
+  padding: 10px 0;
+  border-bottom: 1px solid #ececec;
+`;

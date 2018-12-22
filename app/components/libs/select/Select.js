@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Container, Options, Option } from "./Select.styled";
 
+import ChevronDown from '../../common/icons/ChevronDown';
+
 class Select extends Component {
 
   state = {
@@ -53,9 +55,10 @@ class Select extends Component {
       <Container 
       onClickOutside={this.handleClickOutside} 
       style={style}>
-        <div className="select-wrap" onClick={this.toggleSelecting}>
+        <div className={isSelecting ? 'select-wrap active' : 'select-wrap'} 
+          onClick={this.toggleSelecting}>
           {selected || label }
-          {!disabled && <div className="arrow" />}
+          {!disabled && <div className="arrow"><ChevronDown /></div>}
         </div>
 
         <Options style={ulStyle}>

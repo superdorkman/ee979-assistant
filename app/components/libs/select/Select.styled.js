@@ -3,72 +3,71 @@ import styled, { css } from "styled-components";
 import ClickOutside from "../click-outside/ClickOutside";
 
 export const Container = styled(ClickOutside)`
-cursor: pointer;
-position: relative;
-font-size: 12px;
-color: #999;
-
-&.hasErr {
-  color: #e91528;
-
-  .select-wrap {
-    border-color: #e91528;
-  }
-}
-
-.select-wrap {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: #fff;
-  border-radius: 3px;
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  border: 1px solid #ececec;
   cursor: pointer;
-  user-select: none;
-  outline: none;
+  position: relative;
+  font-size: 12px;
+  color: #999;
 
-  &.has-bg {
-    background-color: #f7f7f7;
-    border: none;
-  }
+  &.hasErr {
+    color: #e91528;
 
-  &:hover {
-    background-color: #f7f7f7;
-  }
-
-  &.active {
-    border-radius: 3px 3px 0 0;
-  }
-  &.selected {
-    color: #333;
-  }
-
-  .arrow {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform .2s ease-out;
-
-    &:after {
-      content: "";
-      width: 11px;
-      height: 5px;
-      background: url(/assets/images/ionic.png) -32px -20px;
+    .select-wrap {
+      border-color: #e91528;
     }
   }
 
-  &.active .arrow {
-    transform: rotate(180deg);
+  .select-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    border-radius: 3px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ececec;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+
+    &.has-bg {
+      background-color: #f7f7f7;
+      border: none;
+    }
+
+    &:hover {
+      background-color: #f7f7f7;
+    }
+
+    &.active {
+      border-radius: 3px 3px 0 0;
+    }
+
+    &.selected {
+      color: #333;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform .2s ease-out;
+
+      svg {
+        width: 14px;
+      }
+    }
+
+    &.active .arrow {
+      transform: rotate(180deg);
+    }
   }
 
 `;

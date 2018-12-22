@@ -8,7 +8,8 @@ export default function createRootReducer(history: History) {
   return combineReducers({
     router: connectRouter(history),
     // counter,
-    app
+    app,
+    game
   });
 }
 
