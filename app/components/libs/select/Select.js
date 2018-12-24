@@ -73,11 +73,12 @@ class Select extends Component {
 
   render() {
     const { isSelecting } = this.state;
-    const { disabled, width, height, options, errMsg, selected, label } = this.props;
+    const { disabled, width, height, options, errMsg, selected, label, style } = this.props;
 
-    const style = {
+    const containerStyle = {
       width,
-      height
+      height,
+      ...style
     };
 
     const pos = this.setPos();
@@ -98,7 +99,7 @@ class Select extends Component {
     }
 
     return (
-      <Container style={style} ref={ref => this.container = ref}>
+      <Container style={containerStyle} ref={ref => this.container = ref}>
         <div className={klass} 
           onClick={this.toggleSelecting}>
           {selected || label }

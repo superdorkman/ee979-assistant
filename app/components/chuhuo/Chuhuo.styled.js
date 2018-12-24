@@ -13,16 +13,12 @@ export const Container = styled.div`
     height: 32px;
     text-align: center;
 
-    &.num {
-      color: #ff8400;
+    .on {
+      color: #138900;
     }
 
-    &.balance {
-      color: #007eff;
-    }
-
-    &.status {
-      color: #009c12;
+    .pause {
+      color: #ff1111;
     }
   }
 

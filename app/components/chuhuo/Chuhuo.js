@@ -70,6 +70,8 @@ export class Finace extends Component {
     switch (ki) {
       case 'areaName':
         return this.handleAreaname(option);
+      case 'serverName':
+        return this.handleServername(option);
       case 'state':
         return this.changeState(option);
     }
@@ -78,7 +80,11 @@ export class Finace extends Component {
   handleAreaname(option) {
     const { serverList } = this.props;
     const serverNames = serverList.filter(v => v.areaName === option).map(v => v.serverName);
-    this.setState({ selectedArea: option, serverNames });
+    this.setState({ areaName: option, serverNames });
+  }
+
+  handleServername(option) {
+    this.setState({ serverName: option });
   }
 
   changeState(option) {
@@ -105,20 +111,30 @@ export class Finace extends Component {
     this.setState({ curMenu: type, listFiltered });
   }
 
+  getStatus(mask, top) {
+    if ((mask == 0 || mask == 2) && top == 1) {
+      return <span className="on">出货中(进入前三)</span>
+    } else if ((mask == 0 || mask == 2) && top != 1) {
+      return <span className="on">出货中(未进前三)</span>
+    } else if (mask==1 || mask == 3) {
+      return <span className="pause">已暂停</span>
+    }
+  }
+
   renderRows() {
     const { listFiltered } = this.state;
     if (!listFiltered) return;
 
     return listFiltered.map((item, idx) => {
-      const { areaName, serverName, ratio, minNum, totalNum, mask, startH, endH } = item;
+      const { areaName, serverName, ratio, minNum, totalNum, mask, top, startH, endH } = item;
       return (
         <tr key={idx}>
-          <td>{`${areaName} ${serverName}`}</td>
+          <td>{`${areaName}/${serverName}`}</td>
           <td>1元={ratio}</td>
           <td>{minNum}</td>
           <td>{totalNum}</td>
-          <td>{mask}</td>
-          <td>{startH}</td>
+          <td>{this.getStatus(mask, top)}</td>
+          <td>{(startH == 0 && endH == 0) ? '全天' : `${startH}}点 - ${endH}`}</td>
           <td>
             <button>修改</button>
             <button>暂停</button>
@@ -142,9 +158,13 @@ export class Finace extends Component {
         <Content>
           <SectionHeader title="收货配置" />
           <Filter>
-            <Select selected={areaName} options={areaNames} onSelect={this.handleSelect} />
-            <Select selected={serverName} options={serverNames} onSelect={this.handleSelect} />
-            <Select selected="游戏币" options={['游戏币']} onSelect={this.handleSelect} />
+            <Select style={{marginRight: 10}} selected={areaName} ki="areaName" 
+              label="游戏区"
+              options={areaNames} onSelect={this.handleSelect} />
+            <Select selected={serverName} ki="serverName" options={serverNames} 
+              label="游戏服"
+              onSelect={this.handleSelect} />
+            {/* <Select selected="游戏币" options={['游戏币']} onSelect={this.handleSelect} /> */}
             <Select selected={selectedState} ki="state" label="在线状态" 
               onSelect={this.handleSelect} options={['在线', '离线']} />
               {selectedState === '离线' ? (<p className="status off">您的出货信息已隐藏，其它玩家不能下单。选择在线后恢复显示。</p>) : 
