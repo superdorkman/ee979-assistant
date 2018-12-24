@@ -1,6 +1,23 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+
+  table, table tr th, table tr td { border:1px solid #e2e2e2; }
+
+  th {
+    height: 45px;
+    background-color: #f7f7f7;
+  }
+
+  td {
+    height: 32px;
+    text-align: center;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
   
 `;
 

@@ -31,7 +31,6 @@ export const Container = styled.div`
   }
 
   table {
-    // border-color: #e2e2e2;
     border-collapse: collapse;
     width: 100%;
   }
