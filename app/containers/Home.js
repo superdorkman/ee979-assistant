@@ -88,6 +88,21 @@ const Main = styled.main`
   background-repeat: no-repeat;
   background-attachment: fixed;
   overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: #aaa;
+    transition: background-color 0.1s;
+  }
 `;
 
 export default Home;

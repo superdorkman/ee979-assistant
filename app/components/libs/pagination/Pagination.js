@@ -10,9 +10,9 @@ import Select from '../select/Select';
 
 const options = [
   '10条/页',
+  '15条/页',
   '20条/页',
   '30条/页',
-  '50条/页',
 ]
 
 export default class Pagination extends Component {
@@ -24,11 +24,13 @@ export default class Pagination extends Component {
     hasEllipseLeft: false,
     hasEllipseRight: false,
     curPage: this.props.page,
-    sizeOption: options[0],
+    sizeOption: '',
   }
 
   componentWillMount() {
     this.initPagers(this.props);
+    const sizeOption = options.findIndex(option => option.indexOf(this.props.size) > -1);
+    this.setState({ sizeOption: options[sizeOption] });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -165,7 +167,7 @@ export default class Pagination extends Component {
   }
 
   jumpTo = () => {
-    const target = parseInt(this.refs.TargetPage.value);
+    const target = parseInt(this.input.value);
     if(target > this.state.pages || target < 1) {
       alert("超出页数范围...");
       return false;
@@ -190,6 +192,7 @@ export default class Pagination extends Component {
             &nbsp;&nbsp;
             <Select options={options}
               defaultOption={sizeOption}
+              selected={sizeOption}
               onSelect={this.handleSelect}
               width={100} height={30} left={0} />
           </PageInfo>

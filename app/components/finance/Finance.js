@@ -18,7 +18,7 @@ export class Finace extends Component {
   state = {
     selectedRecord: '所有记录',
     page: 1,
-    size: 25,
+    size: 15,
     filter: {
       created: '',
       type: ''
@@ -100,6 +100,20 @@ export class Finace extends Component {
     this.setState({ selectedRecord: option });
   }
 
+  // 改变一页显示数目
+  handleSizeChange = (size) => {
+    this.setState({ size }, () => {
+      this.getList();
+    });
+  }
+
+  // 选择第几页
+  handlePageSelect = (page) => {
+    this.setState({ page }, () => {
+      this.getList();
+    });
+  }
+
   renderRows() {
     const { list,  } = this.state;
     if (!list) return;
@@ -150,7 +164,9 @@ export class Finace extends Component {
             </tbody>
           </table>
 
-          <Pagination count={count} page={page} size={size} />
+          <Pagination count={count} page={page} size={size} 
+            onSizeChange={this.handleSizeChange}
+            onSelect={this.handlePageSelect} />
         </Content>
       </Container>
     )
