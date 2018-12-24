@@ -11,6 +11,7 @@ const initialSetting = {
   myAllInfo: {},
   showToTop: false,
   chatSN: '',
+  notices: null,
 }
 
 const session = sessionStorage.session && JSON.parse(sessionStorage.session);
@@ -73,6 +74,11 @@ const setting = (state = initialSetting, action) => {
       return {
         ...state,
         message: action.msg
+      }
+    case 'SET_NOTICES':
+      return {
+        ...state,
+        notices: action.data,
       }
     case 'SET_PERSONAL_INFO':
       return {

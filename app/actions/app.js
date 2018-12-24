@@ -25,6 +25,11 @@ export const setTitle = (title) => {
   };
 };
 
+export const setNotices = (data) => ({
+  type: 'SET_NOTICES',
+  data,
+});
+
 export const login = (session) => ({
   type: 'LOGIN',
   session
