@@ -87,6 +87,7 @@ const Main = styled.main`
   background-color: #fff;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  overflow: auto;
 `;
 
 export default Home;

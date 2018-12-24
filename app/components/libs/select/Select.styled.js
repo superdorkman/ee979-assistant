@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
 
-import ClickOutside from "../click-outside/ClickOutside";
+// import ClickOutside from "../click-outside/ClickOutside";
 
-export const Container = styled(ClickOutside)`
+export const Container = styled.div`
   cursor: pointer;
   position: relative;
   font-size: 12px;

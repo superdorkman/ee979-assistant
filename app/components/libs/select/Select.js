@@ -9,6 +9,21 @@ class Select extends Component {
     isSelecting: false,
   }
 
+  componentDidMount() {
+    document.addEventListener('click', this.handle, true);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handle, true)
+  }
+
+  handle = e => {
+    const el = this.container;
+    if (el && !el.contains(e.target)) {
+      this.handleClickOutside();
+    }
+  }
+
   toggleSelecting = () => {
     this.setState({ isSelecting: !this.state.isSelecting });
   }
@@ -36,6 +51,26 @@ class Select extends Component {
     ));
   }
 
+  setPos() {
+    let top = '-50%';
+    let left = -8;
+    let bottom = 'unset';
+    if (!this.container) {
+      return { top, left, bottom }
+    }
+
+    const { x, y } = this.container.getBoundingClientRect()
+    const { width, height, options } = this.props;
+    if (y + options.length * height > innerHeight) {
+      top = 'unset';
+      bottom = '-50%';
+    } else if (y - 50 < (height / 2)) {
+      top = '50%';
+    }
+
+    return { top, left, bottom }
+  }
+
   render() {
     const { isSelecting } = this.state;
     const { disabled, width, height, options, errMsg, selected, label } = this.props;
@@ -45,9 +80,12 @@ class Select extends Component {
       height
     };
 
+    const pos = this.setPos();
+
     const ulStyle = {
       overflowY: options && options.length > 8 ? "scroll" : "visible",
-      display: isSelecting ? "block" : "none"
+      display: isSelecting ? "block" : "none",
+      ...pos
     };
 
     let klass = 'select-wrap';
@@ -60,9 +98,7 @@ class Select extends Component {
     }
 
     return (
-      <Container 
-      onClickOutside={this.handleClickOutside} 
-      style={style}>
+      <Container style={style} ref={ref => this.container = ref}>
         <div className={klass} 
           onClick={this.toggleSelecting}>
           {selected || label }

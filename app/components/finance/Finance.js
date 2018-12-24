@@ -18,7 +18,7 @@ export class Finace extends Component {
   state = {
     selectedRecord: '所有记录',
     page: 1,
-    size: 15,
+    size: 25,
     filter: {
       created: '',
       type: ''
