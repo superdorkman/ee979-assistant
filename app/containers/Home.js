@@ -62,6 +62,7 @@ class Home extends Component {
               <Route exact path={`${match.url}`} component={Center} />
               <Route exact path={`${match.url}finance`} component={Finance} />
               <Route exact path={`${match.url}chuhuo`} component={Chuhuo} />
+              {/* <Route exact path={`${match.url}chuhuo`} component={Chuhuo} /> */}
               <Route exact path={`${match.url}orders`} component={Orders} />
               <Route exact path={`${match.url}shouhuo`} component={Shouhuo} />
               <Route exact path={`${match.url}warehouse`} component={Warehouse} />
