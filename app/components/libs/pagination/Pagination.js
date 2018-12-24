@@ -4,7 +4,9 @@ import { ThemeProvider } from 'styled-components';
 import theme from '../../../constants/theme';
 import { Wrapper, PageInfo, PagerWrap, Pager } from './Pagination.styled';
 import Ellipse from './Ellipse';
-import Arrow from '../icons/Arrow';
+import Arrow from '../../common/icons/ChevronLeft';
+
+import Select from '../select/Select';
 
 const options = [
   '10条/页',
@@ -178,25 +180,24 @@ export default class Pagination extends Component {
   }
 
   render() {
-    const { count, page } = this.props;
+    const { count, page, size } = this.props;
     const { pages, curPage, hasEllipseLeft, hasEllipseRight, sizeOption } = this.state;
     return (
       <ThemeProvider theme={theme}>
         <Wrapper>
-          {/* 页数统计 */}
-          {/* <PageInfo>
-            {`共${count}条记录，第${page}/${totalPages}页`}
+          <PageInfo>
+            {`共${count}条记录，第${page}/${pages}页`}
             &nbsp;&nbsp;
             <Select options={options}
               defaultOption={sizeOption}
               onSelect={this.handleSelect}
               width={100} height={30} left={0} />
-          </PageInfo> */}
+          </PageInfo>
 
           {/* 分页 */}
           <PagerWrap>
             <Pager disabled={curPage === 1} onClick={this.onPrev}>
-              <Arrow direction="left" />
+              <Arrow fill="#999" />
             </Pager>
             <Pager active={curPage === 1} onClick={() => this.onPagerClick(1)}>1</Pager>
             {hasEllipseLeft && <Ellipse onClick={() => this.onPagerClick('left')} />}
@@ -204,10 +205,12 @@ export default class Pagination extends Component {
             {hasEllipseRight && <Ellipse onClick={() => this.onPagerClick('right')} />}
             {pages > 1 && (<Pager active={curPage === pages}
               onClick={() => this.onPagerClick(pages)}>{pages}</Pager>)}
-            <Pager disabled={curPage === pages} onClick={this.onNext}>
-              <Arrow direction="right" />
+            <Pager className="right" disabled={curPage === pages} onClick={this.onNext}>
+              <Arrow fill="#999" />
             </Pager>
-            <input className="jump_input" type="text" ref="TargetPage" />
+            <span>跳至</span>
+            <input className="jump_input" type="text" ref={ref => this.input = ref} />
+            <span>页</span>
             <button className="jump_button" onClick={() => {this.jumpTo()}}> 跳转 </button>
           </PagerWrap>
         </Wrapper>

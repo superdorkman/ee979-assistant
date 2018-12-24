@@ -17,7 +17,7 @@ export default (stamp, format = 'YY-MM-DD') => {
   const second = date.getSeconds();
 
   if (format === 'full') {
-    format = 'YY-MM-DD hh:mm';
+    format = 'YY-MM-DD hh:mm:ss';
   }
 
   if (!/[-./]/.test(format) || format.replace(/\W/g, '').replace(/[YMDhms]/g, '')) {

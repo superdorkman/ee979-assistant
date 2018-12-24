@@ -7,6 +7,9 @@ import SectionHeader from '../common/section-header/SectionHeader';
 
 import Select from '../libs/select/Select';
 import axios from 'axios';
+import formatTime from '../../utils/formatTime';
+
+import Pagination from '../libs/pagination/Pagination';
 
 const recordTypes = ['所有记录', '充值记录', '提现记录', '支付记录', '退款记录', '收款记录'];
 
@@ -21,7 +24,7 @@ export class Finace extends Component {
       type: ''
     },
     list: null,
-    total: 0,
+    count: 0,
   }
 
   componentWillMount() {
@@ -36,10 +39,58 @@ export class Finace extends Component {
         res => {
           const { data, error, page } = res.data;
           if (data) {
-            this.setState({ list: data, total: page.count });
+            this.setState({ list: data, count: page.count });
           }
         }
       ).catch(err => {});
+  }
+
+  getType(type) {
+    switch (type) {
+      case 'recharge':
+        return '充值记录';
+      case 'withdraw':
+        return '提现记录';
+      case 'pay':
+        return '支付记录';
+      case 'refund':
+        return '退款记录';
+      case 'receipt':
+        return '收款记录';
+      default:  
+        break;
+    }
+  }
+
+  transformNum(type, num, status) {
+    switch (type) {
+      case 'recharge':
+      case 'receipt':
+      case 'refund':
+        return `+ ${num}`;
+      case 'withdraw':
+        if (status === 'decline') {
+          return `+ ${num}`;
+        } else {
+          return `- ${num}`;
+        }
+      case 'pay':
+        return `- ${num}`;
+    }
+  }
+
+  getStatus(status) {
+    switch (status) {
+      case 'created':
+        return '处理中';
+      case 'success':
+      case 'transfered':
+        return '成功';
+      case 'decline':
+        return '拒绝';
+      default:  
+        break;
+    }
   }
 
   handleClick = () => {
@@ -58,23 +109,23 @@ export class Finace extends Component {
       return (
         <tr key={idx}>
           <td>{index}</td>
-          <td>{type}</td>
-          <td>{num}</td>
-          <td>{created}</td>
-          <td>{balance}</td>
-          <td>{status}</td>
+          <td>{this.getType(type)}</td>
+          <td className="num">{this.transformNum(type, num, status)}</td>
+          <td>{formatTime(created, 'full')}</td>
+          <td className="balance">{balance}</td>
+          <td className="status">{this.getStatus(status)}</td>
         </tr>
       )
     });
   }
 
   render() {
-    const { selectedRecord } = this.state;
+    const { selectedRecord, count, page, size } = this.state;
 
     return (
       <Container>
         <Nav>
-          <Button theme="yellow" onClick={this.handleClick}>提现管理</Button> 
+          <Button theme="gray" onClick={this.handleClick}>提现管理</Button> 
           <Button theme="blue">资金明细</Button> 
         </Nav>
         <Content>
@@ -88,9 +139,9 @@ export class Finace extends Component {
               <tr>
                 <th>订单号</th>
                 <th>类型</th>
-                <th>金额</th>
+                <th>金额（元）</th>
                 <th>时间</th>
-                <th>余额</th>
+                <th>余额（元）</th>
                 <th>状态</th>
               </tr>
             </thead>
@@ -98,6 +149,8 @@ export class Finace extends Component {
               {this.renderRows()}
             </tbody>
           </table>
+
+          <Pagination count={count} page={page} size={size} />
         </Content>
       </Container>
     )

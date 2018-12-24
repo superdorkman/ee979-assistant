@@ -5,18 +5,19 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-direction: row-reverse;
+  // flex-direction: row-reverse;
 `;
 
 export const PageInfo = styled.div`
   display: flex;
   align-items: center;
   color: #999;
-  font-size: 14px;
+  font-size: 13px;
 `;
 
 export const PagerWrap = styled.div`
   display: flex;
+  align-items: center;
 
   .jump_group {
     width: 90px;
@@ -28,9 +29,10 @@ export const PagerWrap = styled.div`
     border-radius: 4px;
     width: 40px;
     text-align: center;
-    margin: 0 10px 0 0;
+    margin: 0 6px;
     height: 25px;
   }
+
   .jump_button {
     min-width: 24px;
     height: 24px;
@@ -45,10 +47,12 @@ export const PagerWrap = styled.div`
     cursor: pointer;
     background-color: #ffba00;
     font-size: 14px;
+    margin-left: 10px;
   }
 `;
 
 export const Pager = styled.button`
+  width: 24px;
   min-width: 24px;
   height: 24px;
   display: flex;
@@ -63,6 +67,15 @@ export const Pager = styled.button`
   background-color: ${props => props.active ? props.theme.main : 'transparent'};
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   opacity: ${props => props.disabled ? .5 : 1};
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  &.right {
+    transform: rotate(180deg);
+  }
 `;
 
 export const Ellipse = styled.svg`

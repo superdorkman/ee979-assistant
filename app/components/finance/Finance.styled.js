@@ -12,6 +12,18 @@ export const Container = styled.div`
   td {
     height: 32px;
     text-align: center;
+
+    &.num {
+      color: #ff8400;
+    }
+
+    &.balance {
+      color: #007eff;
+    }
+
+    &.status {
+      color: #009c12;
+    }
   }
 
   table {
