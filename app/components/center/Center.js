@@ -17,7 +17,7 @@ export class Center extends Component {
   componentWillMount() {
     this.getInfo();
     this.getNotices();
-    // this.getStock(); 
+    this.getStock(); 
   }
 
   getInfo() {
@@ -49,10 +49,7 @@ export class Center extends Component {
   getStock() {
     if (this.props.notices) return;
     const phone = localStorage.getItem('username');
-    const body = { phone: '13362032853', time: new Date().getTime() };
-    // const formData = new FormData();
-    // formData.append('phone', phone);
-    // formData.append('time', new Date());
+    const body = { phone: Number(phone), time: new Date() };
     axios.post('http://101.37.35.234:3333/api/SelfAllots/dailyInfo', body)
       .then(
         res => {

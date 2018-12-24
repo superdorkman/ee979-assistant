@@ -41,7 +41,7 @@ export class Sidebar extends Component {
     return (
       <Container>
         <Info>
-          <Avatar />
+          <Avatar src={this.props.avatar} />
           <div className="name">吴云光</div>
         </Info>
 
@@ -57,11 +57,10 @@ export class Sidebar extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  
+  avatar: state.app.myAllInfo.avatar,
 })
 
-const mapDispatchToProps = {
-  
-}
+const mapDispatchToProps = (dispatch) => ({
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar)

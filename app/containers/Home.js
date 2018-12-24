@@ -82,6 +82,7 @@ const Container = styled.div`
 `;
 
 const Main = styled.main`
+  position: relative;
   flex: 1;
   padding: 15px;
   background-image: url(${bg});

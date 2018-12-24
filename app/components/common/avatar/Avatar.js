@@ -41,6 +41,7 @@ styles.wrap = {
   border: '2px solid #fff',
   borderRadius: '50%',
   overflow: 'hidden',
+  boxShadow: '0 3px 8px rgba(0,0,0,.6)',
 }
 
 
