@@ -83,7 +83,7 @@ const Container = styled.div`
 
 const Main = styled.main`
   flex: 1;
-  padding: 20px;
+  padding: 15px;
   background-image: url(${bg});
   background-color: #fff;
   background-repeat: no-repeat;

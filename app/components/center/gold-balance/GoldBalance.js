@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { setNotices, updateMyInfo } from '../../actions/app';
-import { Container, Row1, Row2, Col1, Cross, Info, Notice } from './Center.styled';
+import { Container, Row1, Row2, Col1, Cross, Info, Notice } from './GoldBalance.styled';
 import axios from 'axios';
 import SectionHeader from '../common/section-header/SectionHeader';
 import formatTime from '../../utils/formatTime';
@@ -10,14 +10,9 @@ const { ipcRenderer } = window.require('electron');
 
 export class Center extends Component {
 
-  state = {
-    goldBlance: null,
-  }
-
   componentWillMount() {
     this.getInfo();
     this.getNotices();
-    // this.getStock(); 
   }
 
   getInfo() {
@@ -46,24 +41,6 @@ export class Center extends Component {
       ).catch(err => {})
   }
 
-  getStock() {
-    if (this.props.notices) return;
-    const phone = localStorage.getItem('username');
-    const body = { phone: '13362032853', time: new Date().getTime() };
-    // const formData = new FormData();
-    // formData.append('phone', phone);
-    // formData.append('time', new Date());
-    axios.post('http://101.37.35.234:3333/api/SelfAllots/dailyInfo', body)
-      .then(
-        res => {
-          const { data } = res.data;
-          if (data) {
-            // this.props.setNotices(data);
-          }
-        }
-      ).catch(err => {})
-  }
-
   renderNotices() {
     const { notices } = this.props;
     if (!notices) return;
@@ -84,47 +61,20 @@ export class Center extends Component {
     ipcRenderer.send('shell:openExternal', url);
   }
 
-  renderRows() {
-    const { goldBlance } = this.state;
-    if (!goldBlance) return;
-
-    // return goldBlance.map((item))
-  }
-
   render() {
     return (
-      <Container>
-        <Row1>
-          <Info>
-
-          </Info>
-          <Notice>
-            <SectionHeader title="平台公告" more="更多" />
-            <ul>
-              {this.renderNotices()}
-            </ul>
-          </Notice>
-        </Row1>
-
-        <Row2>
-          <Col1>
-
-          </Col1>
-          <Cross>
-            <table>
-              <thead>
-                <tr>
-                  <th>跨区</th>
-                  <th>仓库剩余金币（万金）</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.renderRows()}
-              </tbody>
-            </table>
-          </Cross>
-        </Row2>
-      </Container>
+      <Cross>
+        <table>
+          <thead>
+            <tr>
+              <th>跨区</th>
+              <th>仓库剩余金币（万金）</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </Cross>
     )
   }
 }
