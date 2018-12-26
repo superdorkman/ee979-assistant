@@ -1,19 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { setNotices, updateMyInfo } from '../../actions/app';
-import { Container, Row1, Row2, Col1, Cross, Info, Notice } from './Center.styled';
+import { Container, Row1, Row2, Col1, Cross, Notice } from './Center.styled';
 import axios from 'axios';
 import SectionHeader from '../common/section-header/SectionHeader';
 import formatTime from '../../utils/formatTime';
 
 import Credit from './credit/Credit';
+import Enter from './enter/Enter';
+import GoldBalance from './gold-balance/GoldBalance';
+import Info from './info/Info';
 
 const { ipcRenderer } = window.require('electron');
 
 export class Center extends Component {
 
   state = {
-    goldBlance: null,
+    stock: null,
   }
 
   componentWillMount() {
@@ -55,9 +58,9 @@ export class Center extends Component {
     axios.post('http://101.37.35.234:3333/api/SelfAllots/dailyInfo', body)
       .then(
         res => {
-          const { data } = res.data;
-          if (data) {
-            // this.props.setNotices(data);
+          const { msg } = res.data;
+          if (msg === 'success') {
+            this.setState({ stock: res.data });
           }
         }
       ).catch(err => {})
@@ -91,12 +94,13 @@ export class Center extends Component {
   }
 
   render() {
+    const { stock } = this.state;
+
     return (
       <Container>
         <Row1>
-          <Info>
+          <Info />
 
-          </Info>
           <Notice>
             <SectionHeader title="平台公告" more="更多" />
             <ul>
@@ -108,19 +112,10 @@ export class Center extends Component {
         <Row2>
           <Col1>
             <Credit />
+            <Enter />
           </Col1>
           <Cross>
-            <table>
-              <thead>
-                <tr>
-                  <th>跨区</th>
-                  <th>仓库剩余金币（万金）</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.renderRows()}
-              </tbody>
-            </table>
+            <GoldBalance stock={stock} />
           </Cross>
         </Row2>
       </Container>

@@ -3,9 +3,6 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 980px;
   margin: 0 auto;
-  // background-color: red;
-  // display: flex;
-  // flex-direction: column;
 `;
 
 const Row = styled.div`
@@ -32,8 +29,6 @@ export const Notice = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  // align-items: center;
-  // justify-content: space-between;
   border-radius: 3px;
   background-color: #fff;
   padding: 20px 30px;
@@ -52,7 +47,6 @@ export const Notice = styled.div`
       color: #666;
       display: flex;
       justify-content: space-between;
-      // max-width: 180px;
       cursor: pointer;
     }
   }
@@ -93,5 +87,6 @@ export const Cross = styled.div`
   table {
     border-collapse: collapse;
     width: 100%;
+    height: 100%;
   }
 `;
