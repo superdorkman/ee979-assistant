@@ -6,6 +6,8 @@ import axios from 'axios';
 import SectionHeader from '../common/section-header/SectionHeader';
 import formatTime from '../../utils/formatTime';
 
+import Credit from './credit/Credit';
+
 const { ipcRenderer } = window.require('electron');
 
 export class Center extends Component {
@@ -105,7 +107,7 @@ export class Center extends Component {
 
         <Row2>
           <Col1>
-
+            <Credit />
           </Col1>
           <Cross>
             <table>

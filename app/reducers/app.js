@@ -8,7 +8,11 @@ const initialSetting = {
   showFooter: true,
   isWechat: false,
   message: '',
-  myAllInfo: {},
+  myAllInfo: {
+    fund: {},
+    orderNum: {},
+    sRole: {}
+  },
   showToTop: false,
   chatSN: '',
   notices: null,

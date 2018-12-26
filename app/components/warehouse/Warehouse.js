@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { Container, Table, Filter } from './Warehouse.styled';
+import { Container, Table, Filter, Form } from './Warehouse.styled';
 import SectionHeader from '../common/section-header/SectionHeader';
 import axios from 'axios';
 import Select from '../libs/select/Select';
 
 import Popover from '../libs/popover/Popover';
+import MyDialog from '../common/my-dialog/MyDialog';
+import Button from '../libs/button/Button';
 
 const types = ['全部类型', '出金', '收金'];
 const crosses = ['全部跨区', '跨1', '跨2', '跨3a', '跨3b', '跨4', '跨5', '跨6', '跨7', '跨8'];
@@ -15,6 +17,10 @@ export class Center extends Component {
   state = {
     data: {},
     showDialog: false,
+    selectedCross: '',
+    cnt: '',
+    price: '',
+    remark: '',
   }
 
   componentWillMount() {
@@ -58,9 +64,18 @@ export class Center extends Component {
     })
   }
 
+  handleIptChange(e, ki) {
+    this.setState({
+      [ki]: e.target.value,
+    })
+  }
+
   handleRuku(cross) {
-    console.log('123');
-    this.setState({ showDialog: true })
+    this.setState({ showDialog: true, selectedCross: cross })
+  }
+
+  onRuku = () => {
+
   }
 
   hideDialog = () => {
@@ -68,7 +83,7 @@ export class Center extends Component {
   }
 
   render() {
-    const { showDialog } = this.state;
+    const { showDialog, selectedCross, cnt, price, remark, } = this.state;
 
     return (
       <Container>
@@ -99,7 +114,29 @@ export class Center extends Component {
         </Filter>
 
         <Popover show={showDialog} isLocal={true} dismiss={this.hideDialog}>
-          1234
+          <MyDialog title="【入库】金币数量" extra={`跨${selectedCross}`}>
+            <Form>
+              <div className="ipt-wrap">
+                <span className="label">金币数：</span>
+                <input placeholder="请输入金币数量" value={cnt} onChange={(e) => this.handleIptChange(e, 'cnt')} />
+                <span className="unit">万金</span>
+              </div>
+              <div className="ipt-wrap">
+                <span className="label">价格：</span>
+                <input placeholder="请输入价格" value={price} onChange={(e) => this.handleIptChange(e, 'price')} />
+                <span className="unit">元</span>
+              </div>
+              <div className="ipt-wrap">
+                <span className="label">备注：</span>
+                <textarea placeholder="请输入备注信息（可不填）" value={remark} onChange={(e) => this.handleIptChange(e, 'remark')} />
+              </div>
+              <div className="ratio">当前输入比例：</div>
+              <div className="btn-group">
+                <Button style={{width: 120, height: 40}} theme="yellow" onClick={this.onRuku}>入库</Button>
+                <Button style={{width: 120, height: 40}} theme="gray" onClick={this.hideDialog}>取消</Button>
+              </div>
+            </Form>
+          </MyDialog>
         </Popover>
       </Container>
     )

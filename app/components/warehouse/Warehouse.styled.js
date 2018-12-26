@@ -49,3 +49,56 @@ export const Filter = styled.div`
   display: flex;
   align-items: center;
 `;
+
+export const Form = styled.div`
+  width: 378px;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 0 0 5px 5px;
+
+  .ipt-wrap {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+  }
+
+  .label {
+    width: 60px;
+    text-align: right;
+    color: #333;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  input, textarea {
+    border-radius: 3px;
+    border: 1px solid #d5d5d5;
+    background-color: #f7f7f7;
+  }
+
+  input {
+    width: 152px;
+    height: 32px;
+    padding-left: 5px;
+    margin-right: 6px;
+  }
+
+  textarea {
+    width: 230px;
+    height: 94px;
+    resize: none;
+    padding: 5px;
+    outline: none;
+  }
+
+  .ratio {
+    margin: 0 0 10px 60px;
+  }
+
+  .btn-group {
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+`;
