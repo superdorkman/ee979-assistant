@@ -12,7 +12,7 @@ const Row = styled.div`
 
 export const Row1 = styled(Row)`
   height: 216px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 export const Info = styled.div`
@@ -22,7 +22,7 @@ export const Info = styled.div`
   width: 670px;
   border-radius: 3px;
   background-color: #fff;
-  margin-right: 20px;
+  margin-right: 10px;
 `;
 
 export const Notice = styled.div`
@@ -60,7 +60,7 @@ export const Row2 = styled(Row)`
 export const Col1 = styled.div`
   width: 670px;
   min-width: 670px;
-  margin-right: 20px;
+  margin-right: 10px;
   flex: 1;
   display: flex;
   flex-direction: column;

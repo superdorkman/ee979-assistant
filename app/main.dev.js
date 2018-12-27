@@ -87,13 +87,13 @@ function prepareChatWin() {
   // win.setSkipTaskbar(false);
   // win.loadURL(startUrl);
   const _x = (sw - 1200) / 2;
-  const _y = (sh - 800) / 2;
-  win.setMinimumSize(1200, 800);
+  const _y = (sh - 810) / 2;
+  win.setMinimumSize(1200, 810);
   win.setBounds({
     x: 100,
     y: 20,
     width: 1200,
-    height: 800,
+    height: 810,
   }, true);
   // win.setSize(1208, 796, true);
   

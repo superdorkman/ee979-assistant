@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { Container, Nav, Content, Filter } from './Chuhuo.styled';
+import { Container, Nav, Content, Filter, MenuWrap, Form } from './Chuhuo.styled';
 import Button from '../libs/button/Button';
 import SectionHeader from '../common/section-header/SectionHeader';
 
@@ -9,6 +9,10 @@ import Select from '../libs/select/Select';
 import axios from 'axios';
 import formatTime from '../../utils/formatTime';
 import TableMenus from '../common/table-menus/TableMenus';
+
+import Popover from '../libs/popover/Popover';
+import MyDialog from '../common/my-dialog/MyDialog';
+import CbSelectComp from '../common/form-items/cb-select/CbSelect';
 
 const tableMenus = [
   {type: 'all', text: '全部状态'},
@@ -29,6 +33,9 @@ export class Finace extends Component {
     serverNames: [],
     selectedState: '在线',
     curMenu: 'all',
+    showDialog: false,
+    controls: {},
+    form: null
   }
 
   componentWillMount() {
@@ -145,9 +152,81 @@ export class Finace extends Component {
     });
   }
 
+  handleAddShouhuo = () => {
+    const { areaName, serverName } = this.state;
+    if (!areaName || !serverName) return alert('请先选择区服');
+    const body = { 
+      game: 'dnf',
+      goodsType: '游戏币',
+      areaName, serverName
+    };
+    axios.post('ElasticTraders/eform', body)
+      .then(
+        res => {
+          const { data, error } = res.data;
+          if (data) {
+            const controls = this.buildForm(data);
+            this.setState({ showDialog: true, controls, form: data });
+          }
+        }
+      ).catch(err => {});
+  }
+
+  hideDialog = () => {
+    this.setState({ showDialog: false })
+  }
+
+  buildForm(data) {
+    const controls = {};
+    form.forEach(f => {
+      const { key: k, key1: k1, key2: k2, value, value1, value2, hidden } = f.data;
+      if (!hidden) {
+        if (k1) {
+          controls[k1] = value1 || '';
+          controls[k2] = value2 || '';
+        } else {
+          controls[k] = value || '';
+        }
+      }
+    });
+
+    return controls;
+  }
+
+  renderControls() {
+    let { form } = this.state;
+    if (!form) return;
+    form = form.filter(c => !c.data.hidden);
+    return form.map((item, idx) => <React.Fragment key={idx}>{this.getComponent(item)}</React.Fragment>);
+  }
+
+  getComponent(item) {
+    const { selector, data } = item;
+    data.ki = data.key;
+    switch (selector) {
+      case 'checkbox':
+        return <CbSelectComp {...data} onChange={this.handleValueChanged} />
+      // case 'selection':
+      //   return <SelectComp {...data} onSelect={this.handleValueChanged} />
+      // case 'defaultInput':
+      //   return <DefaultInputComp {...data} onChange={this.handleValueChanged} />
+      // case 'input':
+      // case 'quantity':
+      //   return <InputComp {...data} onChange={this.handleValueChanged} />
+      // case 'quantity':
+      //   return <ShouQuantityComp {...data} onChange={this.handleValueChanged} />
+      default:
+        return null;
+    }
+  }
+
+  handleValueChanged = () => {
+    
+  }
+
   render() {
     const { areaNames } = this.props;
-    const { areaName, serverName, serverNames, selectedState, curMenu } = this.state;
+    const { areaName, serverName, serverNames, selectedState, curMenu, showDialog } = this.state;
 
     return (
       <Container>
@@ -172,9 +251,12 @@ export class Finace extends Component {
               }
           </Filter>
 
-          <div>
+          <MenuWrap>
             <TableMenus menus={tableMenus} curMenu={curMenu} onMenuSelect={this.handleMenuSelect} />
-          </div>
+            <div className="btns">
+              <Button style={{width: 88, height: 26, fontSize: 14}} theme="yellow" onClick={this.handleAddShouhuo}>新增收货</Button> 
+            </div>
+          </MenuWrap>
 
           <table>
             <thead>
@@ -193,6 +275,34 @@ export class Finace extends Component {
             </tbody>
           </table>
         </Content>
+
+        <Popover show={showDialog} isLocal={true} dismiss={this.hideDialog}>
+          <MyDialog title="新增收货" extra="">
+            <Form>
+              {this.renderControls()}
+              {/* <div className="ipt-wrap">
+                <span className="label">金币数：</span>
+                <input placeholder="请输入金币数量" value={cnt} onChange={(e) => this.handleIptChange(e, 'cnt')} />
+                <span className="unit">万金</span>
+              </div>
+              <div className="ipt-wrap">
+                <span className="label">价格：</span>
+                <input placeholder="请输入价格" value={price} onChange={(e) => this.handleIptChange(e, 'price')} />
+                <span className="unit">元</span>
+              </div>
+              <div className="ipt-wrap">
+                <span className="label">备注：</span>
+                <textarea placeholder="请输入备注信息（可不填）" value={remark} onChange={(e) => this.handleIptChange(e, 'remark')} />
+              </div>
+              <div className="ratio">当前输入比例：</div>
+              <div className="btn-group">
+                <Button style={{width: 120, height: 40}} theme="yellow" onClick={this.onRuku}>入库</Button>
+                <Button style={{width: 120, height: 40}} theme="gray" onClick={this.hideDialog}>取消</Button>
+              </div> */}
+            </Form>
+          </MyDialog>
+        </Popover>
+
       </Container>
     )
   }

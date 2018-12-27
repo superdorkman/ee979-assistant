@@ -7,8 +7,8 @@ function MyDialog(props) {
   return (
     <Container>
       <h2>
-        <span class="title">{title}</span>
-        <span class="qufu">{extra}</span>
+        <span className="title">{title}</span>
+        <span className="qufu">{extra}</span>
       </h2>
       {children}
     </Container>

@@ -10,7 +10,7 @@ export const Container = styled.div`
   background-color: #fff;
   padding: 30px 30px 0 30px;
   border-radius: 3px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 
   .credit-bottom {
     display: flex;
