@@ -13,6 +13,7 @@ import TableMenus from '../common/table-menus/TableMenus';
 import Popover from '../libs/popover/Popover';
 import MyDialog from '../common/my-dialog/MyDialog';
 import CbSelectComp from '../common/form-items/cb-select/CbSelect';
+import BestRadio from '../common/form-items/best-ratio/BestRadio';
 
 const tableMenus = [
   {type: 'all', text: '全部状态'},
@@ -28,8 +29,8 @@ export class Finace extends Component {
     list: null,
     listFiltered: null,
     count: 0,
-    areaName: '',
-    serverName: '',
+    areaName: '广东区',
+    serverName: '广东1区',
     serverNames: [],
     selectedState: '在线',
     curMenu: 'all',
@@ -176,7 +177,7 @@ export class Finace extends Component {
     this.setState({ showDialog: false })
   }
 
-  buildForm(data) {
+  buildForm(form) {
     const controls = {};
     form.forEach(f => {
       const { key: k, key1: k1, key2: k2, value, value1, value2, hidden } = f.data;
@@ -206,6 +207,8 @@ export class Finace extends Component {
     switch (selector) {
       case 'checkbox':
         return <CbSelectComp {...data} onChange={this.handleValueChanged} />
+      case 'bRatio':
+        return <BestRadio {...data} onChange={this.handleValueChanged} />
       // case 'selection':
       //   return <SelectComp {...data} onSelect={this.handleValueChanged} />
       // case 'defaultInput':
@@ -220,8 +223,15 @@ export class Finace extends Component {
     }
   }
 
-  handleValueChanged = () => {
-    
+  handleValueChanged = (key, value) => {
+    setTimeout(() => {
+      this.setState({
+        controls: {
+          ...this.state.controls,
+          [key]: value
+        }
+      });
+    }, 0);
   }
 
   render() {

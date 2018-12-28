@@ -20,18 +20,17 @@ export class CbSelectComp extends Component {
     const { options } = this.props;
     if (!options) return;
     return options.map((option, idx) => (
-      <Checkbox label={option} key={option} />
+      <Checkbox label={option} key={option} style={{marginRight: 10}} />
     ));
   }
 
   render() {
-    const { isSelecting, option } = this.state;
     const { hint, hintm, isMust, label, options, required } = this.props;
 
     return (
       <Wrapper>
         <Label text={label} isMust={required}/>
-        
+        {this.renderItems()}
       </Wrapper>
     )
   }

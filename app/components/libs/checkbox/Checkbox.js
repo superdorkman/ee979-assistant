@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
-import { Wrapper } from './Checkbox.styled';
+import { Container } from './Checkbox.styled';
 
-export class Checkbox extends Component {
+class Checkbox extends Component {
 
   handleChange = (e) => {
     // onChange(ki, e.target.value);
   }
 
   render() {
-    const { label } = this.props;
+    const { label, ...props } = this.props;
 
     return (
-      <Wrapper>
+      <Container {...props}>
         <input type="checkbox" onChange={this.handleChange} /> 
-        <span class="fake-radio"></span>
+        <span className="fake-radio"></span>
         <span>{ label }</span>
-      </Wrapper>
+      </Container>
     )
   }
 }
