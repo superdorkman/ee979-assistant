@@ -5,7 +5,7 @@ import { login } from '../../actions/app';
 import { API_URL } from '../../constants/url';
 import { Container, IptWrap, Submit, Top, Ctrls, Bottom, } from './Login.styled';
 import Loading from '../libs/loading/Loading';
-import logo from '../../assets/images/login-logo.png';
+import logo from '../../assets/images/assistant.png';
 import svgIcons from '../../assets/icons/icons.svg';
 
 import UsernameIcon from '../common/icons/Username';

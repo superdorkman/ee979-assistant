@@ -30,7 +30,7 @@ app.on('browser-window-focus', () => {
 });
 
 app.on('window-all-closed', () => {
-  // app.quit();
+  app.quit();
 });
 
 function createLoginWin() {

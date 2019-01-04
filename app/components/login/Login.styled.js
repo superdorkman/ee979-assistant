@@ -17,6 +17,10 @@ export const Top = styled.div`
   height: 126px;
   padding-top: 20px;
   background-image: linear-gradient(#8868f1, #6a4cce);
+
+  img {
+    width: 180px;
+  }
 `;
 
 export const Ctrls = styled.ul`

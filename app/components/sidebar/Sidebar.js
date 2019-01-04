@@ -4,6 +4,12 @@ import { NavLink } from 'react-router-dom';
 
 import { Container, Info, Menus, Logo } from './Sidebar.styled';
 import Avatar from '../common/avatar/Avatar';
+import HomeIcon from '../common/icons/Home';
+import WarehouseIcon from '../common/icons/Warehouse';
+import ShouhuoIcon from '../common/icons/Shouhuo';
+import ChuhuoIcon from '../common/icons/Chuhuo';
+import OrdersIcon from '../common/icons/Orders';
+import FinanceIcon from '../common/icons/Finance';
 
 const menus = [
   {path: '/', label: '助手中心'},
@@ -26,12 +32,33 @@ export class Sidebar extends Component {
     this.props.nav(menu);
   }
 
+  getIcon(label) {
+    switch (label) {
+      case '助手中心':
+        return <HomeIcon />;
+      case '仓库管理':
+        return <WarehouseIcon />;
+      case '我要收货':
+        return <ShouhuoIcon />;
+      case '我要出货':
+        return <ChuhuoIcon />;
+      case '我的订单':
+        return <OrdersIcon />;
+      case '财务管理':
+        return <FinanceIcon />;
+      default: 
+        return null;
+    }
+  }
+
   renderMenus() {
     return menus.map((menu, idx) => {
       const { path, label } = menu;
       return (
         <li key={idx} onClick={() => this.onNav(menu)}>
-          <NavLink to={path} activeClassName="active" isActive={() => this.checkIfActive(menu)}>{label}</NavLink>
+          <NavLink to={path} activeClassName="active" isActive={() => this.checkIfActive(menu)}>
+            {this.getIcon(label)} &nbsp;&nbsp;
+            {label}</NavLink>
         </li>
       )
     })

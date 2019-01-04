@@ -42,10 +42,20 @@ export const Menus = styled.ul`
       color: #fff;
       align-items: center;
       justify-content: center;
+      font-size: 14px;
+
+      svg {
+        fill: #fff;
+      }
 
       &.active {
         background-color: #f7f5f6;
         color: #333;
+        font-weight: bold;
+
+        svg {
+          fill: #000;
+        }
       }
     }
     
