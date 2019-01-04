@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { setNotices, updateMyInfo } from '../../actions/app';
+import { setNotices } from '../../actions/app';
 import { Container, Row1, Row2, Col1, Cross, Notice } from './Center.styled';
 import axios from 'axios';
 import SectionHeader from '../common/section-header/SectionHeader';
@@ -20,21 +20,8 @@ export class Center extends Component {
   }
 
   componentWillMount() {
-    this.getInfo();
     this.getNotices();
     this.getStock(); 
-  }
-
-  getInfo() {
-    axios.get('Members/myAllInfo')
-      .then(
-        res => {
-          const { data } = res.data;
-          if (data) {
-            this.props.updateMyInfo(data);
-          }
-        }
-      ).catch(err => {})
   }
 
   getNotices() {
@@ -129,7 +116,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setNotices: (data) => dispatch(setNotices(data)),
-  updateMyInfo: (info) => dispatch(updateMyInfo(info)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Center)

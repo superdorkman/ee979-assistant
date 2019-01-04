@@ -75,7 +75,7 @@ export const Container = styled.div`
 export const Options = styled.ul`
   display: none;
   position: absolute;
-  top: -50%;
+  top: -30%;
   width: 100%;
   left: -8px;
   z-index: 999;

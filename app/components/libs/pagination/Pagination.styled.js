@@ -51,8 +51,8 @@ export const PagerWrap = styled.div`
   }
 `;
 
-export const Pager = styled.button`
-  width: 24px;
+export const Pager = styled.div`
+  // width: 24px;
   min-width: 24px;
   height: 24px;
   display: flex;
@@ -71,6 +71,10 @@ export const Pager = styled.button`
   svg {
     width: 100%;
     height: 100%;
+  }
+
+  &.left, &.right {
+    width: 24px;
   }
 
   &.right {

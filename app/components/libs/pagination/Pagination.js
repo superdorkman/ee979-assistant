@@ -9,7 +9,6 @@ import Arrow from '../../common/icons/ChevronLeft';
 import Select from '../select/Select';
 
 const options = [
-  '10条/页',
   '15条/页',
   '20条/页',
   '30条/页',
@@ -29,8 +28,12 @@ export default class Pagination extends Component {
 
   componentWillMount() {
     this.initPagers(this.props);
-    const sizeOption = options.findIndex(option => option.indexOf(this.props.size) > -1);
-    this.setState({ sizeOption: options[sizeOption] });
+    let sizeOption = options.find(option => option.indexOf(this.props.size) > -1);
+    if (!sizeOption) {
+      sizeOption = `${this.props.size}条/页`;
+      options.unshift(sizeOption);
+    }
+    this.setState({ sizeOption });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -193,13 +196,14 @@ export default class Pagination extends Component {
             <Select options={options}
               defaultOption={sizeOption}
               selected={sizeOption}
+              label="每页条数"
               onSelect={this.handleSelect}
-              width={100} height={30} left={0} />
+              width={110} height={30} left={0} />
           </PageInfo>
 
           {/* 分页 */}
           <PagerWrap>
-            <Pager disabled={curPage === 1} onClick={this.onPrev}>
+            <Pager className="left" disabled={curPage === 1} onClick={this.onPrev}>
               <Arrow fill="#999" />
             </Pager>
             <Pager active={curPage === 1} onClick={() => this.onPagerClick(1)}>1</Pager>

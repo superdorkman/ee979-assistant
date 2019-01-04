@@ -23,6 +23,7 @@ export const Info = styled.div`
   padding: 30px 0;
 
   .name {
+    color: #fff;
     margin: 10px 0;
   }
 `;

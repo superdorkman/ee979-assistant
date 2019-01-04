@@ -1,0 +1,45 @@
+<div class="wrapper" >
+
+  <ng-container *ngIf="jifen != null">
+    <span class="status" *ngIf="jifen < 1000">
+      <img src="/assets/icons/status/s1.gif" />
+    </span>
+    <span class="status" *ngIf="jifen >= 1000 && jifen < 3000">
+      <img src="/assets/icons/status/s2.gif" />
+    </span>
+    <span class="status" *ngIf="jifen >= 3000 && jifen < 15000">
+      <img src="/assets/icons/status/s3.gif" />
+    </span>
+    <span class="status" *ngIf="jifen >= 15000 && jifen < 30000">
+      <img src="/assets/icons/status/s4.gif" />
+    </span>
+    <span class="status" *ngIf="jifen >= 30000 && jifen < 100000">
+      <img src="/assets/icons/status/s5.gif" />
+    </span>
+    <span class="status" *ngIf="jifen >= 100000 && jifen < 250000">
+      <img src="/assets/icons/status/s6.gif" />
+    </span>
+    <span class="status" *ngIf="jifen >= 250000 && jifen < 500000">
+      <img src="/assets/icons/status/s7.gif" />
+    </span>
+    <span class="status" *ngIf="jifen >= 500000 && jifen < 1000000">
+      <img src="/assets/icons/status/s8.gif" />
+    </span>
+    <span class="status" *ngIf="jifen >= 1000000">
+      <img src="/assets/icons/status/s9.gif" />
+    </span>
+
+    <div class="desc" [ngClass]="pos" *ngIf="pos">
+      <div class="head">
+        <span *ngIf="curStatus">{{curStatus?.name}}：需累计积分达到{{curStatus?.jifen}}</span>
+        （买家购买1元=2积分，卖家卖出1元=1积分）
+      </div>
+      <ul>
+        <li *ngFor="let status of statusList; let idx = index" (mouseover)="onMouseover(status)" (mouseleave)="onMouseleave()">
+          <img [src]="'/assets/icons/status/s' + (9 - idx) + '.gif'" [class.lighted]="jifen >= status.jifen" />
+        </li>
+      </ul>
+    </div>
+  </ng-container>
+
+</div>

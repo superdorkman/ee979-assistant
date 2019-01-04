@@ -18,7 +18,7 @@ export const Container = styled.div`
   }
 
   .as-buyer, .as-seller {
-    margin-right: 70px;
+    margin-right: 60px;
 
     h2 {
         color: #373737;

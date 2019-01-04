@@ -64,7 +64,7 @@ const initialSetting = {
     lwjtjm: "老玩家推荐码",
     other: "其它"
   },
-  searchParams
+  searchParams,
 };
 
 const game = (state = initialSetting, action) => {

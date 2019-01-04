@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { Container, Nav, Content, Filter } from './Finance.styled';
+import { Container, LoadWrap, Nav, Content, Filter } from './Finance.styled';
 import Button from '../libs/button/Button';
 import SectionHeader from '../common/section-header/SectionHeader';
 
@@ -10,6 +10,7 @@ import axios from 'axios';
 import formatTime from '../../utils/formatTime';
 
 import Pagination from '../libs/pagination/Pagination';
+import Loading from '../libs/loading/Loading';
 
 const recordTypes = ['所有记录', '充值记录', '提现记录', '支付记录', '退款记录', '收款记录'];
 
@@ -18,7 +19,7 @@ export class Finace extends Component {
   state = {
     selectedRecord: '所有记录',
     page: 1,
-    size: 15,
+    size: 12,
     filter: {
       created: '',
       type: ''
@@ -134,7 +135,7 @@ export class Finace extends Component {
   }
 
   render() {
-    const { selectedRecord, count, page, size } = this.state;
+    const { selectedRecord, count, page, size, list } = this.state;
 
     return (
       <Container>
@@ -159,14 +160,23 @@ export class Finace extends Component {
                 <th>状态</th>
               </tr>
             </thead>
-            <tbody>
-              {this.renderRows()}
-            </tbody>
+            {!!list && (
+              <tbody>
+                {this.renderRows()}
+              </tbody>
+            )}
           </table>
 
-          <Pagination count={count} page={page} size={size} 
-            onSizeChange={this.handleSizeChange}
-            onSelect={this.handlePageSelect} />
+          {!list && (
+            <LoadWrap><Loading /></LoadWrap>
+          )}
+
+          {!!list && (
+            <Pagination count={count} page={page} size={size} 
+              onSizeChange={this.handleSizeChange}
+              onSelect={this.handlePageSelect} />
+          )}
+          
         </Content>
       </Container>
     )

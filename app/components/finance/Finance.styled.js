@@ -30,7 +30,18 @@ export const Container = styled.div`
     border-collapse: collapse;
     width: 100%;
   }
+
+  tbody tr:hover {
+    background-color: #ececec;
+  }
   
+`;
+
+export const LoadWrap = styled.div`
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const Nav = styled.div`

@@ -32,7 +32,7 @@ class Select extends Component {
     this.setState({
       isSelecting: false,
     });
-
+    if (this.props.selected === option) return;
     this.props.onSelect(option, idx, this.props.ki);
   }
 
@@ -52,7 +52,7 @@ class Select extends Component {
   }
 
   setPos() {
-    let top = '-50%';
+    let top = '-30%';
     let left = -8;
     let bottom = 'unset';
     if (!this.container) {
