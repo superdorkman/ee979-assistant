@@ -95,6 +95,8 @@ export class Finace extends Component {
   }
 
   handleClick = () => {
+    const { history, match: { url }} = this.props;
+    history.push(`${url}/withdraw`);
   }
 
   handleSelect = (option, index, ki) => {
@@ -140,8 +142,8 @@ export class Finace extends Component {
     return (
       <Container>
         <Nav>
-          <Button theme="gray" onClick={this.handleClick}>提现管理</Button> 
           <Button theme="blue">资金明细</Button> 
+          <Button theme="gray" onClick={this.handleClick}>提现管理</Button> 
         </Nav>
         <Content>
           <SectionHeader title="提现管理" />

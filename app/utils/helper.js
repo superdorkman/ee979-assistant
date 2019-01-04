@@ -91,3 +91,22 @@ export const toFixed = (val, real = 2) => {
 
   return val.toFixed(real);
 }
+
+export const decimalAdjust = (number, precision) => {
+  var factor = Math.pow(10, precision);
+  var tempNumber = number * factor;
+  var roundedTempNumber = Math.round(tempNumber);
+  return roundedTempNumber / factor;
+};
+
+export const trimDecimal = val => {
+  if (!val) return;
+  return trimZero(parseFloat(val));
+}
+
+export const trimZero = val => {
+  if (/\.\d{3,}/.test(val)) {
+    return val.toFixed(2);
+  }
+  return val;
+}

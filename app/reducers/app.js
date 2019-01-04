@@ -24,7 +24,7 @@ if (session) {
   initialSetting.session = session;
 }
 
-const setting = (state = initialSetting, action) => {
+const app = (state = initialSetting, action) => {
   // console.log(action)
   switch (action.type) {
     case 'LOGIN':
@@ -115,4 +115,4 @@ const setting = (state = initialSetting, action) => {
   }
 }
 
-export default setting;
+export default app;

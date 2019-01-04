@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from './Button.styled';
 
-export default ({ children, theme, ...props }) => {
+const Button = ({ children, theme, ...props }) => {
   
   return (
     <Container className={theme} {...props}>
@@ -9,3 +9,9 @@ export default ({ children, theme, ...props }) => {
     </Container>
   )
 }
+
+Button.defaultProps = {
+  theme: 'gray',
+}
+
+export default Button;
