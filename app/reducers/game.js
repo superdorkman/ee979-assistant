@@ -65,6 +65,7 @@ const initialSetting = {
     other: "其它"
   },
   searchParams,
+  crossList: ['跨1','跨2','跨3a','跨3b','跨4','跨5','跨6','跨7','跨8']
 };
 
 const game = (state = initialSetting, action) => {

@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { Container, Table, Filter, Form } from './Warehouse.styled';
+import { Container, Table, Filter, Form, Button } from './Warehouse.styled';
 import SectionHeader from '../common/section-header/SectionHeader';
 import axios from 'axios';
 import Select from '../libs/select/Select';
 
 import Popover from '../libs/popover/Popover';
 import MyDialog from '../common/my-dialog/MyDialog';
-import Button from '../libs/button/Button';
+// import Button from '../libs/button/Button';
+import Plus from '../common/icons/Plus';
+import Minus from '../common/icons/Minus';
 
 const types = ['全部类型', '出金', '收金'];
 const crosses = ['全部跨区', '跨1', '跨2', '跨3a', '跨3b', '跨4', '跨5', '跨6', '跨7', '跨8'];
@@ -56,8 +58,14 @@ export class Center extends Component {
           <td>{shou}万金</td>
           <td>{stock}万金</td>
           <td>
-            <button onClick={() => this.handleRuku(cross)}>入库</button>
-            <button>出库</button>
+            <Button theme="blue" onClick={() => this.handleRuku(cross)}>
+              <span>入库</span>
+              <Plus fill="#fff" />
+            </Button>
+            <Button theme="blue">
+              <span>出库</span>
+              <Minus fill="#fff" />
+            </Button>
           </td>
         </tr>
       )

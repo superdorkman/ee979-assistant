@@ -234,6 +234,11 @@ export class Finace extends Component {
     }, 0);
   }
 
+  viewTrend = () => {
+    const { history, match: { url }} = this.props;
+    history.replace(`${url}/trend`);
+  }
+
   render() {
     const { areaNames } = this.props;
     const { areaName, serverName, serverNames, selectedState, curMenu, showDialog } = this.state;
@@ -242,7 +247,7 @@ export class Finace extends Component {
       <Container>
         <Nav>
           <Button theme="blue">出货配置</Button> 
-          <Button theme="gray">出货商走势</Button> 
+          <Button theme="gray" onClick={this.viewTrend}>出货商走势</Button> 
         </Nav>
         <Content>
           <SectionHeader title="收货配置" />

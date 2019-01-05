@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default props => {
+const Line = props => {
 
   return (
     <svg viewBox="0 0 42 42" {...props}>
@@ -8,3 +8,10 @@ export default props => {
     </svg>
   )
 }
+
+Line.defaultProps = {
+  width: 12,
+  height: 12,
+}
+
+export default Line;

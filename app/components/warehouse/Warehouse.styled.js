@@ -102,3 +102,32 @@ export const Form = styled.div`
     justify-content: space-around;
   }
 `;
+
+export const Button = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 67px;
+  height: 22px;
+  background-image: linear-gradient(#7f6eff, #533eed);
+  border-radius: 5px;
+  color: #fff;
+  margin-right: 30px;
+
+  span {
+    margin-right: 4px;
+  }
+
+  .icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #fff;
+    margin-left: 4px;
+
+  }
+`;

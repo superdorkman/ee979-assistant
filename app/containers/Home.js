@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import Sidebar from '../components/sidebar/Sidebar';
 import Center from '../components/center/Center';
-import Chuhuo from '../components/chuhuo/Chuhuo';
+import Chuhuo from '../components/chuhuo';
 import Finance from '../components/finance';
 import Shouhuo from '../components/shouhuo/Shouhuo';
 import Orders from '../components/orders/Orders';
@@ -61,7 +61,7 @@ class Home extends Component {
             <Switch>
               <Route exact path={`${match.url}`} component={Center} />
               <Route path={`${match.url}finance`} component={Finance} />
-              <Route exact path={`${match.url}chuhuo`} component={Chuhuo} />
+              <Route path={`${match.url}chuhuo`} component={Chuhuo} />
               <Route exact path={`${match.url}orders`} component={Orders} />
               <Route exact path={`${match.url}shouhuo`} component={Shouhuo} />
               <Route exact path={`${match.url}warehouse`} component={Warehouse} />

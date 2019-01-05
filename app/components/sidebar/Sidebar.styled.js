@@ -13,6 +13,14 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   background-image: linear-gradient(#7261f2, #4530df);
+
+  .update {
+    max-width: 90%;
+    position: absolute;
+    bottom: 10px;
+    height: 16px;
+    overflow: hidden;
+  }
 `;
 
 export const Info = styled.div`

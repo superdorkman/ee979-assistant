@@ -190,7 +190,19 @@ export class Orders extends Component {
 
   handleSend({orderSN, title}) {
     const flag = confirm(`${title}\r确定给买家发货吗`);
-    console.log(flag)
+    const body = {
+      orderSN,
+      op: 'success',
+    }
+    axios.post('Orders/opSeller', body)
+      .then(
+        res => {
+          const { data, error } = res.data;
+          if (data) {
+            // this.order.status = 'operated';
+          }
+        }
+      ).catch(err => {})
   }
 
   // 改变一页显示数目
@@ -244,7 +256,7 @@ export class Orders extends Component {
         <Content>
           <div className="head">
             <h2>{selectedType}/{selectedOrder}</h2> 
-            <Select selected={selectedType} options={goodsTypes} onSelect={this.handleSelect} />
+            {/* <Select selected={selectedType} options={goodsTypes} onSelect={this.handleSelect} /> */}
           </div>
           <table>
             <thead>
