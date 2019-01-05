@@ -39,6 +39,14 @@ export const NavButton = styled.div`
   cursor: pointer;
   user-select: none;
 
+  .play {
+    width: 12px;
+  }
+
+  .forward {
+    width: 16px;
+  }
+
   &:hover {
     background: #e0e0e0;
     border-radius: 4px;

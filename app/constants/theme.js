@@ -1,6 +1,6 @@
 export default {
-  main: '#ffcf4c',
+  main: '#6266ff',
   dark: '#000',
   grayText: '#999',
-  blue: '#6266ff'
+  yellow: '#ffcf4c'
 }

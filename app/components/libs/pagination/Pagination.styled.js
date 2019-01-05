@@ -40,12 +40,12 @@ export const PagerWrap = styled.div`
     justify-content: center;
     align-items: center;
     padding: 0 4px;
-    border: 1px solid #ffba00;
+    border: 1px solid ${props => props.theme.main};
     border-radius: 4px;
     color: #fff;
     font-size: 12px;
     cursor: pointer;
-    background-color: #ffba00;
+    background-color: ${props => props.theme.main};
     font-size: 14px;
     margin-left: 10px;
   }

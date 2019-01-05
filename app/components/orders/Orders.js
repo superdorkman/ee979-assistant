@@ -12,6 +12,8 @@ import Button from '../libs/button/Button';
 import Pagination from '../libs/pagination/Pagination';
 import Loading from '../libs/loading/Loading';
 
+import DateRange from '../common/date-range/DateRange';
+
 const goodsTypes = ['游戏币'];
 const orderTypes = ['出货订单', '收货订单'];
 const dateTypes = ['默认', '今日', '7天', '30天', '自定义日期'];
@@ -83,6 +85,8 @@ export class Orders extends Component {
     switch (en) {
       case 'payed':
         return '已付款';
+      case 'operated':
+        return '已发货';
       case 'failed':
         return '已失败';
       case 'finish':
@@ -162,17 +166,18 @@ export class Orders extends Component {
             <Button theme="blue">联系买家</Button> 
           </td>
           <td>
-            {this.getOpButton(isChuhuo, status)}
+            {this.getOpButton(isChuhuo, item)}
           </td>
         </tr>
       )
     });
   }
 
-  getOpButton(isChuhuo, status) {
+  getOpButton(isChuhuo, item) {
+    const { status, orderSN } = item;
     if (isChuhuo) {
       if (status === 'payed') {
-        return <Button theme="blue">确认发货</Button>;
+        return <Button theme="blue" onClick={() => this.handleSend(item)}>确认发货</Button>;
       }
     } else {
       if (status === 'pending') {
@@ -181,6 +186,11 @@ export class Orders extends Component {
     }
 
     return null;
+  }
+
+  handleSend({orderSN, title}) {
+    const flag = confirm(`${title}\r确定给买家发货吗`);
+    console.log(flag)
   }
 
   // 改变一页显示数目
@@ -211,10 +221,11 @@ export class Orders extends Component {
             <span>订单类型: </span>
             <Select selected={selectedOrder} ki="selectedOrder" options={orderTypes} onSelect={this.handleSelect} />
           </div>
-          <div className="item">
+          {/* <div className="item">
             <span>交易时间: </span>
             <Select selected={selectedDate} ki="selectedDate" options={dateTypes} onSelect={this.handleSelect} />
-          </div>
+          </div> */}
+          <DateRange />
         </Filter>
         <Filter>
           <div className="item">

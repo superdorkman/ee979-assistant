@@ -11,6 +11,7 @@ import formatTime from '../../utils/formatTime';
 
 import Pagination from '../libs/pagination/Pagination';
 import Loading from '../libs/loading/Loading';
+import DateRange from '../common/date-range/DateRange';
 
 const recordTypes = ['所有记录', '充值记录', '提现记录', '支付记录', '退款记录', '收款记录'];
 
@@ -63,6 +64,23 @@ export class Finace extends Component {
     }
   }
 
+  reverseType(type) {
+    switch (type) {
+      case '充值记录':
+        return 'recharge';
+      case '提现记录':
+        return 'withdraw';
+      case '支付记录':
+        return 'pay';
+      case '退款记录':
+        return 'refund';
+      case '收款记录':
+        return 'receipt';
+      default:  
+        break;
+    }
+  }
+
   transformNum(type, num, status) {
     switch (type) {
       case 'recharge':
@@ -100,7 +118,12 @@ export class Finace extends Component {
   }
 
   handleSelect = (option, index, ki) => {
-    this.setState({ selectedRecord: option });
+    this.setState({ selectedRecord: option, page: 1, filter: {
+      type: this.reverseType(option),
+      created: '',
+    }}, () => {
+      this.getList();
+    });
   }
 
   // 改变一页显示数目
@@ -136,6 +159,35 @@ export class Finace extends Component {
     });
   }
 
+  handleDateChange = (created) => {
+    console.log(created);
+    this.setState({
+      filter: {
+        type: this.state.filter.type,
+        created
+      },
+      page: 1,
+    }, () => {
+      this.getList();
+    });
+  }
+
+  handleReset = () => {
+    if (!this.state.filter.type && !this.state.filter.created) {
+      return console.log('no need to reload');
+    }
+
+    this.setState({
+      page: 1,
+      filter: {
+        created: '',
+        type: '',
+      }
+    }, () => {
+      this.getList();
+    })
+  }
+
   render() {
     const { selectedRecord, count, page, size, list } = this.state;
 
@@ -148,7 +200,13 @@ export class Finace extends Component {
         <Content>
           <SectionHeader title="提现管理" />
           <Filter>
-            <Select selected={selectedRecord} options={recordTypes} onSelect={this.handleSelect} />
+            <div className="left">
+              <Select selected={selectedRecord} options={recordTypes} onSelect={this.handleSelect} />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <DateRange emitDate={this.handleDateChange} />
+            </div>
+            
+            <Button theme="blue" onClick={this.handleReset}>重置</Button>  
           </Filter>
 
           <table>

@@ -67,5 +67,11 @@ export const Content = styled.div`
 export const Filter = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 10px 0;
+
+  .left {
+    display: flex;
+    align-items: center;
+  }
 `;

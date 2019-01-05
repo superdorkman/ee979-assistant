@@ -12,7 +12,7 @@ const months = ['一月', '二月', '三月', '四月', '五月', '六月', '七
 const weekdays = ['一', '二', '三', '四', '五', '六', '日'];
 
 
-export default class DatePicker extends PureComponent {
+class DatePicker extends PureComponent {
 
   state = {
     curYear: null,
@@ -161,7 +161,7 @@ export default class DatePicker extends PureComponent {
     if (!daysNow) return;
     return daysNow.map((d, i) => (
       <DayWrap key={i} onClick={() => this.onDaySelected(d)} >
-        <Day active={d === curDay}>{d}</Day>
+        <Day active={d == curDay}>{d}</Day>
       </DayWrap>
     ));
   }
@@ -177,6 +177,7 @@ export default class DatePicker extends PureComponent {
   render() {
     const { curMonth, curYear } = this.state;
     const { show } = this.props;
+    
     return (
       <ThemeProvider theme={theme}>
         <React.Fragment>
@@ -184,16 +185,21 @@ export default class DatePicker extends PureComponent {
           <Wrapper show={show}>
             <Head>
               <div>
-                <NavButton reverse={true} onClick={() => this.changeMY('pm')}><img src={imgPlay} /></NavButton>
-                <NavButton onClick={() => this.changeMY('py')}><img src={fastForwards} /></NavButton>
+                <NavButton reverse={true} onClick={() => this.changeMY('pm')}>
+                  <img className="play" src={imgPlay} />
+                </NavButton>
+                <NavButton onClick={() => this.changeMY('py')}>
+                  <img className="forward" src={fastForwards} />
+                </NavButton>
               </div>
               <div>
                 <span>{months[curMonth - 1]}</span>
                 <span>{curYear}</span>
               </div>
               <div>
-                <NavButton reverse={true} onClick={() => this.changeMY('ny')}><img src={fastForwards} /></NavButton>
-                <NavButton onClick={() => this.changeMY('nm')}><img src={imgPlay} /></NavButton>
+                <NavButton reverse={true} onClick={() => this.changeMY('ny')}>
+                  <img className="forward" src={fastForwards} /></NavButton>
+                <NavButton onClick={() => this.changeMY('nm')}><img className="play" src={imgPlay} /></NavButton>
               </div>
             </Head>
 
@@ -212,3 +218,5 @@ export default class DatePicker extends PureComponent {
     );
   }
 }
+
+export default DatePicker;
