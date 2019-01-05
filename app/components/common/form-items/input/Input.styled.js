@@ -1,26 +1,40 @@
 import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
-  position: relative;
-  display: flex;
-  height: 13.13vw;
-  background-color: #fff;
-  margin-bottom: 1px;
-`;
+  margin-bottom: 20px;
 
-export const IptWrap = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 18.75vw;
-  padding: 0 4.6vw 0 2vw;
-  font-size: 0.12rem;
-  color: #999;
+  & > div {
+    display: flex;
+    align-items: center;
+  }
 
   input {
-    flex: 1;
-    height: 100%;
+    width: 150px;
+    height: 30px;
+    border: 1px solid #e4e2e5;
+    padding: 0 20px;
+    border-radius: 3px;
+    font-size: 12px;
   }
-`;
 
+  .hint {
+    font-size: 12px;
+    color: #999;
+    margin-left: 20px;
+  }
+
+  .unit {
+    font-size: 12px;
+    color: #333;
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .checker {
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+  }
+  
+`;

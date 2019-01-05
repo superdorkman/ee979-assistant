@@ -5,22 +5,30 @@ import Checkbox from '../../../libs/checkbox/Checkbox';
 
 export class CbSelectComp extends Component {
 
+  state = {
+    checkList: [],
+    checked: false,
+  }
+
   onCheck(option) {
-    this.checked = true;
-    let idx = this.checkList.indexOf(option);
+    const { checkList } = this.state;
+    // this.checked = true;
+    let idx = checkList.indexOf(option);
     if (idx === -1) {
-      this.checkList.push(option);
+      checkList.push(option);
     } else {
-      this.checkList.splice(idx, 1);
+      checkList.splice(idx, 1);
     }
-    this.form.patchValue({delivery: this.checkList});
+    console.log(this.props, checkList)
+    this.props.onChange(this.props.ki, checkList);
   }
 
   renderItems() {
     const { options } = this.props;
     if (!options) return;
     return options.map((option, idx) => (
-      <Checkbox label={option} key={option} style={{marginRight: 10}} />
+      <Checkbox check={() => this.onCheck(option)} label={option} key={option} 
+        style={{marginRight: 10}} />
     ));
   }
 

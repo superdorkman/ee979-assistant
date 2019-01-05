@@ -7,7 +7,7 @@ import Sidebar from '../components/sidebar/Sidebar';
 import Center from '../components/center/Center';
 import Chuhuo from '../components/chuhuo';
 import Finance from '../components/finance';
-import Shouhuo from '../components/shouhuo/Shouhuo';
+import Shouhuo from '../components/shouhuo';
 import Orders from '../components/orders/Orders';
 import Warehouse from '../components/warehouse/Warehouse';
 
@@ -63,7 +63,7 @@ class Home extends Component {
               <Route path={`${match.url}finance`} component={Finance} />
               <Route path={`${match.url}chuhuo`} component={Chuhuo} />
               <Route exact path={`${match.url}orders`} component={Orders} />
-              <Route exact path={`${match.url}shouhuo`} component={Shouhuo} />
+              <Route path={`${match.url}shouhuo`} component={Shouhuo} />
               <Route exact path={`${match.url}warehouse`} component={Warehouse} />
             </Switch>
           </Main>

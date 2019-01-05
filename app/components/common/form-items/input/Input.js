@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Wrapper, IptWrap } from './Input.styled';
 import Label from '../label/Label';
+import Check from '../../check/Check';
 
 export class InputComp extends Component {
 
@@ -20,14 +21,22 @@ export class InputComp extends Component {
 
     return (
       <Wrapper>
-        <Label text={label} isMust={required}/>
-        <IptWrap>
-          <input type={type || 'text'} required={required} value={value} onChange={this.handleChange} placeholder={hint} />
+        <div>
+          <Label text={label} isMust={required}/>
+          <input type={type} required={required} value={value} onChange={this.handleChange} 
+            />
           {unit && <span className="unit">{unit}</span>}
-        </IptWrap>
+          <i className="hint">{ hint } </i>
+          {/* <Check className="checker" /> */}
+        </div>
       </Wrapper>
+    
     )
   }
+}
+
+InputComp.defaultProps = {
+  type: 'text'
 }
 
 export default InputComp;

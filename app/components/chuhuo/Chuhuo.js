@@ -13,6 +13,8 @@ import TableMenus from '../common/table-menus/TableMenus';
 import Popover from '../libs/popover/Popover';
 import MyDialog from '../common/my-dialog/MyDialog';
 import CbSelectComp from '../common/form-items/cb-select/CbSelect';
+import InputComp from '../common/form-items/input/Input';
+import TimeComp from '../common/form-items/time/Time';
 import BestRadio from '../common/form-items/best-ratio/BestRadio';
 
 const tableMenus = [
@@ -29,8 +31,9 @@ export class Finace extends Component {
     list: null,
     listFiltered: null,
     count: 0,
-    areaName: '广东区',
-    serverName: '广东1区',
+    areaName: '',
+    serverName: '',
+    goodsSN: '',
     serverNames: [],
     selectedState: '在线',
     curMenu: 'all',
@@ -45,7 +48,11 @@ export class Finace extends Component {
   }
 
   getOnlineState() {
-    axios.post('ElasticTraders/memStatus')
+    const body = {
+      game: 'dnf',
+      goodsType: '游戏币',
+    }
+    axios.post('ElasticTraders/memStatus', body)
       .then(
         res => {
           const { data, error } = res.data;
@@ -95,8 +102,23 @@ export class Finace extends Component {
     this.setState({ serverName: option });
   }
 
+  // 上下线
   changeState(option) {
-    this.setState({ selectedState: option });
+    const body = {
+      game: 'dnf',
+      goodsType: '游戏币',
+    }
+    axios.post('ElasticTraders/toggleOnline', body)
+      .then(
+        res => {
+          const { data, error } = res.data;
+          if (data) {
+            this.setState({ selectedState: option });
+          } else if (error) {
+            
+          }
+        }
+      ).catch(err => {});
   }
 
   handleMenuSelect = (type) => {
@@ -209,15 +231,11 @@ export class Finace extends Component {
         return <CbSelectComp {...data} onChange={this.handleValueChanged} />
       case 'bRatio':
         return <BestRadio {...data} onChange={this.handleValueChanged} />
-      // case 'selection':
-      //   return <SelectComp {...data} onSelect={this.handleValueChanged} />
-      // case 'defaultInput':
-      //   return <DefaultInputComp {...data} onChange={this.handleValueChanged} />
-      // case 'input':
-      // case 'quantity':
-      //   return <InputComp {...data} onChange={this.handleValueChanged} />
-      // case 'quantity':
-      //   return <ShouQuantityComp {...data} onChange={this.handleValueChanged} />
+      case 'input':
+      case 'quantity':
+        return <InputComp {...data} onChange={this.handleValueChanged} />
+      case 'time':
+        return <TimeComp {...data} onChange={this.handleValueChanged} />
       default:
         return null;
     }
@@ -237,6 +255,31 @@ export class Finace extends Component {
   viewTrend = () => {
     const { history, match: { url }} = this.props;
     history.replace(`${url}/trend`);
+  }
+
+  handleSubmit = () => {
+    const { controls, areaName, serverName, goodsSN } = this.state;
+
+    const bundle = {
+      game: 'dnf',
+      areaName,
+      serverName,
+      goodsType: '游戏币',
+      goodsSN,
+      ...controls
+    };
+
+    axios.post('ElasticTraders/addd', { bundle })
+      .then(
+        res => {
+          const { data, error } = res.data;
+          if (data) {
+
+          } else if (error) {
+            alert(error);
+          }
+        }
+      ).catch(err => {});
   }
 
   render() {
@@ -259,6 +302,7 @@ export class Finace extends Component {
               label="游戏服"
               onSelect={this.handleSelect} />
             {/* <Select selected="游戏币" options={['游戏币']} onSelect={this.handleSelect} /> */}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Select selected={selectedState} ki="state" label="在线状态" 
               onSelect={this.handleSelect} options={['在线', '离线']} />
               {selectedState === '离线' ? (<p className="status off">您的出货信息已隐藏，其它玩家不能下单。选择在线后恢复显示。</p>) : 
@@ -295,25 +339,10 @@ export class Finace extends Component {
           <MyDialog title="新增收货" extra="">
             <Form>
               {this.renderControls()}
-              {/* <div className="ipt-wrap">
-                <span className="label">金币数：</span>
-                <input placeholder="请输入金币数量" value={cnt} onChange={(e) => this.handleIptChange(e, 'cnt')} />
-                <span className="unit">万金</span>
+              <div className="btns">
+                <Button theme="yellow" onClick={this.handleSubmit}>保存</Button>
+                <Button onClick={this.hideDialog}>取消</Button>
               </div>
-              <div className="ipt-wrap">
-                <span className="label">价格：</span>
-                <input placeholder="请输入价格" value={price} onChange={(e) => this.handleIptChange(e, 'price')} />
-                <span className="unit">元</span>
-              </div>
-              <div className="ipt-wrap">
-                <span className="label">备注：</span>
-                <textarea placeholder="请输入备注信息（可不填）" value={remark} onChange={(e) => this.handleIptChange(e, 'remark')} />
-              </div>
-              <div className="ratio">当前输入比例：</div>
-              <div className="btn-group">
-                <Button style={{width: 120, height: 40}} theme="yellow" onClick={this.onRuku}>入库</Button>
-                <Button style={{width: 120, height: 40}} theme="gray" onClick={this.hideDialog}>取消</Button>
-              </div> */}
             </Form>
           </MyDialog>
         </Popover>

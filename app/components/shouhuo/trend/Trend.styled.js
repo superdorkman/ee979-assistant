@@ -59,35 +59,5 @@ export const Filter = styled.div`
     color: #999;
     font-size: 12px;
     margin-left: 10px;
-
-    &.off {
-      color: red;
-    }
-  }
-`;
-
-export const MenuWrap = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .btn {
-    width: 88px;
-    height: 26px;
-  }
-`;
-
-export const Form = styled.div`
-  width: 642px;
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 0 0 5px 5px;
-
-  .btns {
-    margin: 20px 0 0 115px;
-
-    button {
-      margin-right: 30px;
-    }
   }
 `;
