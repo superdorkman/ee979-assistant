@@ -47,7 +47,8 @@ export class Login extends Component {
 
     const body = {
       name: username,
-      password
+      password,
+      isAssistant: true,
     };
     axios.post(`${API_URL}/Members/loginx`, body)
       .then(
@@ -62,6 +63,7 @@ export class Login extends Component {
             this.props.history.replace('/');
           } else if (error) {
             this.setState({ isSubmitting: false });
+            alert(error);
           }
         }
       ).catch(err => { this.setState({ isSubmitting: false }); });
