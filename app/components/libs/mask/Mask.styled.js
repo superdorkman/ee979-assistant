@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
   position: ${props => props.isLocal ? 'absolute' : 'fixed'};
@@ -8,4 +8,11 @@ export const Container = styled.div`
   bottom: 0;
   z-index: 1;
   background-color: ${props => props.light ? 'transparent' : 'rgba(0,0,0,.5)'};
+  pointer-events: none;
+  opacity: 0;
+
+  ${props => props.show && css`
+    opacity: 1;
+    pointer-events: all;
+  `};
 `;

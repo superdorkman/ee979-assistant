@@ -9,6 +9,8 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 2px 2px rgba(0,0,0,.2);
+  z-index: 1;
 
   & > span {
     font-size: 20px;

@@ -7,6 +7,9 @@ import { toFixed } from '../../../utils/helper';
 import MsgIcon from '../../common/icons/Msg';
 import FinanceIcon from '../../common/icons/Finance';
 import WarehouseIcon from '../../common/icons/Warehouse';
+import Shangcheng from '../../common/icons/Shangcheng';
+import GoodsIcon from '../../common/icons/Goods';
+import OrdersIcon from '../../common/icons/Orders';
 
 const { ipcRenderer } = window.require('electron');
 
@@ -49,18 +52,24 @@ export class Center extends Component {
                     {/* <span className="badge" *ngIf="messages > 0">{{ messages }}</span> */}
                 </li>
                 <li onClick={() => this.browse('/personal/purchased')}>
-                    <div className="thumb buy"></div>
-                    <span>已买到的商品</span>
+                    <div className="thumb buy">
+                        <OrdersIcon />
+                    </div>
+                    <span>收货订单</span>
                     {/* <span className="badge" *ngIf="goodsAlreadyBuyCnt > 0">{{ goodsAlreadyBuyCnt }}</span> */}
                 </li>
                 <li onClick={() => this.browse('/personal/sale')}>
-                    <div className="thumb sale"></div>
+                    <div className="thumb sale">
+                        <GoodsIcon />
+                    </div>
                     <span>商品管理</span>
                     {/* <span className="badge" *ngIf="goodsOnSaleCnt > 0">{{ goodsOnSaleCnt }}</span> */}
                 </li>
                 <li onClick={() => this.browse('/personal/sold')}>
-                    <div className="thumb sold"></div>
-                    <span>订单管理</span>
+                    <div className="thumb sold">
+                        <Shangcheng />
+                    </div>
+                    <span>商城配置</span>
                     {/* <span className="badge" *ngIf="goodsOnTradeCnt > 0">{{ goodsOnTradeCnt }}</span> */}
                 </li>
                 <li onClick={() => this.browse('/personal/sold')}>

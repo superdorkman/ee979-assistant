@@ -104,32 +104,33 @@ export const Form = styled.div`
   }
 `;
 
-export const Button = styled.div`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 67px;
-  height: 22px;
-  background-image: linear-gradient(#7f6eff, #533eed);
-  border-radius: 5px;
-  color: #fff;
-  margin-right: 30px;
+export const DateWrap = styled.div`
+  position: relative;
+  width: 142px;
+  height: 40px;
+  border: 1px solid #ececec;
+  border-radius: 3px;
   cursor: pointer;
+  // margin-right: 10px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-size: 14px;
 
-  span {
-    margin-right: 4px;
-  }
-
-  .icon {
-    position: relative;
+  .arrow {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 40px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: #fff;
-    margin-left: 4px;
+    align-items: center;
+    transition: transform .2s ease-out;
 
+    svg {
+      width: 14px;
+    }
   }
 `;
+
