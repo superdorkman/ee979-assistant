@@ -18,6 +18,7 @@ const recordTypes = ['所有记录', '充值记录', '提现记录', '支付记�
 export class Finace extends Component {
 
   state = {
+    selectedDate: '默认',
     selectedRecord: '所有记录',
     page: 1,
     size: 12,
@@ -118,7 +119,9 @@ export class Finace extends Component {
   }
 
   handleSelect = (option, index, ki) => {
-    this.setState({ selectedRecord: option, page: 1, filter: {
+    this.setState({ 
+      selectedDate: '默认',
+      selectedRecord: option, page: 1, filter: {
       type: this.reverseType(option),
       created: '',
     }}, () => {
@@ -159,9 +162,9 @@ export class Finace extends Component {
     });
   }
 
-  handleDateChange = (created) => {
-    console.log(created);
+  handleDateChange = (option, created) => {
     this.setState({
+      selectedDate: option,
       filter: {
         type: this.state.filter.type,
         created
@@ -178,6 +181,7 @@ export class Finace extends Component {
     }
 
     this.setState({
+      selectedDate: '默认',
       page: 1,
       filter: {
         created: '',
@@ -189,7 +193,7 @@ export class Finace extends Component {
   }
 
   render() {
-    const { selectedRecord, count, page, size, list } = this.state;
+    const { selectedDate, selectedRecord, count, page, size, list } = this.state;
 
     return (
       <Container>
@@ -203,7 +207,7 @@ export class Finace extends Component {
             <div className="left">
               <Select selected={selectedRecord} options={recordTypes} onSelect={this.handleSelect} />
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <DateRange emitDate={this.handleDateChange} />
+              <DateRange emitDate={this.handleDateChange} selectedDate={selectedDate} />
             </div>
             
             <Button theme="blue" onClick={this.handleReset}>重置</Button>  
@@ -231,7 +235,7 @@ export class Finace extends Component {
             <LoadWrap><Loading /></LoadWrap>
           )}
 
-          {!!list && (
+          {!!list && !!count && (
             <Pagination count={count} page={page} size={size} 
               onSizeChange={this.handleSizeChange}
               onSelect={this.handlePageSelect} />

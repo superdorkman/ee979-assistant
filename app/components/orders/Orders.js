@@ -56,6 +56,7 @@ export class Orders extends Component {
       goodsType: '游戏币',
       orderSN: '',
       status: '',
+      created: '',
     }
   }
 
@@ -105,22 +106,96 @@ export class Orders extends Component {
         const serverNames = serverList.filter(v => v.areaName === option).map(v => v.serverName);
         this.setState({
           selectedArea: option,
+          selectedCross: '',
           serverNames,
+          filter: {
+            ...this.state.filter,
+            areaName: option,
+            serverName: '',
+            cross: '',
+          }
         });
+        break;
       case 'serverName':
         this.setState({
           selectedServer: option,
-        });
-      case 'selectedOrder':
-        this.setState({ [ki]: option }, () => {
+          filter: {
+            ...this.state.filter,
+            serverName: option,
+            page: 1,
+          }
+        }, () => {
           this.getOrders();
         });
+        break;
+      case 'cross':
+        this.setState({ 
+          selectedCross: option,
+          selectedArea: '',
+          selectedServer: '',
+          serverNames: [],
+          filter: {
+            ...this.state.filter,
+            areaName: '',
+            serverName: '',
+            cross: `DNF${option}`,
+          }
+        }, () => {
+          this.getOrders();
+        });
+        break;
     }
     
   }
 
-  changeOrder() {
-    console.log('chaneg order')
+  changeOrderType = (option, index, ki) => {
+    this.setState({
+      selectedDate: '默认',
+      selectedOrder: option,
+      selectedArea: '',
+      selectedServer: '',
+      selectedCross: '',
+      serverNames: [],
+      filter: {
+        ...this.state.filter,
+        cross: '',
+        created: '',
+      }
+    }, () => {
+      this.getOrders();
+    })
+  }
+
+  handleDateChange = (option, created) => {
+    this.setState({
+      selectedDate: option,
+      filter: {
+        ...this.state.filter,
+        created
+      }
+    }, () => {
+      this.getOrders();
+    })
+  }
+
+  reset = () => {
+    const { selectedArea, selectedServer, selectedCross } = this.state;
+    if (!selectedArea && !selectedServer && !selectedCross) return;
+
+    this.setState({
+      selectedArea: '',
+      selectedServer: '',
+      selectedCross: '',
+      filter: {
+        ...this.state.filter,
+        areaName: '',
+        serverName: '',
+        cross: '',
+        // created: '',
+      }
+    }, () => {
+      this.getOrders();
+    });
   }
 
   renderTHeads() {
@@ -169,7 +244,9 @@ export class Orders extends Component {
           
           <td className={status}>{this.transformStatus(status)}</td>
           <td>
-            <Button theme="blue" onClick={() => this.viewOrder(orderSN)}>联系买家</Button> 
+            <Button theme="blue" onClick={() => this.viewOrder(orderSN)}>
+              {isChuhuo ? '联系买家' : '联系卖家'}
+            </Button> 
           </td>
           <td>
             {this.getOpButton(isChuhuo, item)}
@@ -237,13 +314,9 @@ export class Orders extends Component {
           </div>
           <div className="item">
             <span>订单类型: </span>
-            <Select selected={selectedOrder} ki="selectedOrder" options={orderTypes} onSelect={this.handleSelect} />
+            <Select selected={selectedOrder} options={orderTypes} onSelect={this.changeOrderType} />
           </div>
-          {/* <div className="item">
-            <span>交易时间: </span>
-            <Select selected={selectedDate} ki="selectedDate" options={dateTypes} onSelect={this.handleSelect} />
-          </div> */}
-          <DateRange />
+          <DateRange emitDate={this.handleDateChange} selectedDate={selectedDate} />
         </Filter>
         <Filter>
           <div className="item">
@@ -258,6 +331,8 @@ export class Orders extends Component {
               label="选择跨区" ki="cross"
               onSelect={this.handleSelect} />
           </div>
+
+          <Button theme="yellow" onClick={this.reset}>重置</Button>
         </Filter>
         <Content>
           <div className="head">
@@ -279,7 +354,7 @@ export class Orders extends Component {
           {!list && (
             <LoadWrap><Loading /></LoadWrap>
           )}
-          {!!list && (
+          {!!list && !!count && (
             <Pagination count={count} page={page} size={size} 
             onSizeChange={this.handleSizeChange}
             onSelect={this.handlePageSelect} />

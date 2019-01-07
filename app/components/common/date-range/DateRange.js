@@ -11,11 +11,14 @@ const dateTypes = ['默认', '今日', '7天', '30天', '自定义日期'];
 class DateRange extends Component {
 
   state = {
-    curType: '默认',
+    curType: this.props.selectedDate,
     startSelect: false,
     firstDate: '',
     lastDate: '',
-    selectedDate: '',
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ curType: nextProps.selectedDate });
   }
 
   handleSelect = (option, idx, ki) => {
@@ -31,11 +34,11 @@ class DateRange extends Component {
   }
 
   onDateSelected = (date) => {
-    const { startSelect } = this.state;
+    const { curType, startSelect } = this.state;
     this.setState({ startSelect: '', [`${startSelect}Date`]: date || this.state[`${startSelect}Date`] }, () => {
       const { firstDate, lastDate } = this.state;
       if (firstDate && lastDate) {
-        this.props.emitDate({between: [firstDate, lastDate]});
+        this.props.emitDate(curType, {between: [firstDate, lastDate]});
       }
     });
   }
@@ -58,7 +61,7 @@ class DateRange extends Component {
       created = { between: getDateRange('l30') };
     }
 
-    this.props.emitDate(created);
+    this.props.emitDate(curType, created);
   }
 
   render() {
