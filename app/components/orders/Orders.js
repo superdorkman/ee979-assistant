@@ -13,6 +13,7 @@ import Pagination from '../libs/pagination/Pagination';
 import Loading from '../libs/loading/Loading';
 
 import DateRange from '../common/date-range/DateRange';
+import { openUrl } from '../../services/extenals';
 
 const goodsTypes = ['游戏币'];
 const orderTypes = ['出货订单', '收货订单'];
@@ -137,6 +138,11 @@ export class Orders extends Component {
     });
   }
 
+  viewOrder(orderSN) {
+    const url = `https://www.ee979.com/order/${orderSN}`;
+    openUrl(url);
+  }
+
   renderRows() {
     const { list, selectedOrder } = this.state;
     
@@ -163,7 +169,7 @@ export class Orders extends Component {
           
           <td className={status}>{this.transformStatus(status)}</td>
           <td>
-            <Button theme="blue">联系买家</Button> 
+            <Button theme="blue" onClick={() => this.viewOrder(orderSN)}>联系买家</Button> 
           </td>
           <td>
             {this.getOpButton(isChuhuo, item)}
