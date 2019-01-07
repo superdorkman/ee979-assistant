@@ -19,7 +19,7 @@ export const List = styled.div`
         justify-content: space-between;
         width: 200px;
         height: 108px;
-        padding: 20px;
+        padding: 15px;
         border-radius: 5px;
         background-image: linear-gradient(#7b7eff,#6266ff);
         background-color: #7b7eff;
@@ -34,13 +34,13 @@ export const List = styled.div`
         }
         
         h3 {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: bold;
         }
     
         h4 {
           font-size: 11px;
-          margin-top:5px;
+          margin-top: 5px;
         }
     
         &:nth-child(4n + 4) {
@@ -63,7 +63,7 @@ export const List = styled.div`
         }
       
         button {
-          padding: 5px 18px;
+          padding: 5px 10px;
           color: #890a00;
           border-radius: 5px;
           cursor: pointer;

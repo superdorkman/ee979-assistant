@@ -1,9 +1,12 @@
 import React from "react";
 import { Container } from "./SectionHeader.styled";
 
+import { openUrl } from '../../../services/extenals';
+
 function SectionHeader(props) {
   const { darkTitle, hasBorder, callback, link, more, target, title } = props;
   const more_flag = more !== undefined;
+
   return (
     <Container>
       {hasBorder && (
@@ -11,9 +14,9 @@ function SectionHeader(props) {
       )}
       {!hasBorder && <span className="title">{title}</span>}
       {more_flag && link && (
-        <a className="more" target={target}>
+        <span className="more" onClick={() => openUrl(link)}>
           {more}
-        </a>
+        </span>
       )}
       {more_flag && callback && (
         <a className="more" target={target}>

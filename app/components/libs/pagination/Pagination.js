@@ -171,6 +171,7 @@ export default class Pagination extends Component {
 
   jumpTo = () => {
     const target = parseInt(this.input.value);
+    if (!target) return;
     if(target > this.state.pages || target < 1) {
       alert("超出页数范围...");
       return false;

@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import sprite from '../../../assets/icons/ionic.png';
+
 export const Container = styled.div`
   padding-bottom: 14px;
   border-bottom: 1px solid #e2e2e2;
@@ -62,7 +64,7 @@ export const Container = styled.div`
       height: 10px;
       right: 0;
       top: 50%;
-      background: url(/assets/images/ionic.png) -206px -20px;
+      background: url(${sprite}) -206px -20px;
       display: inline-block;
     }
   }

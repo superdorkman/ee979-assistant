@@ -39,7 +39,6 @@ export class Center extends Component {
   }
 
   getStock() {
-    if (this.props.notices) return;
     const phone = localStorage.getItem('username');
     const body = { phone: Number(phone), time: new Date() };
     axios.post('http://101.37.35.234:3333/api/SelfAllots/dailyInfo', body)
@@ -89,7 +88,7 @@ export class Center extends Component {
           <Info />
 
           <Notice>
-            <SectionHeader title="平台公告" more="更多" />
+            <SectionHeader title="平台公告" more="更多" link="https://www.ee979.com/service/news" />
             <ul>
               {this.renderNotices()}
             </ul>

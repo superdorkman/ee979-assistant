@@ -15,8 +15,34 @@ export class Center extends Component {
     ]
   }
 
+  componentWillMount() {
+    this.setTypes(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setTypes(nextProps);
+  }
+
+  setTypes(props) {
+    const { myAllInfo } = props;
+    let { types } = this.state;
+    types = types.map((type) => {
+      let datum = myAllInfo['sRole'][type.en];
+      type.applied = !!datum;
+      type.deposit = datum ? datum.yj : null;
+      return type;
+    });
+
+    this.setState({ types });
+  }
+
   handleNoticeClick(newsSN) {
     const url = `https://www.ee979.com/service/news/${newsSN}`;
+    ipcRenderer.send('shell:openExternal', url);
+  }
+
+  handleExit(type) {
+    const url = `https://www.ee979.com/personal/enter`;
     ipcRenderer.send('shell:openExternal', url);
   }
 

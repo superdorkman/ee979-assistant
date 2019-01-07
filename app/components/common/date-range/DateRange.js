@@ -11,7 +11,7 @@ const dateTypes = ['默认', '今日', '7天', '30天', '自定义日期'];
 class DateRange extends Component {
 
   state = {
-    curType: '自定义日期',
+    curType: '默认',
     startSelect: false,
     firstDate: '',
     lastDate: '',

@@ -48,7 +48,7 @@ export class Login extends Component {
     const body = {
       name: username,
       password,
-      isAssistant: true,
+      // isAssistant: true,
     };
     axios.post(`${API_URL}/Members/loginx`, body)
       .then(
