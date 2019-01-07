@@ -115,6 +115,7 @@ function prepareChatWin() {
   });
 
   ipcMain.on('shell:openExternal', (event, url) => {
+    console.log(url)
     shell.openExternal(url);
   });
 

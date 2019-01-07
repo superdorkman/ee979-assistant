@@ -44,6 +44,11 @@ button {
   cursor: pointer;
 }
 
+
+::-webkit-input-placeholder {
+  color: #ccc;
+}
+
 /*超出字体变...(仅限一行)*/
 .one-liner {
   text-overflow: ellipsis;

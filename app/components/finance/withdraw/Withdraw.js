@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { updateMyInfo } from '../../../actions/app';
 import { Container, LoadWrap, Nav, Content } from './Withdraw.styled';
 import Button from '../../libs/button/Button';
 import SectionHeader from '../../common/section-header/SectionHeader';
@@ -11,6 +11,7 @@ import axios from 'axios';
 // import formatTime from '../../../utils/formatTime';
 
 // import Loading from '../../libs/loading/Loading';
+import { openUrl } from '../../../services/extenals';
 
 class Withdraw extends Component {
 
@@ -77,7 +78,7 @@ class Withdraw extends Component {
     })
   }
 
-  onCalcFee() {
+  onCalcFee = () => {
     let { actualAmount, freeWDB, curType, fee } = this.state;
     if (Number.isNaN(Number(actualAmount))) {
       return;
@@ -111,17 +112,60 @@ class Withdraw extends Component {
     this.setState({ fee });
   }
 
-  onTrim() {
-    this.actualAmount = trimDecimal(this.actualAmount);
+  onTrim = () => {
+    this.setState({ actualAmount: trimDecimal(this.state.actualAmount) });
   }
 
-  goBind(type) {
-    
+  goBind(e, type) {
+    e.preventDefault();
+    e.stopPropagation();
+    const url = `https://www.ee979.com/personal/security/bankcard?type=${type}`;
+    openUrl(url);
+  }
+
+  handleAmountChange = (e) => {
+    this.setState({ actualAmount: e.target.value }, () => {
+      this.onCalcFee();
+    })
+  }
+
+  handlePwdChange = (e) => {
+    this.setState({ payPwd: e.target.value });
+  }
+
+  onWithdraw = () => {
+    const { curType, actualAmount, payPwd } = this.state;
+    if (!actualAmount) return alert('请输入提现金额');
+    if (!payPwd) return alert('请输入提现密码');
+
+    const body = {
+      payMethod: curType, money: parseFloat(actualAmount), payPwd
+    }
+    axios.post('Funds/withdraw', body)
+      .then(
+        res => {
+          const { data, error } = res.data;
+          if (data) {
+            alert(data);
+            const {balance, free, frozen} = this.props.fund;
+            this.props.updateMyInfo({
+              fund: {
+                balance: toCropped(balance - actualAmount),
+                free: toCropped(free - actualAmount),
+                frozen
+              }
+            });
+            this.setState({ actualAmount: '', payPwd: '' });
+          } else if (error) {
+            alert(error);
+          }
+        }
+      ).catch(err => {});
   }
 
   render() {
     const { balance, free } = this.props.fund;
-    const { bindInfo: {bindAliPay, bindWxPay, account, nickname}, freeWD, fee, actualAmount, curType } = this.state;
+    const { bindInfo: {bindAliPay, bindWxPay, account, nickname}, freeWD, fee, actualAmount, curType, payPwd } = this.state;
 
     return (
       <Container>
@@ -159,7 +203,7 @@ class Withdraw extends Component {
                   </div>
                   <div className="card_a">{ account ? account : '尚未绑定' }</div>
                   <div className="card_p">支付宝提现资金到帐时间为2小时</div>
-                  <div className="card_s blue" onClick={() => goBind('aliPay')}>{ account ? '修改绑定' : '立即绑定'}</div>
+                  <div className="card_s blue" onClick={(e) => this.goBind(e,'aliPay')}>{ account ? '修改绑定' : '立即绑定'}</div>
                 </div>
 
                 <div className={ curType === 'wxPay'? 'card_infor_list wx' : 'card_infor_list'} onClick={() => this.choosePay('wxPay')}>
@@ -174,7 +218,7 @@ class Withdraw extends Component {
                   </div>
                   <div className="card_a">{ nickname ? nickname : '尚未绑定' }</div>
                   <div className="card_p">提现资金到帐时间为2小时</div>
-                  <div className="card_s green" onClick={() => this.goBind('wxPay')}>{ nickname ? '修改绑定' : '立即绑定' }</div>
+                  <div className="card_s green" onClick={(e) => this.goBind(e, 'wxPay')}>{ nickname ? '修改绑定' : '立即绑定' }</div>
                 </div>
               </div>
             </li>
@@ -182,8 +226,9 @@ class Withdraw extends Component {
               <span>提现金额</span>
               <div className="card_infor">
                 <div className="money-ipt">
-                  <input placeholder="单笔提现不少于5元" pattern="^\d*(\.?\d+)?$" autocomplete="off" name="amount"
-                    required onInput="onCalcFee(amount.valid)" onBlur="onTrim()" />
+                  <input placeholder="单笔提现不少于5元" pattern="^\d*(\.?\d+)?$" 
+                    autoComplete="off" name="amount" onChange={this.handleAmountChange}
+                    required onBlur={this.onTrim} value={actualAmount} />
                   <b className="get-all" onClick={this.moveAll}>全部提出</b>
                   <p>&nbsp;&nbsp;剩余提现免费额度<em>{toFixed(freeWD > 0 ? freeWD : 0)}</em>
                   </p>
@@ -192,16 +237,20 @@ class Withdraw extends Component {
 
               </div>
             </li>
-            <li>
-              <span>支付密码</span>
-              <div className="card_infor">
-                <input placeholder="请输入支付密码" autocomplete="off" />
-              </div>
-            </li>
+            {!!actualAmount && (
+              <li>
+                <span>支付密码</span>
+                <div className="card_infor">
+                  <input placeholder="请输入支付密码" value={payPwd}
+                    onChange={this.handlePwdChange} type="password"
+                  autoComplete="off" />
+                </div>
+              </li>
+            )}
             <li>
               <span></span>
               <div className="card_infor">
-                <button className="per_btn" onClick="onWithdraw()">立即提现</button>
+                <button className="per_btn" onClick={this.onWithdraw}>立即提现</button>
               </div>
             </li>
           </ul>
@@ -216,8 +265,8 @@ const mapStateToProps = (state) => ({
   fund: state.app.myAllInfo.fund,
 })
 
-const mapDispatchToProps = {
-  
-}
+const mapDispatchToProps = (dispatch) => ({
+  updateMyInfo: (info) => dispatch(updateMyInfo(info)),
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Withdraw)

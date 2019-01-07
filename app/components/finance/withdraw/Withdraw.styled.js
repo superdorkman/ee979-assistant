@@ -107,19 +107,27 @@ export const Container = styled.div`
   .card_infor_list .card_n{
     width: 160px
   }
-  .card_infor_list .card_t{
+  .card_infor_list .card_t {
     width: 100px
-  }
-  .card_infor_list .card_t b{
-    width: 44px;
-    height: 24px;
-    color: #fff;
-    font-size: 12px;
-    text-align: center;
-    line-height: 24px;
-    display: inline-block;
-    margin-left: 15px;
 
+    b {
+      width: 44px;
+      height: 24px;
+      color: #fff;
+      font-size: 12px;
+      text-align: center;
+      line-height: 24px;
+      display: inline-block;
+      margin-left: 15px;
+    }
+
+    .bblue {
+      background-color: #26b7ff;
+    }
+
+    .bgreen {
+      background-color: #09bb07;
+    }
   }
   .card_infor_list .card_a{
     width: 150px;
@@ -133,6 +141,14 @@ export const Container = styled.div`
   .card_infor_list .card_s{
     width: 100px;
     font-size: 12px;
+
+    &.blue {
+      color: #26b7ff;
+    }
+
+    &.green {
+      color: #09bb07;
+    }
   }
   label.round_label {
     display: flex;
