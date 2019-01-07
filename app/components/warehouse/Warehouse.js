@@ -13,6 +13,8 @@ import Minus from '../common/icons/Minus';
 
 import { toFixed } from '../../utils/helper';
 
+import History from './history/History';
+
 const types = ['全部类型', '出金', '收金'];
 const crosses = ['全部跨区', '跨1', '跨2', '跨3a', '跨3b', '跨4', '跨5', '跨6', '跨7', '跨8'];
 
@@ -164,10 +166,7 @@ export class Center extends Component {
           </tbody>
         </table>
 
-        <Filter>
-          <Select options={crosses} selected="全部跨区" />
-          <Select options={types} selected="全部类型" />
-        </Filter>
+        <History />
 
         <Popover show={showDialog} isLocal={true} dismiss={this.hideDialog}>
           <MyDialog title="【入库】金币数量" extra={`跨${selectedCross}`}>
