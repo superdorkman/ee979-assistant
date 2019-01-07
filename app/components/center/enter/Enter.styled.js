@@ -19,7 +19,7 @@ export const List = styled.div`
         justify-content: space-between;
         width: 200px;
         height: 108px;
-        padding: 15px;
+        padding: 12px;
         border-radius: 5px;
         background-image: linear-gradient(#7b7eff,#6266ff);
         background-color: #7b7eff;
@@ -56,10 +56,10 @@ export const List = styled.div`
       .status {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-end;
       
         h5 {
-          font-size: 13px;
+          font-size: 12px;
         }
       
         button {
@@ -93,11 +93,11 @@ export const List = styled.div`
         span {
           display: inline-block;
           text-align: center;
-          width: 18px;
-          height: 18px;
+          width: 16px;
+          height: 16px;
           border-radius: 3px;
-          line-height: 18px;
-          font-size: 13px;
+          line-height: 16px;
+          font-size: 12px;
           font-weight: bold;
           color: #fff;
           background-color: #333;

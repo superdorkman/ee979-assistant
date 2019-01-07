@@ -15,13 +15,14 @@ export const Container = styled.div`
   background-image: linear-gradient(#7261f2, #4530df);
 
   .update {
-    max-width: 90%;
+    width: 100%;
     position: absolute;
     bottom: 10px;
     height: 16px;
     overflow: hidden;
     color: #fff;
-    textAlign: center;
+    text-align: center;
+    padding: 0 5px;
   }
 `;
 

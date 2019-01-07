@@ -93,6 +93,11 @@ export const Form = styled.div`
 
   .ratio {
     margin: 0 0 10px 60px;
+
+    em {
+      color: red;
+      font-size: 14px;
+    }
   }
 
   .btn-group {

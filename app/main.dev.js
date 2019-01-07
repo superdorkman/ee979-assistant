@@ -80,7 +80,6 @@ function createLoginWin() {
   });
 }
 
-
 function prepareChatWin() {
   // console.log(win.getBounds())
   const { width: sw, height: sh } = require('electron').screen.getPrimaryDisplay().workAreaSize;
@@ -115,7 +114,6 @@ function prepareChatWin() {
   });
 
   ipcMain.on('shell:openExternal', (event, url) => {
-    console.log(url)
     shell.openExternal(url);
   });
 
@@ -137,7 +135,11 @@ function prepareChatWin() {
 
     gallaryWin.loadURL(`file://${__dirname}/app.html#/gallary`);
 
-    gallaryWin.webContents.openDevTools({mode: 'detach'});
+    if (process.env.NODE_ENV !== 'production') {
+      gallaryWin.webContents.openDevTools({mode: 'detach'});
+    }
+
+    
 
     gallaryWin.on('closed', () => {
       gallaryWin = null;
@@ -217,9 +219,10 @@ autoUpdater.on('error', (err) => {
   sendStatusToWindow('更新出错' + err);
 })
 autoUpdater.on('download-progress', (progressObj) => {
-  let log_message = "下载速度" + progressObj.bytesPerSecond;
-  log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
-  log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+  // let log_message = "下载速度" + progressObj.bytesPerSecond;
+  // log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+  // log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+  let log_message = `已下载${parseInt(progressObj.percent)}%`;
   sendStatusToWindow(log_message);
 })
 autoUpdater.on('update-downloaded', (info) => {

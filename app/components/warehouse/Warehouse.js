@@ -11,6 +11,8 @@ import MyButton from '../libs/button/Button';
 import Plus from '../common/icons/Plus';
 import Minus from '../common/icons/Minus';
 
+import { toFixed } from '../../utils/helper';
+
 const types = ['全部类型', '出金', '收金'];
 const crosses = ['全部跨区', '跨1', '跨2', '跨3a', '跨3b', '跨4', '跨5', '跨6', '跨7', '跨8'];
 
@@ -26,6 +28,7 @@ export class Center extends Component {
     shou: 0,
     chu: 0,
     balance: 0,
+    tradeType: '',
   }
 
   componentWillMount() {
@@ -75,11 +78,11 @@ export class Center extends Component {
           <td>{shou}万金</td>
           <td>{stock}万金</td>
           <td>
-            <Button theme="blue" onClick={() => this.handleRuku(cross)}>
+            <Button onClick={() => this.handleRuku('shou', cross)}>
               <span>入库</span>
               <Plus fill="#fff" />
             </Button>
-            <Button theme="blue">
+            <Button onClick={() => this.handleRuku('chu', cross)}>
               <span>出库</span>
               <Minus fill="#fff" />
             </Button>
@@ -95,12 +98,40 @@ export class Center extends Component {
     })
   }
 
-  handleRuku(cross) {
-    this.setState({ showDialog: true, selectedCross: cross })
+  handleRuku(tradeType, cross) {
+    this.setState({ showDialog: true, selectedCross: cross, tradeType })
   }
 
   onRuku = () => {
-
+    const { cnt, price, remark, selectedCross, data, tradeType } = this.state;
+    const phone = localStorage.getItem('username');
+    const body = { 
+      phone: parseInt(phone), 
+      tradeType,
+      cross: `cross_${selectedCross}`,
+      cnt: parseFloat(cnt), price: parseFloat(price), remark,
+    };
+    axios.post('http://101.37.35.234:3333/api/SelfAllots/turnover', body)
+      .then(
+        res => {
+          if (res.data) {
+            data[`cross_${selectedCross}_${tradeType}`] +=  parseFloat(cnt);
+            if (tradeType === 'shou') {
+              data[`cross_${selectedCross}_stock`] +=  parseFloat(cnt);
+            } else if (tradeType === 'chu') {
+              data[`cross_${selectedCross}_stock`] -=  parseFloat(cnt);
+            }
+            
+            this.setState({  
+              cnt: '',
+              price: '',
+              remark: '',
+              data,
+            });
+            this.hideDialog();
+          }
+        }
+      ).catch(err => {})
   }
 
   hideDialog = () => {
@@ -114,8 +145,8 @@ export class Center extends Component {
       <Container>
         <SectionHeader title="库存统计" />
         <div className="today-total">
-          <span>今日出货总计：{shou}万金</span>
-          <span>今日收货总计：{chu}万金</span>
+          <span>今日出货总计：{chu}万金</span>
+          <span>今日收货总计：{shou}万金</span>
           <span>仓库剩余总库存：{balance}万金</span>
         </div>
         <table>
@@ -155,7 +186,9 @@ export class Center extends Component {
                 <span className="label">备注：</span>
                 <textarea placeholder="请输入备注信息（可不填）" value={remark} onChange={(e) => this.handleIptChange(e, 'remark')} />
               </div>
-              <div className="ratio">当前输入比例：</div>
+              <div className="ratio">当前输入比例：
+                <em>{price ? toFixed(cnt/price) : ''}</em>
+              </div>
               <div className="btn-group">
                 <MyButton style={{width: 120, height: 40}} theme="yellow" onClick={this.onRuku}>入库</MyButton>
                 <MyButton style={{width: 120, height: 40}} onClick={this.hideDialog}>取消</MyButton>
