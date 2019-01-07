@@ -115,7 +115,13 @@ export const Container = styled.div`
             height: 56px;
             background-color: #f7f7f7;
             border-radius: 50%;
-            // background: url('/assets/icons/sprite_personal.png') no-repeat;
+            padding: 15px;
+
+            svg {
+                width: 100%;
+                height: 100%;
+                fill: #666;
+            }
 
             &.msg {
                 background-position: 0 -40px;

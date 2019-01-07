@@ -257,7 +257,7 @@ export class Finace extends Component {
       goodsSN,
       ...controls
     };
-    console.log(bundle)
+    
     axios.post('ElasticTraders/addd', { bundle })
       .then(
         res => {
