@@ -70,7 +70,9 @@ function createLoginWin() {
   
   win.loadURL(startUrl);
 
-  win.webContents.openDevTools({mode: 'detach'});
+  if (process.env.NODE_ENV !== 'production') {
+    win.webContents.openDevTools({mode: 'detach'});
+  }
 
   setTray();
   

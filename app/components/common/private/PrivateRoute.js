@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 
 const PrivateRoute = ({ component: Component, isLoggedIn, ...rest }) => {
-  console.log('islogged', isLoggedIn);
-  
   return (
     <Route
       {...rest}
@@ -26,9 +24,5 @@ const PrivateRoute = ({ component: Component, isLoggedIn, ...rest }) => {
 const mapStateTpProps = (state) => ({
   isLoggedIn: state.app.isLoggedIn
 });
-
-// const mapDispatchToProps = (dispatch) => ({
-//   onToggleDrawer: () => dispatch(toggleDrawer())
-// });
 
 export default connect(mapStateTpProps)(PrivateRoute);

@@ -32,12 +32,12 @@ export class Trend extends Component {
       page: 1,
       size: 10000,
     };
-    axios.post('ElasticTraders/list', body)
+    axios.post('ShipmentTraders/list', body)
       .then(
         res => {
           const { data, error } = res.data;
           if (data) {
-            console.log(data);
+            // console.log(data);
             this.setState({ list: data });
           }
         }
@@ -90,7 +90,7 @@ export class Trend extends Component {
 
   goConfig = () => {
     const { history, match: { url }} = this.props;
-    history.replace('/chuhuo');
+    history.replace('/shouhuo');
   }
 
   render() {
@@ -115,7 +115,7 @@ export class Trend extends Component {
               <tr>
                 <th>跨区</th>
                 <th>收货商</th>
-                <th>收货量</th>
+                <th>收货量(万金)</th>
                 <th>万金单价</th>
                 <th>每元比例</th>
               </tr>
