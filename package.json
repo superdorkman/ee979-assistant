@@ -1,7 +1,7 @@
 {
   "name": "ee979-assistant",
   "productName": "ee979-assistant",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "ee979商家助手",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
@@ -62,6 +62,8 @@
     "files": [
       "app/dist/",
       "app/app.html",
+      "app/logo.png",
+      "app/logogray.png",
       "app/main.prod.js",
       "app/main.prod.js.map",
       "package.json"

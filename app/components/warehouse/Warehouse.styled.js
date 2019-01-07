@@ -113,6 +113,7 @@ export const Button = styled.div`
   border-radius: 5px;
   color: #fff;
   margin-right: 30px;
+  cursor: pointer;
 
   span {
     margin-right: 4px;

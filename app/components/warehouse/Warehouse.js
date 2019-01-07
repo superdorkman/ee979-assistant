@@ -7,7 +7,7 @@ import Select from '../libs/select/Select';
 
 import Popover from '../libs/popover/Popover';
 import MyDialog from '../common/my-dialog/MyDialog';
-// import Button from '../libs/button/Button';
+import MyButton from '../libs/button/Button';
 import Plus from '../common/icons/Plus';
 import Minus from '../common/icons/Minus';
 
@@ -23,23 +23,40 @@ export class Center extends Component {
     cnt: '',
     price: '',
     remark: '',
+    shou: 0,
+    chu: 0,
+    balance: 0,
   }
 
   componentWillMount() {
-    // this.getStock();
+    this.getStock();
   }
 
   getStock() {
     if (this.props.notices) return;
-    // const phone = localStorage.getItem('username');
-    const body = { phone: 13362032853, time: new Date() };
+    const phone = localStorage.getItem('username');
+    const body = { phone: parseInt(phone), time: new Date() };
     axios.post('http://101.37.35.234:3333/api/SelfAllots/dailyInfo', body)
       .then(
         res => {
           const { msg } = res.data;
           if (msg === 'success') {
             // this.props.setNotices(data);
-            this.setState({ data: res.data });
+            let shou = 0;
+            let chu = 0;
+            let balance = 0;
+            Object.keys(res.data).forEach(key => {
+              if (key.indexOf('shou') > -1) {
+                shou += res.data[key];
+              } else if (key.indexOf('chu') > -1) {
+                chu += res.data[key];
+              } else if (key.indexOf('stock') > -1) {
+                balance += res.data[key];
+              }
+            });
+
+            this.setState({ data: res.data, shou, chu, balance });
+            
           }
         }
       ).catch(err => {})
@@ -91,15 +108,15 @@ export class Center extends Component {
   }
 
   render() {
-    const { showDialog, selectedCross, cnt, price, remark, } = this.state;
+    const { showDialog, selectedCross, cnt, price, remark, chu, shou, balance } = this.state;
 
     return (
       <Container>
         <SectionHeader title="库存统计" />
         <div className="today-total">
-          <span>今日出货总计：888888.88万金</span>
-          <span>今日收货总计：888888.88万金</span>
-          <span>仓库剩余总库存：888888.88万金</span>
+          <span>今日出货总计：{shou}万金</span>
+          <span>今日收货总计：{chu}万金</span>
+          <span>仓库剩余总库存：{balance}万金</span>
         </div>
         <table>
           <thead>
@@ -140,8 +157,8 @@ export class Center extends Component {
               </div>
               <div className="ratio">当前输入比例：</div>
               <div className="btn-group">
-                <Button style={{width: 120, height: 40}} theme="yellow" onClick={this.onRuku}>入库</Button>
-                <Button style={{width: 120, height: 40}} theme="gray" onClick={this.hideDialog}>取消</Button>
+                <MyButton style={{width: 120, height: 40}} theme="yellow" onClick={this.onRuku}>入库</MyButton>
+                <MyButton style={{width: 120, height: 40}} onClick={this.hideDialog}>取消</MyButton>
               </div>
             </Form>
           </MyDialog>

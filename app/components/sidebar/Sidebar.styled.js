@@ -20,6 +20,8 @@ export const Container = styled.div`
     bottom: 10px;
     height: 16px;
     overflow: hidden;
+    color: #fff;
+    textAlign: center;
   }
 `;
 
