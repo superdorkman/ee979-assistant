@@ -6,7 +6,7 @@ import Label from '../label/Label';
 class BestRadio extends Component {
 
   state = {
-    value: '',
+    value: this.props.value,
   }
 
   handleIptChange = (e) => {

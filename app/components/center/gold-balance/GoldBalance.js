@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react';
+import Loading from '../../libs/loading/Loading';
 
 const { ipcRenderer } = window.require('electron');
 
 function renderStock(props) {
   const { stock } = props;
-  if (!stock) return;
 
   return ['1','2','3a','3b','4','5','6','7','8'].map((cross, idx) => {
     const balance = stock[`cross_${cross}_stock`] || 0;
@@ -18,17 +18,27 @@ function renderStock(props) {
 }
 
 export default props => {
+
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>跨区</th>
-          <th>仓库剩余金币（万金）</th>
-        </tr>
-      </thead>
-      <tbody>
-        {renderStock(props)}
-      </tbody>
-    </table>
+    <Fragment>
+      <table>
+        <thead>
+          <tr>
+            <th>跨区</th>
+            <th>仓库剩余金币（万金）</th>
+          </tr>
+        </thead>
+        {!!props.stock && (
+          <tbody>
+            {renderStock(props)}
+          </tbody>
+        )}
+      </table>
+      {!props.stock && (
+        <div style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Loading />
+        </div>
+      )}
+    </Fragment>
   )
 }

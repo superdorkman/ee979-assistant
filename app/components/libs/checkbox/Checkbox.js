@@ -9,11 +9,11 @@ class Checkbox extends Component {
   }
 
   render() {
-    const { label, ...props } = this.props;
+    const { label, checked, ...props } = this.props;
 
     return (
       <Container {...props}>
-        <input type="checkbox" onChange={this.handleChange} /> 
+        <input type="checkbox" defaultChecked={checked} onChange={this.handleChange} /> 
         <span className="fake-radio"></span>
         <span>{ label }</span>
       </Container>

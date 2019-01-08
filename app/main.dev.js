@@ -87,13 +87,13 @@ function prepareChatWin() {
   const { width: sw, height: sh } = require('electron').screen.getPrimaryDisplay().workAreaSize;
   // win.setSkipTaskbar(false);
   // win.loadURL(startUrl);
-  const _x = (sw - 1200) / 2;
+  const _x = (sw - 1300) / 2;
   const _y = (sh - 810) / 2;
-  win.setMinimumSize(1200, 810);
+  win.setMinimumSize(1300, 810);
   win.setBounds({
     x: 100,
     y: 20,
-    width: 1200,
+    width: 1300,
     height: 810,
   }, true);
   // win.setSize(1208, 796, true);

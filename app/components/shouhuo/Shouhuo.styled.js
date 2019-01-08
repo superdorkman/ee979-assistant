@@ -20,6 +20,14 @@ export const Container = styled.div`
     .pause {
       color: #ff1111;
     }
+
+    button {
+      font-size: 12px;
+      padding: 3px 6px;
+      background: #e8e6e6;
+      border-radius: 4px;
+      margin-right: 5px;
+    }
   }
 
   table {
@@ -27,6 +35,13 @@ export const Container = styled.div`
     width: 100%;
   }
   
+`;
+
+export const LoadWrap = styled.div`
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const Nav = styled.div`

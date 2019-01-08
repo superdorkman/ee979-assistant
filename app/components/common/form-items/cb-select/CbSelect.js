@@ -10,24 +10,30 @@ export class CbSelectComp extends Component {
     checked: false,
   }
 
+  componentWillMount() {
+    this.setState({
+      checkList: this.props.value.split(','),
+    })
+  }
+
   onCheck(option) {
     const { checkList } = this.state;
-    // this.checked = true;
     let idx = checkList.indexOf(option);
     if (idx === -1) {
       checkList.push(option);
     } else {
       checkList.splice(idx, 1);
     }
-    console.log(this.props, checkList)
     this.props.onChange(this.props.ki, checkList);
   }
 
   renderItems() {
-    const { options } = this.props;
+    const { options, value } = this.props;
     if (!options) return;
     return options.map((option, idx) => (
-      <Checkbox check={() => this.onCheck(option)} label={option} key={option} 
+      <Checkbox check={() => this.onCheck(option)} 
+        checked={value.indexOf(option) > -1}
+        label={option} key={option} 
         style={{marginRight: 10}} />
     ));
   }

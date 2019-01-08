@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { Container, Nav, Content, Filter, MenuWrap, Form } from './Chuhuo.styled';
+import { Container, LoadWrap, Nav, Content, Filter, MenuWrap, Form } from './Chuhuo.styled';
+import Loading from '../libs/loading/Loading';
 import Button from '../libs/button/Button';
 import SectionHeader from '../common/section-header/SectionHeader';
 
@@ -156,7 +157,7 @@ export class Finace extends Component {
     if (!listFiltered) return;
 
     return listFiltered.map((item, idx) => {
-      const { areaName, serverName, ratio, minNum, totalNum, mask, top, startH, endH } = item;
+      const { areaName, goodsSN, serverName, ratio, minNum, totalNum, mask, top, startH, endH } = item;
       return (
         <tr key={idx}>
           <td>{`${areaName}/${serverName}`}</td>
@@ -166,22 +167,71 @@ export class Finace extends Component {
           <td>{this.getStatus(mask, top)}</td>
           <td>{(startH == 0 && endH == 0) ? '全天' : `${startH}}点 - ${endH}`}</td>
           <td>
-            <button>修改</button>
-            <button>暂停</button>
-            <button>删除</button>
+            <button onClick={() => this.handleModify(goodsSN)}>修改</button>
+            <button onClick={() => this.setBestRatio(goodsSN)}>一键第一</button>
+            {(mask == 0 || mask == 2) && (
+              <button onClick={() => this.togglePause(goodsSN, 'off')}>暂停</button>
+            )}
+            {(mask == 1 || mask == 3) && (
+              <button onClick={() => this.togglePause(goodsSN, 'on')}>启用</button>
+            )}
+            <button className="del">删除</button>
           </td>
         </tr>
       )
     });
   }
 
-  handleAddShouhuo = () => {
-    const { areaName, serverName } = this.state;
-    if (!areaName || !serverName) return alert('请先选择区服');
+  setBestRatio(goodsSN) {
+    const flag = confirm('确定设置为第一的比例吗？');
+    if (!flag) return;
+    axios.post('ElasticTraders/bestRatio', { goodsSN })
+      .then(
+        res => {
+          const { data } = res.data;
+          if (data) {
+            const { list, listFiltered } = this.state;
+            list.find(item => item.goodsSN === goodsSN).ratio = data;
+            listFiltered.find(item => item.goodsSN === goodsSN).ratio = data;
+            this.setState({ list, listFiltered });
+          }
+        }
+      ).catch(err => {});
+  }
+
+  togglePause(goodsSN, status) {
+    const flag = confirm(`确定${status === 'off' ? '暂停' : '启用'}此出货吗？`);
+    if (!flag) return;
+    const body = {
+      game: 'dnf',
+      goodsType: '游戏币',
+      goodsSN, status
+    }
+    axios.post('ElasticTraders/eonff', body)
+      .then(
+        res => {
+          const { data } = res.data;
+          if (data) {
+            this.getList();
+          }
+        }
+      ).catch(err => {});
+  }
+
+  handleModify(goodsSN) {
+    this.setState({ goodsSN }, () => {
+      this.handleAddChouhuo();
+    });
+  }
+
+  handleAddChouhuo = () => {
+    const { areaName, serverName, goodsSN } = this.state;
+    if (!goodsSN && (!areaName || !serverName)) return alert('请先选择区服');
     const body = { 
       game: 'dnf',
       goodsType: '游戏币',
-      areaName, serverName
+      areaName, serverName,
+      goodsSN,
     };
     axios.post('ElasticTraders/eform', body)
       .then(
@@ -189,7 +239,10 @@ export class Finace extends Component {
           const { data, error } = res.data;
           if (data) {
             const controls = this.buildForm(data);
-            this.setState({ showDialog: true, controls, form: data });
+            this.setState({ showDialog: true, controls, form: data, goodsSN: '' });
+          } else if (error) {
+            alert(error);
+            this.setState({ goodsSN: '' });
           }
         }
       ).catch(err => {});
@@ -284,7 +337,7 @@ export class Finace extends Component {
 
   render() {
     const { areaNames } = this.props;
-    const { areaName, serverName, serverNames, selectedState, curMenu, showDialog } = this.state;
+    const { areaName, list, serverName, serverNames, selectedState, curMenu, showDialog } = this.state;
 
     return (
       <Container>
@@ -313,7 +366,7 @@ export class Finace extends Component {
           <MenuWrap>
             <TableMenus menus={tableMenus} curMenu={curMenu} onMenuSelect={this.handleMenuSelect} />
             <div className="btns">
-              <Button style={{width: 88, height: 26, fontSize: 14}} theme="yellow" onClick={this.handleAddShouhuo}>新增收货</Button> 
+              <Button style={{width: 88, height: 26, fontSize: 14}} theme="yellow" onClick={this.handleAddChouhuo}>新增收货</Button> 
             </div>
           </MenuWrap>
 
@@ -329,10 +382,16 @@ export class Finace extends Component {
                 <th>操作</th>
               </tr>
             </thead>
-            <tbody>
-              {this.renderRows()}
-            </tbody>
+            {!!list && (
+              <tbody>
+                {this.renderRows()}
+              </tbody>
+            )}
           </table>
+
+          {!list && (
+            <LoadWrap><Loading /></LoadWrap>
+          )}
         </Content>
 
         <Popover show={showDialog} isLocal={true} dismiss={this.hideDialog}>
