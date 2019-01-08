@@ -9,6 +9,14 @@ export const Container = styled.div`
 
   table, table tr th, table tr td { border:1px solid #e2e2e2; }
 
+  tr.shou td {
+    color: #32CD32;
+  }
+
+  tr.manual td {
+    color: #ee4425;
+  }
+
   th {
     height: 45px;
     background-color: #f7f7f7;

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import { Container } from './Info.styled';
+import { withRouter } from 'react-router-dom';
 
 import { toFixed } from '../../../utils/helper';
 
@@ -13,7 +14,7 @@ import OrdersIcon from '../../common/icons/Orders';
 
 const { ipcRenderer } = window.require('electron');
 
-export class Center extends Component {
+export class Info extends Component {
 
   componentWillMount() {
   }
@@ -21,6 +22,10 @@ export class Center extends Component {
   browse(path) {
     const url = `https://www.ee979.com${path}`;
     ipcRenderer.send('shell:openExternal', url);
+  }
+
+  navTo(path) {
+    this.props.history.push(path)
   }
 
   render() {
@@ -65,21 +70,21 @@ export class Center extends Component {
                     <span>商品管理</span>
                     {/* <span className="badge" *ngIf="goodsOnSaleCnt > 0">{{ goodsOnSaleCnt }}</span> */}
                 </li>
-                <li onClick={() => this.browse('/personal/sold')}>
+                <li onClick={() => this.navTo('/chuhuo')}>
                     <div className="thumb sold">
                         <Shangcheng />
                     </div>
-                    <span>商城配置</span>
+                    <span>出货配置</span>
                     {/* <span className="badge" *ngIf="goodsOnTradeCnt > 0">{{ goodsOnTradeCnt }}</span> */}
                 </li>
-                <li onClick={() => this.browse('/personal/sold')}>
+                <li onClick={() => this.navTo('/warehouse')}>
                     <div className="thumb sold">
                         <WarehouseIcon />
                     </div>
                     <span>库存管理</span>
                     {/* <span className="badge" *ngIf="goodsOnTradeCnt > 0">{{ goodsOnTradeCnt }}</span> */}
                 </li>
-                <li onClick={() => this.browse('/personal/sold')}>
+                <li onClick={() => this.navTo('/finance')}>
                     <div className="thumb sold">
                         <FinanceIcon />
                     </div>
@@ -101,4 +106,4 @@ const mapDispatchToProps = (dispatch) => ({
   updateMyInfo: (info) => dispatch(updateMyInfo(info)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Center)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Info));

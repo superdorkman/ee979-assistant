@@ -14,6 +14,7 @@ import Loading from '../libs/loading/Loading';
 
 import DateRange from '../common/date-range/DateRange';
 import { openUrl } from '../../services/extenals';
+import { toFixed } from '../../utils/helper';
 
 const goodsTypes = ['游戏币'];
 const orderTypes = ['出货订单', '收货订单'];
@@ -27,8 +28,9 @@ const theads = [
   {label: '总价'},
   {label: '比例'},
   {label: '单价'},
-  {label: '跨区', chu: true},
-  {label: '买家区服', chu: true},
+  {label: '件数', chu: true},
+  {label: '跨区'},
+  {label: '买家区服'},
   {label: '收货角色名', chu: true},
   {label: '状态'},
   {label: '沟通'},
@@ -46,7 +48,7 @@ export class Orders extends Component {
     selectedCross: '',
     serverNames: [],
     page: 1,
-    size: 12,
+    size: 20,
     list: null,
     count: 0,
     filter: {
@@ -232,8 +234,9 @@ export class Orders extends Component {
           <td>{orderSN}</td>
           <td>{coins}万金</td>
           <td>{price}元</td>
-          <td>{50}</td>
+          <td>{toFixed(coins/price)}</td>
           <td>{unitPrice}</td>
+          <td>{buyNum}件</td>
           {isChuhuo && (
             <Fragment>
               <td>{cross}</td>
@@ -326,7 +329,8 @@ export class Orders extends Component {
               onSelect={this.handleSelect} /> &nbsp;&nbsp;
             <Select selected={selectedServer} options={serverNames}
               label="选择服" ki="serverName"
-              onSelect={this.handleSelect} /> &nbsp;&nbsp;
+              onSelect={this.handleSelect} /> &nbsp;&nbsp;&nbsp;&nbsp;
+            <span>游戏跨区: </span>
             <Select selected={selectedCross} options={crosses} 
               label="选择跨区" ki="cross"
               onSelect={this.handleSelect} />

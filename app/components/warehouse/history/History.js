@@ -64,10 +64,19 @@ export class History extends Component {
     const { list } = this.state;
 
     return list.map((item, idx) => {
-      const { buyNum, cnt, created, cross, orderCreated, orderSN, price, stock } = item;
+      const { buyNum, cnt, created, cross, orderCreated, orderSN, price, stock, frontType } = item;
       let _cross = cross.split('_')[1];
+      const isShou = frontType == '收金';
+      const isManual = frontType.indexOf('手动') > -1;
+      let klass = '';
+      if (isShou) {
+        klass = 'shou';
+      } else if (isManual) {
+        klass = 'manual';
+      }
+
       return (
-        <tr key={idx}>
+        <tr key={idx} className={klass}>
           <td>{idx + 1}</td>
           <td>{formatTime(created, 'full')}</td>
           <td>{formatTime(orderCreated, 'full')}</td>
@@ -77,7 +86,7 @@ export class History extends Component {
           <td>{buyNum || 1}件</td>
           <td>{price}元</td>
           <td>{toFixed(cnt/price)}</td>
-          <td>入库</td>
+          <td>{frontType}</td>
           <td>{stock}万金</td>
         </tr>
       )
