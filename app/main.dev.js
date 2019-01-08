@@ -188,6 +188,9 @@ function setTray() {
     {label: '显示窗口', click: () => {
       win.show();
     }},
+    {label: '检查更新', click: () => {
+      autoUpdater.checkForUpdatesAndNotify();
+    }},
     {role: 'quit', label: '退出程序'},
   ])
   tray.setToolTip('易易在线聊天系统');
