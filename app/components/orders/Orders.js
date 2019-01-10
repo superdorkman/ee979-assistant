@@ -236,15 +236,10 @@ export class Orders extends Component {
           <td>{price}元</td>
           <td>{toFixed(coins/price)}</td>
           <td>{unitPrice}</td>
-          <td>{buyNum}件</td>
-          {isChuhuo && (
-            <Fragment>
-              <td>{cross}</td>
-              <td>{areaName}-{serverName}</td>
-              <td>{character}</td>
-            </Fragment>
-          )}
-          
+          {isChuhuo && <td>{buyNum}件</td>}
+          <td>{cross}</td>
+          <td>{areaName}-{serverName}</td>
+          {isChuhuo && <td>{character}</td>}
           <td className={status}>{this.transformStatus(status)}</td>
           <td>
             <Button theme="blue" onClick={() => this.viewOrder(orderSN)}>

@@ -1,0 +1,9 @@
+<div class="snack" 
+  [ngClass]="theme"
+  [class.manual]="manual"
+  [class.hide]="shouldLeave"
+  [class.show]="showBar">
+  <app-cross *ngIf="manual" (dismiss)="onDismiss()"></app-cross>
+  <img [src]="'../../../assets/icons/' + theme + '.svg'" *ngIf="theme"/>
+  {{ text }}
+</div>
