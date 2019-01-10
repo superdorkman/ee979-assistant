@@ -12,6 +12,7 @@ import UsernameIcon from '../common/icons/Username';
 import PasswordIcon from '../common/icons/Password';
 import LineIcon from '../common/icons/Line';
 import CloseIcon from '../common/icons/Close';
+import { openSnack } from '../../services/SnackbarService';
 
 const { ipcRenderer } = window.require('electron');
 
@@ -63,7 +64,7 @@ export class Login extends Component {
             this.props.history.replace('/');
           } else if (error) {
             this.setState({ isSubmitting: false });
-            alert(error);
+            openSnack(error);
           }
         }
       ).catch(err => { this.setState({ isSubmitting: false }); });

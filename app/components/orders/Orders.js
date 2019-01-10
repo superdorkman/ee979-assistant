@@ -15,6 +15,7 @@ import Loading from '../libs/loading/Loading';
 import DateRange from '../common/date-range/DateRange';
 import { openUrl } from '../../services/extenals';
 import { toFixed } from '../../utils/helper';
+import Detail from './detail/Detail';
 
 const { ipcRenderer } = window.require('electron');
 
@@ -42,6 +43,7 @@ const theads = [
 export class Orders extends Component {
 
   state = {
+    showDetail: false,
     selectedType: '游戏币',
     selectedOrder: '出货订单',
     selectedDate: '默认',
@@ -218,8 +220,13 @@ export class Orders extends Component {
   }
 
   viewOrder(orderSN) {
-    const url = `https://www.ee979.com/order/${orderSN}`;
-    openUrl(url);
+    // const url = `https://www.ee979.com/order/${orderSN}`;
+    // openUrl(url);
+    this.setState({ showDetail: true });
+  }
+
+  hideDetail = () => {
+    this.setState({ showDetail: false });
   }
 
   renderRows() {
@@ -308,7 +315,7 @@ export class Orders extends Component {
   }
 
   render() {
-    const { selectedType, selectedOrder, selectedDate, selectedArea, selectedServer, selectedCross, count, page, size, list, serverNames } = this.state;
+    const { showDetail, selectedType, selectedOrder, selectedDate, selectedArea, selectedServer, selectedCross, count, page, size, list, serverNames } = this.state;
     const { areaNames } = this.props;
     return (
       <Container>
@@ -366,6 +373,8 @@ export class Orders extends Component {
             onSelect={this.handlePageSelect} />
           )}
         </Content>
+
+        <Detail show={showDetail} dismiss={this.hideDetail} />
       </Container>
     )
   }

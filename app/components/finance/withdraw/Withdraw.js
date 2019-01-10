@@ -12,6 +12,7 @@ import axios from 'axios';
 
 // import Loading from '../../libs/loading/Loading';
 import { openUrl } from '../../../services/extenals';
+import { openSnack } from '../../../services/SnackbarService';
 
 class Withdraw extends Component {
 
@@ -71,7 +72,7 @@ class Withdraw extends Component {
   moveAll = () => {
     const { free } = this.props.fund;
     if (free < 5) {
-      return alert('余额不足5元, 单笔提现至少5元');
+      return openSnack('余额不足5元, 单笔提现至少5元');
     }
     this.setState({ actualAmount: String(free) }, () => {
       this.onCalcFee();
@@ -135,8 +136,8 @@ class Withdraw extends Component {
 
   onWithdraw = () => {
     const { curType, actualAmount, payPwd } = this.state;
-    if (!actualAmount) return alert('请输入提现金额');
-    if (!payPwd) return alert('请输入提现密码');
+    if (!actualAmount) return openSnack('请输入提现金额');
+    if (!payPwd) return openSnack('请输入提现密码');
 
     const body = {
       payMethod: curType, money: parseFloat(actualAmount), payPwd
@@ -146,7 +147,7 @@ class Withdraw extends Component {
         res => {
           const { data, error } = res.data;
           if (data) {
-            alert(data);
+            openSnack(data);
             const {balance, free, frozen} = this.props.fund;
             this.props.updateMyInfo({
               fund: {
@@ -157,7 +158,7 @@ class Withdraw extends Component {
             });
             this.setState({ actualAmount: '', payPwd: '' });
           } else if (error) {
-            alert(error);
+            openSnack(error);
           }
         }
       ).catch(err => {});

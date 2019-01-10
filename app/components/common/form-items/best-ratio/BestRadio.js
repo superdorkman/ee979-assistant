@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container } from './BestRadio.styled';
 
 import Label from '../label/Label';
+import { openSnack } from '../../../../services/SnackbarService';
 
 class BestRadio extends Component {
 
@@ -17,7 +18,7 @@ class BestRadio extends Component {
   getBest = () => {
     const { bValue } = this.props;
     if (!bValue) {
-      return alert('此区暂无收货信息，无法为您提供最佳比例');
+      return openSnack('此区暂无收货信息，无法为您提供最佳比例');
     }
     this.setState({ value: bValue });
     this.props.onChange(this.props.ki, bValue);

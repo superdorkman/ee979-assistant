@@ -7,6 +7,7 @@ import Ellipse from './Ellipse';
 import Arrow from '../../common/icons/ChevronLeft';
 
 import Select from '../select/Select';
+import { openSnack } from '../../../services/SnackbarService';
 
 const options = [
   '15条/页',
@@ -173,7 +174,7 @@ export default class Pagination extends Component {
     const target = parseInt(this.input.value);
     if (!target) return;
     if(target > this.state.pages || target < 1) {
-      alert("超出页数范围...");
+      openSnack("超出页数范围...");
       return false;
     }
 

@@ -17,6 +17,7 @@ import CbSelectComp from '../common/form-items/cb-select/CbSelect';
 import InputComp from '../common/form-items/input/Input';
 import TimeComp from '../common/form-items/time/Time';
 import BestRadio from '../common/form-items/best-ratio/BestRadio';
+import { openSnack } from '../../services/SnackbarService';
 
 const tableMenus = [
   {type: 'all', text: '全部状态'},
@@ -208,7 +209,7 @@ export class Finace extends Component {
 
   handleAddShouhuo = () => {
     const { areaName, serverName, goodsSN } = this.state;
-    if (!goodsSN && (!areaName || !serverName)) return alert('请先选择区服');
+    if (!goodsSN && (!areaName || !serverName)) return openSnack('请先选择区服');
     const body = { 
       game: 'dnf',
       goodsType: '游戏币',
@@ -223,7 +224,7 @@ export class Finace extends Component {
             const controls = this.buildForm(data);
             this.setState({ showDialog: true, controls, form: data, goodsSN: '' });
           } else if (error) {
-            alert(error);
+            openSnack(error);
             this.setState({ goodsSN: '' });
           }
         }
@@ -309,9 +310,9 @@ export class Finace extends Component {
         res => {
           const { data, error } = res.data;
           if (data) {
-
+            openSnack('添加成功');
           } else if (error) {
-            alert(error);
+            openSnack(error);
           }
         }
       ).catch(err => {});

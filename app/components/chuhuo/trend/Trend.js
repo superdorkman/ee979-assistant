@@ -8,6 +8,7 @@ import SectionHeader from '../../common/section-header/SectionHeader';
 import Select from '../../libs/select/Select';
 import axios from 'axios';
 import { toFixed } from '../../../utils/helper';
+import { openSnack } from '../../../services/SnackbarService';
 // import formatTime from '../../../utils/formatTime';
 // import TableMenus from '../../../common/table-menus/TableMenus';
 
@@ -70,7 +71,7 @@ export class Trend extends Component {
 
   handleAddShouhuo = () => {
     const { areaName, serverName } = this.state;
-    if (!areaName || !serverName) return alert('请先选择区服');
+    if (!areaName || !serverName) return openSnack('请先选择区服');
     const body = { 
       game: 'dnf',
       goodsType: '游戏币',
