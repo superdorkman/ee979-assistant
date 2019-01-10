@@ -14,9 +14,9 @@ class Tooltip extends Component {
     return (
       <ThemeProvider theme={theme}>
         {text &&
-        <Wrapper pos={pos}>
+        <Wrapper>
           { children }
-          <div className="pointer">
+          <div className={`pointer ${pos}`}>
             <div className="inner"> 
               <div className="text">{ text }</div>
             </div>

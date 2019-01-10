@@ -44,6 +44,7 @@ export const Info = styled.div`
     align-items: center;
     color: #fff;
     margin-bottom: 10px;
+    cursor: pointer;
 
     .indicator {
       display: inline-block;
