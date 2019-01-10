@@ -253,6 +253,7 @@ function createdMenuWin() {
   });
 
   ipcMain.on('menu:click', (event, args) => {
+    menuWin.setOpacity(0);
     switch (args.type) {
       case 'online':
         break;
@@ -265,8 +266,6 @@ function createdMenuWin() {
         app.exit();
         break;
     }
-
-    menuWin.setOpacity(0);
   });
 
   tray.on('right-click', (event, bounds) => {
