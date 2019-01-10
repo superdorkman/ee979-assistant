@@ -99,16 +99,16 @@ export class Sidebar extends Component {
   }
 
   render() {
-    const { avatar, nickName, username, jifen } = this.props.myAllInfo;
+    const { avatar, nickName, username, jifen, online } = this.props.myAllInfo;
 
     return (
       <Container>
         <Info>
           <Avatar src={avatar} />
           <div className="name">{nickName || username}</div>
-          <div className="online">
+          <div className={online ? 'status online' : 'status offline'}>
             <span className="indicator"></span>
-            在线
+            {online ? '在线' : '离线'}
           </div>
           <JifenStatus jifen={jifen} />
         </Info>

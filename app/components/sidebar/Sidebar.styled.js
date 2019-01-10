@@ -38,19 +38,26 @@ export const Info = styled.div`
     margin: 10px 0;
   }
 
-  .online {
+  .status {
     display: flex;
     align-items: center;
     color: #fff;
     margin-bottom: 10px;
 
-    span {
+    .indicator {
       display: inline-block;
       width: 12px;
       height: 12px;
       border-radius: 12px;
-      background-color: #22d24f;
       margin-right: 5px;
+    }
+
+    &.online .indicator {
+      background-color: #22d24f;
+    }
+
+    &.offline .indicator {
+      background-color: #bbb;
     }
   }
 `;
