@@ -17,6 +17,7 @@ import JifenStatus from '../common/jifen-status/JifenStatus';
 import initMqtt from '../../services/mqtt';
 
 import Tooltip from '../libs/tooltip/Tooltip';
+import { openSnack } from '../../services/SnackbarService';
 
 const { ipcRenderer } = window.require('electron');
 
@@ -42,6 +43,9 @@ export class Sidebar extends Component {
   componentDidMount() {
     ipcRenderer.on('update', (event, text) => {
       this.setState({ updateMsg: text });
+    });
+    ipcRenderer.on('online:toggle', (event, status) => {
+      this.toggleOnline(status);
     });
     initMqtt();
   }
@@ -100,16 +104,47 @@ export class Sidebar extends Component {
     })
   }
 
+  handleStatusClick = () => {
+    const { online } = this.props.myAllInfo;
+    const flag = confirm(`确定切换到${online ? '离线' : '在线'}状态吗?`);
+    if (!flag) return;
+
+    this.toggleOnline(!online);
+  }
+
+  toggleOnline(targetStatus) {
+    
+    const { myAllInfo, updateMyInfo } = this.props;
+    const { online } = myAllInfo;
+    if (targetStatus == online) return;
+
+    axios.get('Members/toggleOnline')
+      .then(
+        res => {
+          const { data, error } = res.data;
+          if (data) {
+            updateMyInfo({
+              ...myAllInfo,
+              online: targetStatus,
+            });
+            openSnack(`您已${online ? '离线' : '在线'}`);
+          } else if (error) {
+            openSnack(error);
+          }
+        }
+      ).catch(err => {});
+  }
+
   render() {
     const { avatar, nickName, username, jifen, online } = this.props.myAllInfo;
 
     return (
       <Container>
         <Info>
-          <Avatar src={avatar} />
+          <Avatar src={avatar} gray={!online} />
           <div className="name">{nickName || username}</div>
           <Tooltip pos="right" text={online ? '设置离线后除商城出货、收货外的普通商品将全部隐藏，用户无法进行购买！' : '您目前是离线状态，除商城出货、收货外的普通商品将全部隐藏，用户无法进行购买！'}>
-            <div className={online ? 'status online' : 'status offline'}>
+            <div className={online ? 'status online' : 'status offline'} onClick={this.handleStatusClick}>
               <span className="indicator"></span>
               {online ? '在线' : '离线'}
             </div>

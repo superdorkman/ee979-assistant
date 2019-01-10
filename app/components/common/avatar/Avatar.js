@@ -8,15 +8,16 @@ export class Avatar extends Component {
   }
 
   render() {
-    const { size, src, theme } = this.props;
+    const { size, src, theme, gray } = this.props;
     const style = {
       ...styles.wrap,
       width: size,
-      height: size
+      height: size,
+      filter: gray ? 'grayscale(1)' : 'unset',
     }
 
     return (
-      <div style={style} >
+      <div style={style}>
         {src ? (
           <Lazyload src={src} isAvatar={true} />
         ) : (

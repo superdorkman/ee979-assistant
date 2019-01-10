@@ -261,8 +261,10 @@ function createdMenuWin() {
     menuWin.setOpacity(0);
     switch (args.type) {
       case 'online':
+        win.webContents.send('online:toggle', true);
         break;
       case 'offline':
+        win.webContents.send('online:toggle', false);
         break;
       case 'update':
         autoUpdater.checkForUpdatesAndNotify();

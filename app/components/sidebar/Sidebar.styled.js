@@ -33,6 +33,7 @@ export const Info = styled.div`
   align-items: center;
   padding: 30px 0;
   -webkit-app-region: no-drag;
+  user-select: none;
 
   .name {
     color: #fff;
