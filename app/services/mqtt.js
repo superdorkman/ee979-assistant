@@ -1,7 +1,7 @@
 import MQTT from 'mqtt';
 import axios from 'axios';
 import { API_URL } from '../constants/url';
-import store from '../store';
+import { store } from '../index';
 
 const groupId = 'GID_ee979';
 let client;
@@ -28,7 +28,7 @@ const connect = (memberSN, token, num = 1) => {
   client.on('message', function (topic, message) {
     message = message.toString();
     const { type } = JSON.parse(message);
-    if (type !== 'freeChat') return;
+    if (type === 'freeChat') return;
     console.log('message arrived', message);
     store.dispatch({
       type: 'SET_MSG',
@@ -42,7 +42,7 @@ const connect = (memberSN, token, num = 1) => {
 }
 
 const initMqtt = () => {
-  axios.get(`${API_URL}/Members/getMqttToken`)
+  axios.get('Members/getMqttToken')
     .then(res => {
       const { data } = res.data;
       if (data) {

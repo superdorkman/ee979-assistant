@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #f0f;
+        color: #000;
+        font-size: 14px;
+        font-family: '微软雅黑', Arial, Helvetica, sans-serif;
+      }
+
+      #root {
+        user-select: none;
+        width: 160px;
+        background-color: #fff;
+      }
+
+      section {
+        padding: 8px 0;
+      }
+
+      section:not(:last-child) {
+        border-bottom: 1px solid #f3f3f3;
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      li {
+        display: flex;
+        align-items: center;
+        /* padding-left: 20px; */
+        height: 32px;
+
+      }
+
+      li span {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 100%;
+      }
+
+      li span i{
+        display: inline-block;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+      }
+
+      li span.online i {
+        background-color: #22d24f;
+        /* background-color: #70ed3a; */
+      }
+
+      li span.offline i {
+        background-color: #bbbbbb;
+      }
+
+      li:hover {
+        background-color: #e6e9ed;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <section>
+        <ul>
+          <li onclick="handleClick('online')">
+            <span class="online"><i></i></span>
+            我在线
+          </li>
+          <li onclick="handleClick('offline')">
+            <span class="offline"><i></i></span>
+            离线
+          </li>
+        </ul>
+      </section>
+      <section>
+        <ul>
+          <li onclick="handleClick('update')"><span></span>检查更新</li>
+        </ul>
+      </section>
+      <section>
+        <ul>
+          <li onclick="handleClick('quit')"><span></span>退出</li>
+        </ul>
+      </section>
+    </div>
+    <script>
+      const { ipcRenderer } = window.require('electron');
+      function handleClick(type) {
+        ipcRenderer.send('menu:click', {type});
+      } 
+    </script>
+  </body>
+</html>

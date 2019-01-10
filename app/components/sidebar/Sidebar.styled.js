@@ -37,6 +37,22 @@ export const Info = styled.div`
     color: #fff;
     margin: 10px 0;
   }
+
+  .online {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    margin-bottom: 10px;
+
+    span {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 12px;
+      background-color: #22d24f;
+      margin-right: 5px;
+    }
+  }
 `;
 
 

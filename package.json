@@ -254,6 +254,7 @@
     "electron-updater": "^3.2.3",
     "history": "^4.7.2",
     "js-sha1": "^0.6.0",
+    "mqtt": "^2.18.8",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-hot-loader": "^4.3.12",

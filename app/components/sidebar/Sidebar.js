@@ -14,6 +14,7 @@ import FinanceIcon from '../common/icons/Finance';
 
 import axios from 'axios';
 import JifenStatus from '../common/jifen-status/JifenStatus';
+import initMqtt from '../../services/mqtt';
 
 const { ipcRenderer } = window.require('electron');
 
@@ -39,7 +40,8 @@ export class Sidebar extends Component {
   componentDidMount() {
     ipcRenderer.on('update', (event, text) => {
       this.setState({ updateMsg: text });
-    })
+    });
+    initMqtt();
   }
 
   getInfo() {
@@ -104,6 +106,10 @@ export class Sidebar extends Component {
         <Info>
           <Avatar src={avatar} />
           <div className="name">{nickName || username}</div>
+          <div className="online">
+            <span className="indicator"></span>
+            在线
+          </div>
           <JifenStatus jifen={jifen} />
         </Info>
 

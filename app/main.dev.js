@@ -1,13 +1,23 @@
 import { app, BrowserWindow, globalShortcut, ipcMain, Menu, Tray, nativeImage, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
-import url from 'url';
+// import url from 'url';
 
 let tray = null;
 
 let isLoggedIn = false;
 let win = null;
 let gallaryWin = null;
+
+// 系统托盘跳动
+let blinkTimer;
+let count = 0;
+
+let menuWin = null;
+
+const trayIconPath = path.join(__dirname, 'logo.png');
+let trayIcon = nativeImage.createFromPath(trayIconPath);
+trayIcon = trayIcon.resize({ width: 16, height: 16 });
 
 const startUrl = `file://${__dirname}/app.html`;
 // const startUrl = '192.168.2.106:3000';
@@ -80,6 +90,7 @@ function createLoginWin() {
     isLoggedIn = true;
     prepareChatWin();
   });
+  
 }
 
 function prepareChatWin() {
@@ -141,8 +152,6 @@ function prepareChatWin() {
       gallaryWin.webContents.openDevTools({mode: 'detach'});
     }
 
-    
-
     gallaryWin.on('closed', () => {
       gallaryWin = null;
     })
@@ -163,8 +172,8 @@ function prepareChatWin() {
 
   // 检查更新
   autoUpdater.checkForUpdatesAndNotify();
+  createdMenuWin();
 }
-
 
 function notifyUser() {
   const isVisible = win.isVisible();  // 是否托盘中
@@ -175,35 +184,106 @@ function notifyUser() {
       win.flashFrame(true);
     } else {
       // console.log('should blink the tray')
+      blink();
     }
   }
 }
 
 function setTray() {
   const iconPath = path.join(__dirname, 'logogray.png');
-  let trayIcon = nativeImage.createFromPath(iconPath);
-  trayIcon = trayIcon.resize({ width: 16, height: 16 });
-  tray = new Tray(trayIcon);
+  let trayIconGray = nativeImage.createFromPath(iconPath);
+  trayIconGray = trayIconGray.resize({ width: 16, height: 16 });
+  tray = new Tray(trayIconGray);
   const contextMenu = Menu.buildFromTemplate([
     {label: '显示窗口', click: () => {
       win.show();
     }},
-    {label: '检查更新', click: () => {
-      autoUpdater.checkForUpdatesAndNotify();
-    }},
+    // {label: '检查更新', click: () => {
+    //   autoUpdater.checkForUpdatesAndNotify();
+    // }},
     {role: 'quit', label: '退出程序'},
   ])
-  tray.setToolTip('易易在线聊天系统');
+  tray.setToolTip('商家助手');
   tray.setContextMenu(contextMenu);
 
   tray.on('click', () => {
     win.show();
+    if (isLoggedIn) {
+      clearInterval(blinkTimer);
+      tray.setImage(trayIcon);
+    }
   });
 }
 
-function setWinEvents() {
-  
+function blink() {
+  const emptyIconPath = path.join(__dirname, 'empty.png');
+  let emptyIcon = nativeImage.createFromPath(emptyIconPath);
+  emptyIcon = emptyIcon.resize({ width: 16, height: 16 });
+
+  blinkTimer = setInterval(() => {
+    if (count % 2 === 0) {
+      tray.setImage(emptyIcon);
+    } else {
+      tray.setImage(trayIcon);
+    }
+    count++;
+  }, 400);
 }
+
+
+// 菜单win
+function createdMenuWin() {
+  tray.setContextMenu(null);
+  const { width: sw, height: sh } = require('electron').screen.getPrimaryDisplay().workAreaSize;
+  menuWin = new BrowserWindow({
+    width: 160,
+    height: 178,
+    skipTaskbar: true,
+    frame: false,
+    movable: false,
+    resizable: false,
+    opacity: 0,
+    alwaysOnTop: true,
+  })
+
+  menuWin.loadURL(`file://${__dirname}/menu.html`);
+
+  menuWin.on('blur', () => {
+    menuWin.setOpacity(0);
+  });
+
+  ipcMain.on('menu:click', (event, args) => {
+    switch (args.type) {
+      case 'online':
+        break;
+      case 'offline':
+        break;
+      case 'update':
+        autoUpdater.checkForUpdatesAndNotify();
+        break;
+      case 'quit':
+        app.exit();
+        break;
+    }
+
+    menuWin.setOpacity(0);
+  });
+
+  tray.on('right-click', (event, bounds) => {
+    const {x, y} = bounds;
+    menuWin.setBounds({
+      x: x - 160,
+      y: y - 170,
+      width: 160,
+      height: 178
+    });
+    menuWin.setOpacity(1);
+    menuWin.focus();
+    // clearInterval(blinkTimer);
+    // tray.setImage(trayIcon);
+  });
+}
+
 
 // 升级通信
 function sendStatusToWindow(text) {
