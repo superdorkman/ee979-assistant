@@ -1,4 +1,4 @@
-import { app, BrowserWindow, globalShortcut, ipcMain, Menu, Tray, nativeImage, shell } from 'electron';
+import { app, BrowserWindow, clipboard, globalShortcut, ipcMain, Menu, Tray, nativeImage, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 // import url from 'url';
@@ -124,6 +124,10 @@ function prepareChatWin() {
 
   ipcMain.on('message:arrive', (event, message) => {
     notifyUser();
+  });
+
+  ipcMain.on('clipboard:copy', (event, text) => {
+    clipboard.writeText(text);
   });
 
   ipcMain.on('shell:openExternal', (event, url) => {

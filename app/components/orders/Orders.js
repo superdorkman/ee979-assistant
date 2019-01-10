@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
-
+import { openSnack } from '../../actions/app';
 import { Container, Filter, Content, LoadWrap } from './Orders.styled';
 
 import Select from '../libs/select/Select';
@@ -15,6 +15,8 @@ import Loading from '../libs/loading/Loading';
 import DateRange from '../common/date-range/DateRange';
 import { openUrl } from '../../services/extenals';
 import { toFixed } from '../../utils/helper';
+
+const { ipcRenderer } = window.require('electron');
 
 const goodsTypes = ['游戏币'];
 const orderTypes = ['出货订单', '收货订单'];
@@ -239,7 +241,7 @@ export class Orders extends Component {
           {isChuhuo && <td>{buyNum}件</td>}
           <td>{cross}</td>
           <td>{areaName}-{serverName}</td>
-          {isChuhuo && <td>{character}</td>}
+          {isChuhuo && <td onClick={() => this.handleCopy(character)}>{character}</td>}
           <td className={status}>{this.transformStatus(status)}</td>
           <td>
             <Button theme="blue" onClick={() => this.viewOrder(orderSN)}>
@@ -252,6 +254,11 @@ export class Orders extends Component {
         </tr>
       )
     });
+  }
+
+  handleCopy(character) {
+    this.props.openSnack('角色复制成功');
+    ipcRenderer.send('clipboard:copy', character);
   }
 
   getOpButton(isChuhuo, item) {
@@ -369,8 +376,8 @@ const mapStateToProps = (state) => ({
   serverList: state.game.serverList,
 })
 
-const mapDispatchToProps = {
-  
-}
+const mapDispatchToProps = (dispatch) => ({
+  openSnack: (text) => dispatch(openSnack(text)),
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Orders)

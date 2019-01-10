@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { openSnack } from '../../../actions';
+import { openSnack } from '../../../actions/app';
 import { ThemeProvider } from 'styled-components';
 import theme from '../../../constants/theme';
 
@@ -47,7 +47,7 @@ Snackbar.defaultProps = {
 }
 
 const mapStateToProps = (state) => ({
-  snack: state.setting.snack
+  snack: state.app.snack
 });
 
 const mapDispatchToProps = (dispatch) => ({

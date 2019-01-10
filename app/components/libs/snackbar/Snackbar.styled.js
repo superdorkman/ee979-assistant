@@ -2,14 +2,14 @@ import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
   position: fixed;
-  top: 40px;
+  top: 80px;
   right: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 250px;
+  min-width: 200px;
   max-width: 500px;
-  min-height: 50px;
+  min-height: 40px;
   padding: 0 20px;
   background-color: rgba(40,40,40,.9);
   opacity: 0;
@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
   transform: translate3d(200%, 0, 0);
   border-radius: 4px;
   letter-spacing: 1.5px;
-  transition: all .5s ease-out;
+  transition: all .25s ease-out;
 
   ${props => props.show && css`
     transform: translate3d(0, 0, 0);

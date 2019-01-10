@@ -17,6 +17,7 @@ import Toolbar from '../components/toolbar/Toolbar';
 import axios from 'axios';
 
 import { API_URL } from '../constants/url';
+import Snackbar from '../components/libs/snackbar/Snackbar';
 
 axios.defaults.baseURL = API_URL;
 
@@ -67,6 +68,7 @@ class Home extends Component {
               <Route exact path={`${match.url}warehouse`} component={Warehouse} />
             </Switch>
           </Main>
+          <Snackbar />
         </Container>
       </Fragment>
     );

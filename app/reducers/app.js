@@ -3,6 +3,7 @@ const initialSetting = {
   session: {},
   showDialog: false,
   showDrawer: false,
+  snack: '',
   title: '易易游戏服务网',
   toast: '',
   showFooter: true,
