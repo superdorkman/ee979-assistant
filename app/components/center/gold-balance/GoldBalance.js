@@ -35,7 +35,7 @@ export default props => {
         )}
       </table>
       {!props.stock && (
-        <div style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <div style={{flex: 1, display: 'flex', height: '80%', justifyContent: 'center', alignItems: 'center'}}>
           <Loading />
         </div>
       )}

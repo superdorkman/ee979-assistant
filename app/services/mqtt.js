@@ -3,6 +3,8 @@ import axios from 'axios';
 import { API_URL } from '../constants/url';
 import { store } from '../index';
 
+const { ipcRenderer } = window.require('electron');
+
 const groupId = 'GID_ee979';
 let client;
 let clientId;
@@ -30,6 +32,7 @@ const connect = (memberSN, token, num = 1) => {
     const { type } = JSON.parse(message);
     if (type === 'freeChat') return;
     console.log('message arrived', message);
+    ipcRenderer.send('message:arrive', message)
     store.dispatch({
       type: 'SET_MSG',
       msg: message

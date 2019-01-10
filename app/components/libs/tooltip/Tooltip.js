@@ -7,7 +7,7 @@ import { Wrapper } from './Tooltip.styled';
 class Tooltip extends Component {
 
   render() {
-    const { pos, text } = this.props;
+    const { pos, text, children } = this.props;
 
     if (!text || !text.trim()) return null;
 
@@ -15,7 +15,7 @@ class Tooltip extends Component {
       <ThemeProvider theme={theme}>
         {text &&
         <Wrapper pos={pos}>
-          <div className="two-liner">{ text }</div>
+          { children }
           <div className="pointer">
             <div className="inner"> 
               <div className="text">{ text }</div>

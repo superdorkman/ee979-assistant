@@ -9,7 +9,7 @@ export const Container = styled.div`
   height: 100%;
   background-color: #fff;
   -webkit-app-region: drag;
-  overflow: hidden;
+  // overflow: hidden;
   display: flex;
   flex-direction: column;
   background-image: linear-gradient(#7261f2, #4530df);
@@ -32,6 +32,7 @@ export const Info = styled.div`
   justify-content: center;
   align-items: center;
   padding: 30px 0;
+  -webkit-app-region: no-drag;
 
   .name {
     color: #fff;

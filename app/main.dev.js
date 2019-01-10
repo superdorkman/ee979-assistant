@@ -186,9 +186,10 @@ function notifyUser() {
   if (!isFocused) {
     if (isVisible) {
       win.flashFrame(true);
+      blink();
     } else {
       // console.log('should blink the tray')
-      blink();
+      // blink();
     }
   }
 }

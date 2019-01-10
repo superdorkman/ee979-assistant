@@ -16,6 +16,8 @@ import axios from 'axios';
 import JifenStatus from '../common/jifen-status/JifenStatus';
 import initMqtt from '../../services/mqtt';
 
+import Tooltip from '../libs/tooltip/Tooltip';
+
 const { ipcRenderer } = window.require('electron');
 
 const menus = [
@@ -106,10 +108,12 @@ export class Sidebar extends Component {
         <Info>
           <Avatar src={avatar} />
           <div className="name">{nickName || username}</div>
-          <div className={online ? 'status online' : 'status offline'}>
-            <span className="indicator"></span>
-            {online ? '在线' : '离线'}
-          </div>
+          <Tooltip pos="right" text={online ? '设置离线后除商城出货、收货外的普通商品将全部隐藏，用户无法进行购买！' : '您目前是离线状态，除商城出货、收货外的普通商品将全部隐藏，用户无法进行购买！'}>
+            <div className={online ? 'status online' : 'status offline'}>
+              <span className="indicator"></span>
+              {online ? '在线' : '离线'}
+            </div>
+          </Tooltip>
           <JifenStatus jifen={jifen} />
         </Info>
 
