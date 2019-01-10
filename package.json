@@ -62,6 +62,8 @@
     "files": [
       "app/dist/",
       "app/app.html",
+      "app/menu.html",
+      "app/empty.png",
       "app/logo.png",
       "app/logogray.png",
       "app/main.prod.js",

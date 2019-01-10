@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #f0f;
+        color: #000;
+        font-size: 14px;
+        font-family: '微软雅黑', Arial, Helvetica, sans-serif;
+      }
+
+      #root {
+        user-select: none;
+        width: 160px;
+        background-color: #fff;
+      }
+
+      section {
+        padding: 8px 0;
+      }
+
+      section:not(:last-child) {
+        border-bottom: 1px solid #f3f3f3;
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 50px;
+      }
+
+      li span {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+
+      li:hover {
+        background-color: #e6e9ed;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <h1>新消息</h1>
+      <ul class="messages">
+        <li onclick="handleClick('online')">
+          <span class="online"></span>
+          <div class="info">
+            <h4>订单 OD2394932049230423</h4>
+            <p>nihaod asd ?</p>
+          </div>
+        </li>
+        <li onclick="handleClick('offline')">
+          <span class="offline"></span>
+          <div class="info">
+            <h4>订单 OD2394932049230423</h4>
+            <p>妈的ed阿萨德</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <script>
+      const { ipcRenderer } = window.require('electron');
+      function handleClick(type) {
+        ipcRenderer.send('menu:click', {type});
+      } 
+    </script>
+  </body>
+</html>

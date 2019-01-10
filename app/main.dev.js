@@ -14,6 +14,7 @@ let blinkTimer;
 let count = 0;
 
 let menuWin = null;
+let msgWin = null;
 
 const trayIconPath = path.join(__dirname, 'logo.png');
 let trayIcon = nativeImage.createFromPath(trayIconPath);
@@ -177,6 +178,7 @@ function prepareChatWin() {
   // 检查更新
   autoUpdater.checkForUpdatesAndNotify();
   createdMenuWin();
+  // createdMsgWin();
 }
 
 function notifyUser() {
@@ -290,6 +292,51 @@ function createdMenuWin() {
   });
 }
 
+// 菜单win
+// function createdMsgWin() {
+//   // const { width: sw, height: sh } = require('electron').screen.getPrimaryDisplay().workAreaSize;
+//   msgWin = new BrowserWindow({
+//     width: 240,
+//     minHeight: 170,
+//     skipTaskbar: true,
+//     frame: false,
+//     movable: false,
+//     resizable: false,
+//     opacity: 0,
+//     alwaysOnTop: true,
+//   })
+
+//   msgWin.loadURL(`file://${__dirname}/messages.html`);
+
+//   msgWin.on('blur', () => {
+//     msgWin.setOpacity(0);
+//   });
+
+//   ipcMain.on('msgs:click', (event, args) => {
+//     msgWin.setOpacity(0);
+//     switch (args.type) {
+//       case 'online':
+//         win.webContents.send('online:toggle', true);
+//         break;
+//       case 'offline':
+//         win.webContents.send('online:toggle', false);
+//         break;
+//       case 'update':
+//         autoUpdater.checkForUpdatesAndNotify();
+//         break;
+//       case 'quit':
+//         app.exit();
+//         break;
+//     }
+//   });
+
+//   tray.on('mouse-enter', (event, bounds) => {
+//     console.log(bounds);
+//   });
+//   tray.on('mouse-leave', (event, bounds) => {
+//     msgWin.setOpacity(0);
+//   });
+// }
 
 // 升级通信
 function sendStatusToWindow(text) {
