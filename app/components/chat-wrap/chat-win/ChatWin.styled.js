@@ -62,7 +62,7 @@ const Item = styled.div`
   }
 `;
 
-export const LeftItem = Item.extend`
+export const LeftItem = styled(Item)`
   justify-content: flex-start;
   
   .content {
@@ -76,7 +76,7 @@ export const LeftItem = Item.extend`
   }
 `;
 
-export const RightItem = Item.extend`
+export const RightItem = styled(Item)`
   flex-direction: row-reverse;
   justify-content: flex-start;
   

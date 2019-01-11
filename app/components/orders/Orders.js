@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
-import { openSnack } from '../../actions/app';
+import { toggleOrderDetail } from '../../actions/app';
 import { Container, Filter, Content, LoadWrap } from './Orders.styled';
 
 import Select from '../libs/select/Select';
@@ -15,7 +15,7 @@ import Loading from '../libs/loading/Loading';
 import DateRange from '../common/date-range/DateRange';
 import { openUrl } from '../../services/extenals';
 import { toFixed } from '../../utils/helper';
-import Detail from './detail/Detail';
+import { openSnack } from '../../services/SnackbarService';
 
 const { ipcRenderer } = window.require('electron');
 
@@ -222,7 +222,7 @@ export class Orders extends Component {
   viewOrder(orderSN) {
     // const url = `https://www.ee979.com/order/${orderSN}`;
     // openUrl(url);
-    this.setState({ showDetail: true });
+    this.props.toggleOrderDetail({showOd: true, orderSN});
   }
 
   hideDetail = () => {
@@ -264,7 +264,7 @@ export class Orders extends Component {
   }
 
   handleCopy(character) {
-    this.props.openSnack('角色复制成功');
+    openSnack('角色复制成功');
     ipcRenderer.send('clipboard:copy', character);
   }
 
@@ -374,7 +374,6 @@ export class Orders extends Component {
           )}
         </Content>
 
-        <Detail show={showDetail} dismiss={this.hideDetail} />
       </Container>
     )
   }
@@ -385,8 +384,8 @@ const mapStateToProps = (state) => ({
   serverList: state.game.serverList,
 })
 
-const mapDispatchToProps = (dispatch) => ({
-  openSnack: (text) => dispatch(openSnack(text)),
-})
+const mapDispatchToProps = dispatch => ({
+  toggleOrderDetail: info => dispatch(toggleOrderDetail(info))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Orders)

@@ -2,6 +2,11 @@ export const toggleDrawer = () => ({
   type: 'TOGGLE_DRAWER'
 });
 
+export const toggleOrderDetail = (info) => ({
+  type: 'TOGGLE_ORDER_DETAIL',
+  info
+});
+
 export const openSnack = (text) => ({
   type: 'OPEN_SNACK',
   text

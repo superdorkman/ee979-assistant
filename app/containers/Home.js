@@ -18,6 +18,7 @@ import axios from 'axios';
 
 import { API_URL } from '../constants/url';
 import Snackbar from '../components/libs/snackbar/Snackbar';
+import OrderDetail from '../components/orders/detail/Detail';
 
 axios.defaults.baseURL = API_URL;
 
@@ -69,6 +70,7 @@ class Home extends Component {
             </Switch>
           </Main>
           <Snackbar />
+          <OrderDetail />
         </Container>
       </Fragment>
     );

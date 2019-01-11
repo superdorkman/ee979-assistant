@@ -6,7 +6,8 @@ const initialSetting = {
   snack: '',
   title: '易易游戏服务网',
   toast: '',
-  showFooter: true,
+  showOd: false,
+  orderSN: '',
   isWechat: false,
   message: '',
   myAllInfo: {
@@ -44,6 +45,11 @@ const app = (state = initialSetting, action) => {
         ...state,
         showDrawer: !state.showDrawer
       }
+    case 'TOGGLE_ORDER_DETAIL':
+      return {
+        ...state,
+        ...action.info
+      }
     case 'OPEN_SNACK':
       return {
         ...state,
@@ -58,11 +64,6 @@ const app = (state = initialSetting, action) => {
       return {
         ...state,
         chatSN: action.sn
-      }
-    case 'SET_FOOTER':
-      return {
-        ...state,
-        showFooter: action.sig
       }
     case 'TOGGLE_DIALOG':
       return {

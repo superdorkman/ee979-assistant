@@ -10,6 +10,9 @@ import emoji from '../../../assets/icons/emoji.png';
 import axios from 'axios';
 import { API_URL } from '../../../constants/url';
 import { getOssKey, uploadImg } from '../../../services/oss';
+import Emoji from '../../common/icons/Emoji';
+import Photo from '../../common/icons/Photo';
+import { openSnack } from '../../../services/SnackbarService';
 const { clipboard, ipcRenderer } = window.require('electron');
 
 export class ChatIpt extends Component {
@@ -124,6 +127,7 @@ export class ChatIpt extends Component {
   wrapImage(img) {
     const imgTag = `<img title src="${img}" style="max-width:100%; height:94px">`;
     this.iptBox.innerHTML += imgTag;
+    // this.input = this.iptBox.innerHTML;
   }
   // end of listening
 
@@ -185,7 +189,7 @@ export class ChatIpt extends Component {
       }
 
       if (ipt === '<br>') {
-        return this.dialogService.openSnack('发送失败，请将发送内容截图反馈给客服，谢谢各种');
+        return openSnack('发送失败，请将发送内容截图反馈给客服，谢谢各种');
       }
 
       if (ipt) {
@@ -208,15 +212,17 @@ export class ChatIpt extends Component {
   }
 
   sendMsg(msg) {
-    const { memberSN, targetSn } = this.props;
-    const body = {sn: memberSN, to: targetSn, body: msg};
-    axios.post('Chats/send', body)
+    const { orderSN, targetSN } = this.props;
+    const body = {orderSN, body: msg, to: targetSN};
+    axios.post('Ims/send', body)
       .then(res => {
         const { data, error } = res.data;
         if (data) {
           this.props.onSending(msg);
         } else if (error) {
+          openSnack(error);
         }
+        // this.setState({ ipt: '' });
         this.iptBox.innerHTML = '';
       }).catch(err => {})
   }
@@ -242,8 +248,9 @@ export class ChatIpt extends Component {
     const fileRes = await uploadImg(tokenRes.data.data, this.file);
     if (!fileRes.data.data) return this.file.value = null;
     const filename = fileRes.data.data.filename;
-    const msgWrap = this.wrapImg(filename);
-    this.sendMsg(msgWrap);
+    this.wrapImage(filename);
+    // const msgWrap = this.wrapImg(filename);
+    // this.sendMsg(msgWrap);
   }
 
   wrapImg(img) {
@@ -253,6 +260,31 @@ export class ChatIpt extends Component {
       imgOnly: true,
       src: img,
       created: new Date()
+    }
+  }
+
+  dataURItoBlob(dataURI) {
+    let byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0) {
+      byteString = atob(dataURI.split(',')[1]);
+    } else {
+      byteString = decodeURIComponent(dataURI.split(',')[1]);
+    }
+    let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    let ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ia], { type: mimeString });
+  }
+
+  doUpload(canvas) {
+    if (canvas.toBlob) {
+      canvas.toBlob(blob => this.upload(null, blob));
+    } else {
+      let dataURL = canvas.toDataURL('image/png', 1);
+      let blob = this.dataURItoBlob(dataURL);
+      this.upload(null, blob);
     }
   }
 
@@ -276,16 +308,18 @@ export class ChatIpt extends Component {
           </EmojiHodler>
           <div className="left">
             <div className="icon" onClick={() => this.handleWidgetClick('emoji')}>
+              <Emoji />
             </div>
-            <label className="icon" onClick={() => this.handleWidgetClick('emoji')}>
-              {/* <input type="file" accept="image/jpg,image/png,image/jpeg,image/gif" className="file" ref={ref => this.file = ref} 
-              onChange={this.handleFileChange}/> */}
+            <label className="icon">
+              <input type="file" accept="image/jpg,image/png,image/jpeg,image/gif" className="file" ref={ref => this.file = ref} 
+              onChange={this.handleFileChange}/>
+              <Photo />
             </label>
           </div>
-          <div className="right">
+          {/* <div className="right">
             <div className="icon" onClick={this.onToggleTpl}>
             </div>
-          </div>
+          </div> */}
         </TopWidgets>
 
         <IptWrap>
@@ -302,7 +336,7 @@ export class ChatIpt extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  memberSN: state.app.memberSN
+  // memberSN: state.app.memberSN
 });
 
 export default connect(mapStateToProps)(ChatIpt);

@@ -12,9 +12,9 @@ class ChatWrap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.sn && this.props.sn !== nextProps.sn) {
+    if (nextProps.orderSN && this.props.orderSN !== nextProps.orderSN) {
       this.setState({ messages: [] });
-      this.getDetail(nextProps.sn);
+      this.getDetail(nextProps.orderSN);
     }
 
     if (nextProps.message) {
@@ -22,25 +22,26 @@ class ChatWrap extends Component {
     }
   }
   
-  handleNewMsg({message, sn}) {
+  handleNewMsg({message, orderSN}) {
     const parsedMsg = JSON.parse(message);
-    if (!sn || parsedMsg.from !== sn) return;
+    if (!orderSN || parsedMsg.from !== orderSN) return;
     let { messages } = this.state;
     messages.push(parsedMsg);
 
     this.setState({ messages });
   } 
 
-  getDetail(sn) {
-    const body = { sn };
-    axios.post(`${API_URL}/Chats/history`, body)
+  getDetail(orderSN) {
+    const body = { orderSN };
+    axios.post('Orders/detail', body)
       .then(
         res => {
           const { data } = res.data;
           if (data) {
-            this.setState({
-              messages: data,
-            })
+            console.log(data);
+            // this.setState({
+            //   messages: data,
+            // })
           }
         }
       ).catch(err => {});
@@ -53,12 +54,12 @@ class ChatWrap extends Component {
 
   render() {
     const { messages } = this.state;
-    const { sn } = this.props;
+    const { orderSN } = this.props;
 
     return (
       <div style={styles.container}>
-        <ChatWin messages={messages} targetSn={sn} />
-        { sn && <ChatIpt targetSn={sn} onSending={this.onSending}/> }
+        <ChatWin messages={messages} targetSn={orderSN} />
+        { orderSN && <ChatIpt targetSn={orderSN} onSending={this.onSending}/> }
       </div>
     )
   }
@@ -74,7 +75,8 @@ const styles = {
 }
 
 const mapStateToProps = (state) => ({
-  message: state.setting.message
+  message: state.app.message,
+  orderSN: state.app.orderSN,
 });
 
 export default connect(mapStateToProps)(ChatWrap);
