@@ -16,6 +16,9 @@ import DateRange from '../common/date-range/DateRange';
 import { openUrl } from '../../services/extenals';
 import { toFixed } from '../../utils/helper';
 import { openSnack } from '../../services/SnackbarService';
+import TableMenus from '../common/table-menus/TableMenus';
+
+import NoItem from '../common/NoItem';
 
 const { ipcRenderer } = window.require('electron');
 
@@ -40,6 +43,24 @@ const theads = [
   {label: '操作'},
 ];
 
+const chuMenus = [
+  {type: '', text: '全部订单'},
+  {type: 'payed', text: '待发货'},
+  {type: 'operated', text: '已发货'},
+  {type: 'traded', text: '延时转款中'},
+  {type: 'transfered', text: '交易成功'},
+  {type: 'failed', text: '交易失败'},
+];
+
+const shouMenus = [
+  {type: '', text: '所有订单'},
+  {type: 'created', text: '等待支付'},
+  {type: 'payed', text: '交易中'},
+  {type: 'transfered', text: '交易成功'},
+  {type: 'canceled', text: '已赔付'},
+  {type: 'failed', text: '交易失败'},
+];
+
 export class Orders extends Component {
 
   state = {
@@ -55,6 +76,7 @@ export class Orders extends Component {
     size: 20,
     list: null,
     count: 0,
+    todos: {},
     filter: {
       game: 'dnf',
       areaName: '',
@@ -63,7 +85,9 @@ export class Orders extends Component {
       orderSN: '',
       status: '',
       created: '',
-    }
+    },
+    menus: chuMenus,
+    curMenu: '',
   }
 
   componentWillMount() {
@@ -77,11 +101,12 @@ export class Orders extends Component {
     axios.post(`${API_URL}${path}`, body)
       .then(
         res => {
-          const { data, error, page } = res.data;
+          const { data, error, page, count } = res.data;
           if (data) {
             this.setState({ 
               list: data,
               count: page.count, 
+              todos: count
             });
           }
         }
@@ -166,7 +191,10 @@ export class Orders extends Component {
         ...this.state.filter,
         cross: '',
         created: '',
-      }
+        status: '',
+      },
+      menus: option === '出货订单' ? chuMenus : shouMenus,
+      curMenu: '',
     }, () => {
       this.getOrders();
     })
@@ -198,6 +226,19 @@ export class Orders extends Component {
         serverName: '',
         cross: '',
         // created: '',
+      }
+    }, () => {
+      this.getOrders();
+    });
+  }
+
+  handleMenuSelect = (type) => {
+    this.setState({
+      curMenu: type,
+      page: 1,
+      filter: {
+        ...this.state.filter,
+        status: type,
       }
     }, () => {
       this.getOrders();
@@ -315,7 +356,7 @@ export class Orders extends Component {
   }
 
   render() {
-    const { showDetail, selectedType, selectedOrder, selectedDate, selectedArea, selectedServer, selectedCross, count, page, size, list, serverNames } = this.state;
+    const { menus, curMenu, showDetail, selectedType, selectedOrder, selectedDate, selectedArea, selectedServer, selectedCross, count, todos, page, size, list, serverNames } = this.state;
     const { areaNames } = this.props;
     return (
       <Container>
@@ -350,7 +391,8 @@ export class Orders extends Component {
         <Content>
           <div className="head">
             <h2>{selectedType}/{selectedOrder}</h2> 
-            {/* <Select selected={selectedType} options={goodsTypes} onSelect={this.handleSelect} /> */}
+            <TableMenus menus={menus} count={todos}
+              curMenu={curMenu} onMenuSelect={this.handleMenuSelect} />
           </div>
           <table>
             <thead>
@@ -364,6 +406,9 @@ export class Orders extends Component {
               </tbody>
             )}
           </table>
+          {!!list && list.length === 0 && (
+            <NoItem>没有相关订单</NoItem>
+          )}
           {!list && (
             <LoadWrap><Loading /></LoadWrap>
           )}

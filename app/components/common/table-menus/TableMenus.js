@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Container } from './TableMenus.styled';
 
 export default props => {
-  const { menus, curMenu, onMenuSelect } = props;
+  const { count, menus, curMenu, onMenuSelect } = props;
   
   return (
     <Container>
@@ -11,7 +11,9 @@ export default props => {
         const {text, type} = item;
         return (
           <li className={type == curMenu ? "type-item active" : "type-item"}
-          key={type} onClick={() => type !== curMenu && onMenuSelect(type)}> {text} </li>
+          key={type} onClick={() => type !== curMenu && onMenuSelect(type)}> {text} 
+            {!!count && !!count[type] && <span class="badge">{ count[type] }</span>}
+          </li>
         )
       })}
     </Container>

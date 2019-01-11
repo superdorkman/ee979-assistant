@@ -76,6 +76,10 @@ export const Content = styled.div`
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+
+    h2 {
+      margin-right: 30px;
+    }
   }
 `;
 export const LoadWrap = styled.div`

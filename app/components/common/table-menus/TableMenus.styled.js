@@ -39,8 +39,8 @@ export const Container = styled.ul`
       background-color: #ff0001;
       border-radius: 6px;
       position: absolute;
-      top: 3px;
-      right: -23px;
+      top: -5px;
+      right: -17px;
     }
     
   }

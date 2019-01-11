@@ -4,9 +4,10 @@ export const Container = styled.div`
   position: fixed;
   bottom: 0;
   right: 0;
-  top: 50px;
+  top: 51px;
   left: 182px;
   pointer-events: none;
+  z-index: 11;
 
   ${props => props.show && css`
     pointer-events: all;
