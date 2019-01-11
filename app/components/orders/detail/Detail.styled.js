@@ -87,11 +87,10 @@ export const MsgWrap = styled.div`
     // margin: 10px 0 30px 0;
     background-color: #ddd;
     border-radius: 5px;
-    padding: 15px;
+    padding: 10px;
     font-size: 12px;
     color: #000;
     position: relative;
-    min-height: 50px;
     word-break: break-all;
     max-width: 60%;
   }

@@ -95,6 +95,11 @@ function createLoginWin() {
     isLoggedIn = true;
     prepareChatWin();
   });
+
+  win.on('focus', () => {
+    clearInterval(blinkTimer);
+    tray.setImage(trayIcon);
+  });
   
 }
 
@@ -140,7 +145,11 @@ function prepareChatWin() {
   });
 
   ipcMain.on('gallary:open', (event, images) => {
-    if (gallaryWin) return;
+    if (gallaryWin) {
+      gallaryWin.setOpacity(1);
+      gallaryWin.focus();
+      return;
+    }
     const { width: sw, height: sh } = require('electron').screen.getPrimaryDisplay().workAreaSize;
     gallaryWin = new BrowserWindow({
       width: sw - 100,
@@ -157,7 +166,8 @@ function prepareChatWin() {
 
     gallaryWin.on('closed', () => {
       gallaryWin = null;
-    })
+      // gallaryWin.setOpacity(0);
+    });
 
     ipcMain.on('gallary:images', (event) => {
       event.returnValue = images;
@@ -165,8 +175,9 @@ function prepareChatWin() {
 
     ipcMain.on('gallary:close', (event, arg) => {
       if (!gallaryWin) return;
-      gallaryWin.close();
-      gallaryWin = null;
+      // gallaryWin.close();
+      gallaryWin.setOpacity(0);
+      // gallaryWin = null;
       // event.returnValue = images;
     });
   });
@@ -221,6 +232,7 @@ function setTray() {
 }
 
 function blink() {
+  clearInterval(blinkTimer);
   const emptyIconPath = path.join(__dirname, 'empty.png');
   let emptyIcon = nativeImage.createFromPath(emptyIconPath);
   emptyIcon = emptyIcon.resize({ width: 16, height: 16 });

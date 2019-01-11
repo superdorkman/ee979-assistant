@@ -273,7 +273,7 @@ class Detail extends Component {
       let str = msg.msg;
 
       if (msg.sys) {
-        str = str.replace(/\/assets\//, 'https://www.ee979.com/assets/');
+        str = str.replace(/\/assets\//g, 'https://www.ee979.com/assets/');
       }
 
       return (
@@ -324,8 +324,8 @@ class Detail extends Component {
   }
 
   render() {
-    const { showOd, toggleOrderDetail } = this.props;
-    const { title } = this.state;
+    const { orderSN, showOd, toggleOrderDetail } = this.props;
+    const { targetSN, title } = this.state;
 
     return (
       <Container show={showOd}>
@@ -337,7 +337,7 @@ class Detail extends Component {
           <Messages ref={node => this.msgEl = node}>
             {this.renderMsgs()}
           </Messages>
-          <ChatIpt onSending={this.handleSendingMsg} />
+          <ChatIpt orderSN={orderSN} targetSN={targetSN} onSending={this.handleSendingMsg} />
         </Main>
       </Container>
     )

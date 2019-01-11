@@ -20,6 +20,8 @@ import { API_URL } from '../constants/url';
 import Snackbar from '../components/libs/snackbar/Snackbar';
 import OrderDetail from '../components/orders/detail/Detail';
 
+import Messages from '../components/messages/Messages';
+
 axios.defaults.baseURL = API_URL;
 
 axios.interceptors.request.use((config) => {
@@ -71,6 +73,7 @@ class Home extends Component {
           </Main>
           <Snackbar />
           <OrderDetail />
+          <Messages />
         </Container>
       </Fragment>
     );

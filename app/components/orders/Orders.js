@@ -326,6 +326,7 @@ export class Orders extends Component {
 
   handleSend({orderSN, title}) {
     const flag = confirm(`${title}\r确定给买家发货吗`);
+    if (!flag) return;
     const body = {
       orderSN,
       op: 'success',
