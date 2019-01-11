@@ -7,6 +7,9 @@ import axios from 'axios';
 import { getTimeStamp } from '../../../utils/helper';
 import formatTime from '../../../utils/formatTime';
 import { ChatIpt } from '../chat-ipt/ChatIpt';
+import Avatar from '../../common/avatar/Avatar';
+
+const { ipcRenderer } = window.require('electron');
 
 class Detail extends Component {
 
@@ -28,8 +31,12 @@ class Detail extends Component {
     viewDetail: false,
   }
 
+  componentWillMount() {
+    this.props.orderSN && this.getDetail(this.props.orderSN);
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.orderSN && this.props.orderSN !== nextProps.orderSN) {
+    if (nextProps.orderSN) {
       this.setState({ messages: [] });
       this.getDetail(nextProps.orderSN);
     }
@@ -160,21 +167,34 @@ class Detail extends Component {
   formatMsg(msg) {
     const { myRole, order } = this.state;
     let isSelf = msg.from === order[myRole];
+    const body = JSON.parse(msg.body);
+
+    let _msg;
+
+    try {
+      _msg = decodeURI(body.msg);
+    } catch (e) {
+      _msg = body.msg;
+    }
+
     if (msg.from === 'PLATFORM') {
       return {
-        ...JSON.parse(msg.body),
+        ...body,
+        msg: _msg,
         created: msg.created,
         incoming: true,
         sys: true
       }
     } else if (isSelf) {
       return {
-        ...JSON.parse(msg.body),
+        ...body,
+        msg: _msg,
         created: msg.created,
       }
     } else {
       return {
-        ...JSON.parse(msg.body),
+        ...body,
+        msg: _msg,
         created: msg.created,
         incoming: true
       }
@@ -267,9 +287,9 @@ class Detail extends Component {
             <Fragment>
               <div className="avatar-wrap">
                 {msg.incoming ? (
-                  <Avatar src={avatarYou}/>
+                  <Avatar src={avatarYou} size={40} />
                 ) : (
-                  <Avatar src={avatarMe}/>
+                  <Avatar src={avatarMe} size={40} />
                 )}
               </div>
               <Msg>
@@ -283,7 +303,8 @@ class Detail extends Component {
                 )}
 
                 {msg.imgOnly ? (
-                  <div className="msg-img" dangerouslySetInnerHTML={{__html: str}}></div>
+                  <div className="msg-img" onClick={() => this.handleImgClick(msg)}
+                    dangerouslySetInnerHTML={{__html: str}}></div>
                 ) : (
                   <div className="msg-content" dangerouslySetInnerHTML={{__html: str}}></div>
                 )}
@@ -293,6 +314,13 @@ class Detail extends Component {
         </MsgWrap>
       )
     });
+  }
+
+  handleImgClick(item) {
+    const { curMessages } = this.state;
+    let images = curMessages.filter(img => img.imgOnly).map(item => item.src);
+    const curIdx = images.indexOf(item.src);
+    ipcRenderer.send('gallary:open', {images, curIdx});
   }
 
   render() {

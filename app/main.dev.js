@@ -62,6 +62,10 @@ function createLoginWin() {
     win.loadURL(startUrl);
   });
 
+  globalShortcut.register('ctrl+alt+i', () => {
+    win.webContents.openDevTools({mode: 'detach'});
+  });
+
   ipcMain.on('app:extract', (event) => {
     win.minimize();
   });
@@ -142,13 +146,7 @@ function prepareChatWin() {
       width: sw - 100,
       height: sh - 100,
       frame: false,
-      // backgroundColor: 'transparent',
       transparent: true,
-      // icon: path.join(__dirname, 'logo.png'),
-      // skipTaskbar: true,
-      // webPreferences: {
-      //   devTools: true
-      // }
     });
 
     gallaryWin.loadURL(`file://${__dirname}/app.html#/gallary`);

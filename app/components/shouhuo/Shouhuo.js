@@ -18,6 +18,7 @@ import InputComp from '../common/form-items/input/Input';
 import TimeComp from '../common/form-items/time/Time';
 import BestRadio from '../common/form-items/best-ratio/BestRadio';
 import { openSnack } from '../../services/SnackbarService';
+import NoItem from '../common/NoItem';
 
 const tableMenus = [
   {type: 'all', text: '全部状态'},
@@ -163,7 +164,7 @@ export class Finace extends Component {
             {(mask == 1 || mask == 3) && (
               <button onClick={() => this.togglePause(goodsSN, 'on')}>启用</button>
             )}
-            <button>删除</button>
+            <button onClick={() => this.handleDel(goodsSN)}>删除</button>
           </td>
         </tr>
       )
@@ -196,6 +197,25 @@ export class Finace extends Component {
           const { data } = res.data;
           if (data) {
             this.getList();
+          }
+        }
+      ).catch(err => {});
+  }
+
+  handleDel(goodsSN) {
+    const flag = confirm('确定删除此收货吗？');
+    if (!flag) return;
+    const body = { goodsSN };
+
+    axios.post('ShipmentTraders/del', body)
+      .then(
+        res => {
+          const { data } = res.data;
+          if (data) {
+            let { list, listFiltered } = this.state;
+            list = list.filter(item => item.goodsSN !== goodsSN);
+            listFiltered = listFiltered.filter(item => item.goodsSN !== goodsSN);
+            this.setState({ list, listFiltered });
           }
         }
       ).catch(err => {});
@@ -320,7 +340,7 @@ export class Finace extends Component {
 
   render() {
     const { areaNames, sRole: { shipmentTrader } } = this.props;
-    const { areaName, list, serverName, serverNames, selectedState, curMenu, showDialog } = this.state;
+    const { areaName, list, listFiltered, serverName, serverNames, selectedState, curMenu, showDialog } = this.state;
 
     return (
       <Container>
@@ -371,6 +391,7 @@ export class Finace extends Component {
               </tbody>
             )}
           </table>
+          {!!list && !listFiltered.length && <NoItem>没有收货信息</NoItem>}
 
           {!list && (
             <LoadWrap><Loading /></LoadWrap>

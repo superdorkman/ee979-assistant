@@ -72,7 +72,8 @@ export const Head = styled.div`
 
 export const Msg = styled.div`
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
+  width: 100%;
 `;
 
 export const MsgWrap = styled.div`

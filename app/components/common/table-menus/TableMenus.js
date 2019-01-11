@@ -12,7 +12,7 @@ export default props => {
         return (
           <li className={type == curMenu ? "type-item active" : "type-item"}
           key={type} onClick={() => type !== curMenu && onMenuSelect(type)}> {text} 
-            {!!count && !!count[type] && <span class="badge">{ count[type] }</span>}
+            {!!count && !!count[type] && <span className="badge">{ count[type] }</span>}
           </li>
         )
       })}

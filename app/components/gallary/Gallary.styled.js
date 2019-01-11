@@ -8,6 +8,11 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  user-select: none;
+
+  img {
+    max-width: 80%;
+  }
 `;
 
 export const CloseWrap = styled.div`
@@ -50,4 +55,19 @@ export const Left = styled(Arrow)`
 export const Right = styled(Arrow)`
   right: 10px;
   transform: rotate(180deg);
+`;
+
+export const Widgets = styled.div`
+  position: absolute;
+  right: 0;
+  top: 50px;
+  width: 50px;
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+
+  & > div {
+    width: 50px;
+    height: 50px;
+    padding: 8px;
+  }
 `;
