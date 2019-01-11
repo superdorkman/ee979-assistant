@@ -65,6 +65,14 @@ export const Filter = styled.div`
       margin-right: 10px;
     }
   }
+
+  input {
+    width: 190px;
+    height: 40px;
+    border: 1px solid #ececec;
+    border-radius: 3px;
+    padding-left: 10px;
+  }
 `;
 
 export const Content = styled.div`

@@ -98,7 +98,7 @@ export class Orders extends Component {
     const { filter, page, size, selectedOrder } = this.state;
     const body = { filter, page, size };
     const path = selectedOrder === '出货订单' ? '/Goods/myGoodsSold' : '/ShipmentTraders/myBuyOrder';
-    axios.post(`${API_URL}${path}`, body)
+    axios.post(path, body)
       .then(
         res => {
           const { data, error, page, count } = res.data;
@@ -213,8 +213,8 @@ export class Orders extends Component {
   }
 
   reset = () => {
-    const { selectedArea, selectedServer, selectedCross } = this.state;
-    if (!selectedArea && !selectedServer && !selectedCross) return;
+    const { selectedArea, selectedServer, selectedCross, filter } = this.state;
+    if (!selectedArea && !selectedServer && !selectedCross && !filter.orderSN) return;
 
     this.setState({
       selectedArea: '',
@@ -225,6 +225,7 @@ export class Orders extends Component {
         areaName: '',
         serverName: '',
         cross: '',
+        orderSN: '',
         // created: '',
       }
     }, () => {
@@ -356,8 +357,17 @@ export class Orders extends Component {
     });
   }
 
+  handleIptChange = (e) => {
+    this.setState({
+      filter: {
+        ...this.state.filter,
+        orderSN: e.target.value,
+      }
+    })
+  }
+
   render() {
-    const { menus, curMenu, showDetail, selectedType, selectedOrder, selectedDate, selectedArea, selectedServer, selectedCross, count, todos, page, size, list, serverNames } = this.state;
+    const { menus, curMenu, showDetail, selectedType, selectedOrder, selectedDate, selectedArea, selectedServer, selectedCross, count, todos, page, size, list, serverNames, filter } = this.state;
     const { areaNames } = this.props;
     return (
       <Container>
@@ -385,9 +395,13 @@ export class Orders extends Component {
             <Select selected={selectedCross} options={crosses} 
               label="选择跨区" ki="cross"
               onSelect={this.handleSelect} />
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            <span>订单号: </span>
+            <input value={filter.orderSN} onChange={this.handleIptChange} />
           </div>
 
-          <Button theme="yellow" onClick={this.reset}>重置</Button>
+          <Button style={{width: 80}} theme="yellow" onClick={() => this.getOrders()}>搜索</Button>
+          <Button style={{width: 80}} theme="yellow" onClick={this.reset}>重置</Button>
         </Filter>
         <Content>
           <div className="head">

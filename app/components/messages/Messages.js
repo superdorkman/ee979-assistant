@@ -18,7 +18,7 @@ class Messages extends Component {
 
   processMsg(message) {
     try {
-      const { body, orderSN, role } = JSON.parse(message);
+      const { body, from, orderSN, role } = JSON.parse(message);
       const { msgs } = this.state;
       const item = msgs.find(msg => msg.orderSN === orderSN);
       if (item) {
@@ -28,6 +28,7 @@ class Messages extends Component {
           orderSN,
           msg: body.msg,
           role,
+          from,
           count: 1,
         });
       }
@@ -40,15 +41,14 @@ class Messages extends Component {
   renderMsgs() {
     const { msgs } = this.state;
     return msgs.map((item, idx) => {
-      const { msg, orderSN, role, count } = item;
+      const { msg, orderSN, role, count, from } = item;
       return (
         <li key={idx} onClick={() => this.handleMsgClick(orderSN)}>
           <span className={`type ${role}`}>{role === 'seller' ? '卖' : '买'}</span>
           <div className="info">
             <p>订单 {orderSN}</p>
-            <p className="one-liner">{msg}</p>
+            <p className="one-liner">{from === 'PLATFORM' ? '系统消息' : msg}</p>
           </div>
-
           <i className="badge">{count}</i>
         </li>
       )

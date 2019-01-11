@@ -17,6 +17,9 @@ import { toFixed } from '../../../utils/helper';
 import formatTime from '../../../utils/formatTime';
 
 import DatePicker from '../../libs/datepicker/DatePicker';
+import Button from '../../libs/button/Button';
+
+import NoItem from '../../common/NoItem';
 
 const types = ['全部类型', '出金', '收金'];
 const crosses = ['全部跨区', '跨1', '跨2', '跨3a', '跨3b', '跨4', '跨5', '跨6', '跨7', '跨8'];
@@ -138,6 +141,8 @@ export class History extends Component {
             &nbsp;&nbsp;&nbsp;&nbsp;
           <Select options={crosses} ki="cross" label="全部跨区" selected={crosses[crossIdx]}
             onSelect={this.handleSelect} />
+          
+          <Button style={{marginLeft: 30}} theme="yellow" onClick={() => this.getHistory()}>刷新历史</Button>
         </Filter>
 
         <table>
@@ -152,7 +157,7 @@ export class History extends Component {
             </tbody>
           )}
         </table>
-
+        {!!list && list.length === 0 && <NoItem>暂无今日记录</NoItem>}
         {!list && (
           <LoadWrap><Loading /></LoadWrap>
         )}
