@@ -27,7 +27,8 @@ app.on('ready', createLoginWin);
 
 app.on('will-quit', () => {
   // 清空所有快捷键
-  globalShortcut.unregisterAll()
+  // console.log('will-quit');
+  globalShortcut.unregisterAll();
 })
 
 app.on('browser-window-blur', () => {
@@ -41,6 +42,7 @@ app.on('browser-window-focus', () => {
 });
 
 app.on('window-all-closed', () => {
+  // console.log('window-all-closed');
   app.quit();
 });
 
@@ -117,6 +119,7 @@ function prepareChatWin() {
     width: 1300,
     height: 810,
   }, true);
+  win.center();
   // win.setSize(1208, 796, true);
   
   const iconPath = path.join(__dirname, 'logo.png');
@@ -182,12 +185,9 @@ function prepareChatWin() {
     });
   });
 
-  // win.webContents.openDevTools({mode: 'detach'});
-
   // 检查更新
   autoUpdater.checkForUpdatesAndNotify();
   createdMenuWin();
-  // createdMsgWin();
 }
 
 function notifyUser() {
@@ -214,21 +214,39 @@ function setTray() {
     {label: '显示窗口', click: () => {
       win.show();
     }},
-    // {label: '检查更新', click: () => {
-    //   autoUpdater.checkForUpdatesAndNotify();
-    // }},
     {role: 'quit', label: '退出程序'},
   ])
   tray.setToolTip('商家助手');
   tray.setContextMenu(contextMenu);
 
   tray.on('click', () => {
-    win.show();
+    if (win) {
+      if (win.isDestroyed()) {
+        // restoreWin();
+      } else {
+        win.show();
+      }
+    } else {
+      restoreWin();
+    }
+    
     if (isLoggedIn) {
       clearInterval(blinkTimer);
       tray.setImage(trayIcon);
     }
   });
+}
+
+function restoreWin() {
+  win = new BrowserWindow({
+    width: 1300,
+    height: 810,
+    frame: false,
+    icon: path.join(__dirname, 'logo.png'),
+  });
+  win.center();
+
+  win.loadURL(startUrl);
 }
 
 function blink() {
@@ -246,7 +264,6 @@ function blink() {
     count++;
   }, 400);
 }
-
 
 // 菜单win
 function createdMenuWin() {
@@ -300,53 +317,12 @@ function createdMenuWin() {
     // clearInterval(blinkTimer);
     // tray.setImage(trayIcon);
   });
+
+  win.on('closed', () => {
+    tray.destroy();
+    menuWin.destroy();
+  });
 }
-
-// 菜单win
-// function createdMsgWin() {
-//   // const { width: sw, height: sh } = require('electron').screen.getPrimaryDisplay().workAreaSize;
-//   msgWin = new BrowserWindow({
-//     width: 240,
-//     minHeight: 170,
-//     skipTaskbar: true,
-//     frame: false,
-//     movable: false,
-//     resizable: false,
-//     opacity: 0,
-//     alwaysOnTop: true,
-//   })
-
-//   msgWin.loadURL(`file://${__dirname}/messages.html`);
-
-//   msgWin.on('blur', () => {
-//     msgWin.setOpacity(0);
-//   });
-
-//   ipcMain.on('msgs:click', (event, args) => {
-//     msgWin.setOpacity(0);
-//     switch (args.type) {
-//       case 'online':
-//         win.webContents.send('online:toggle', true);
-//         break;
-//       case 'offline':
-//         win.webContents.send('online:toggle', false);
-//         break;
-//       case 'update':
-//         autoUpdater.checkForUpdatesAndNotify();
-//         break;
-//       case 'quit':
-//         app.exit();
-//         break;
-//     }
-//   });
-
-//   tray.on('mouse-enter', (event, bounds) => {
-//     console.log(bounds);
-//   });
-//   tray.on('mouse-leave', (event, bounds) => {
-//     msgWin.setOpacity(0);
-//   });
-// }
 
 // 升级通信
 function sendStatusToWindow(text) {

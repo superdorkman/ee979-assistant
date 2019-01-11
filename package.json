@@ -1,7 +1,7 @@
 {
   "name": "ee979-assistant",
   "productName": "ee979-assistant",
-  "version": "0.0.15",
+  "version": "1.0.0",
   "description": "ee979商家助手",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
