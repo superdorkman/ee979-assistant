@@ -14,6 +14,7 @@ import TableMenus from '../common/table-menus/TableMenus';
 import Popover from '../libs/popover/Popover';
 import MyDialog from '../common/my-dialog/MyDialog';
 import CbSelectComp from '../common/form-items/cb-select/CbSelect';
+import MultiSelectComp from '../common/form-items/multi-select/MultiSelect';
 import InputComp from '../common/form-items/input/Input';
 import TimeComp from '../common/form-items/time/Time';
 import BestRadio from '../common/form-items/best-ratio/BestRadio';
@@ -242,7 +243,7 @@ export class Finace extends Component {
           const { data, error } = res.data;
           if (data) {
             const controls = this.buildForm(data);
-            this.setState({ showDialog: true, controls, form: data, goodsSN: '' });
+            this.setState({ showDialog: true, controls, form: data });
           } else if (error) {
             openSnack(error);
             this.setState({ goodsSN: '' });
@@ -252,7 +253,7 @@ export class Finace extends Component {
   }
 
   hideDialog = () => {
-    this.setState({ showDialog: false })
+    this.setState({ showDialog: false, goodsSN: '' })
   }
 
   buildForm(form) {
@@ -287,6 +288,8 @@ export class Finace extends Component {
         return <CbSelectComp {...data} onChange={this.handleValueChanged} />
       case 'bRatio':
         return <BestRadio {...data} onChange={this.handleValueChanged} />
+      case 'mSelect':
+        return <MultiSelectComp {...data} onChange={this.handleValueChanged} />
       case 'input':
       case 'quantity':
         return <InputComp {...data} onChange={this.handleValueChanged} />
@@ -330,7 +333,9 @@ export class Finace extends Component {
         res => {
           const { data, error } = res.data;
           if (data) {
-            openSnack('添加成功');
+            openSnack(data);
+            this.setState({ goodsSN: '', showDialog: false });
+            this.getList();
           } else if (error) {
             openSnack(error);
           }

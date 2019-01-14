@@ -59,15 +59,16 @@ class Select extends Component {
       return { top, left, bottom }
     }
 
-    const { x, y } = this.container.getBoundingClientRect()
+    const { x, y } = this.container.getBoundingClientRect();
     const { width, height, options } = this.props;
-    if (y + 8 * height > innerHeight) {
+    
+    if (y + 10 * height > innerHeight) {
       top = 'unset';
       bottom = '-50%';
     } else if (y - 50 < (height / 2)) {
       top = '50%';
     }
-
+    
     return { top, left, bottom }
   }
 

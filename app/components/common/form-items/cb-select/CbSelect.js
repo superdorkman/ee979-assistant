@@ -11,9 +11,12 @@ export class CbSelectComp extends Component {
   }
 
   componentWillMount() {
-    this.setState({
-      checkList: this.props.value.split(','),
-    })
+    const { ki, onChange, value } = this.props;
+    if (value) {
+      let checkList = value.split(',');
+      this.setState({ checkList });
+      onChange(ki, checkList);
+    }
   }
 
   onCheck(option) {

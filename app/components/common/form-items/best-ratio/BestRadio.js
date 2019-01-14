@@ -7,7 +7,7 @@ import { openSnack } from '../../../../services/SnackbarService';
 class BestRadio extends Component {
 
   state = {
-    value: this.props.value,
+    value: this.props.value || '',
   }
 
   handleIptChange = (e) => {
@@ -25,8 +25,10 @@ class BestRadio extends Component {
   }
 
   render() {
-    const { value } = this.state;
+    let { value } = this.state;
     const { label, required } = this.props;
+
+    value = String(value);
 
     return (
       <Container>

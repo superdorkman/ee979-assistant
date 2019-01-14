@@ -264,7 +264,7 @@ export class Finace extends Component {
           const { data, error } = res.data;
           if (data) {
             const controls = this.buildForm(data);
-            this.setState({ showDialog: true, controls, form: data, goodsSN: '' });
+            this.setState({ showDialog: true, controls, form: data });
           } else if (error) {
             openSnack(error);
             this.setState({ goodsSN: '' });
@@ -352,7 +352,9 @@ export class Finace extends Component {
         res => {
           const { data, error } = res.data;
           if (data) {
-            openSnack('添加成功');
+            openSnack(data);
+            this.setState({ goodsSN: '', showDialog: false });
+            this.getList();
           } else if (error) {
             openSnack(error);
           }
