@@ -63,11 +63,27 @@ export const LoadingWrap = styled.div`
 export const Head = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 50px;
   // box-shadow: 0 2px 2px rgba(0,0,0,.1);
   border-bottom: 1px solid #ececec;
   font-size: 16px;
   padding: 0 30px;
+
+  button {
+    width: 100px;
+    line-height: 30px;
+    text-align: center;
+    background-image: linear-gradient(#7b7eff,#6266ff);
+    border-radius: 30px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+
+    &.service {
+      background-image: linear-gradient(#ff8400, #ff9c33);
+    }
+  }
 `;
 
 export const Msg = styled.div`

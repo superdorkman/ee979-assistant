@@ -20,14 +20,15 @@ class Detail extends Component {
     curMessages: null,
     messages: null,
     curTarget: '',
+    curTargetCn: '',
     otherTarget: '',
     counterpart: '',
-    service: null,
+    counterpartCn: '',
+    service: {},
     singleTarget: false,
     order: null,
     orderSN: '',
     targetSN: '',
-    title: '',
     viewDetail: false,
   }
 
@@ -84,25 +85,25 @@ class Detail extends Component {
   }
 
   setChatTarget() {
-    let { myRole, order, curTarget, counterpart, otherTarget, service } = this.state;
+    let { myRole, order, curTarget, curTargetCn, counterpart, counterpartCn, otherTarget, service } = this.state;
     let singleTarget = false;
     let avatarMe = order[`${myRole}Info`].avatar;;
     let avatarYou;
     let targetSN;
-    let title;
     if (order.tradeType === '担保交易' || order.tradeType === 'ShipmentTrader') {
       curTarget = counterpart = myRole === 'buyer' ? 'seller' : 'buyer';
+      curTargetCn = counterpartCn = myRole === 'buyer' ? '卖家' : '买家';
       otherTarget = 'service';
-      let t = myRole === 'buyer' ? '卖家' : '买家';
-      title = `与${t}聊天中`;
+      // let t = myRole === 'buyer' ? '卖家' : '买家';
+      // title = `与${t}聊天中`;
     } else {
       singleTarget = true;
       curTarget = 'service';
-      title = '与客服聊天中';
+      curTargetCn = '客服';
     }
     avatarYou = curTarget === 'service' ? service.avatar : order[`${curTarget}Info`].avatar;
     targetSN = order[curTarget];
-    this.setState({ avatarMe, avatarYou, curTarget, counterpart, otherTarget, singleTarget, targetSN, title }, () => this.recoverMsg());
+    this.setState({ avatarMe, avatarYou, curTarget, curTargetCn, counterpart, counterpartCn, otherTarget, singleTarget, targetSN }, () => this.recoverMsg());
     
   }
 
@@ -323,16 +324,38 @@ class Detail extends Component {
     ipcRenderer.send('gallary:open', {images, curIdx});
   }
 
+  handleTargetChange = () => {
+    // if (target === this.curTarget) return;
+    // this.msgUnRead = 0;
+    let { curTarget, counterpart, counterpartCn, messages, order, service } = this.state;
+    let _curTarget = curTarget !== 'service' ? 'service' : counterpart;
+    this.setState({
+      curTarget: _curTarget,
+      curTargetCn: _curTarget === 'service' ? '客服' : counterpartCn,
+      otherTarget: curTarget,
+      curMessages: [...messages[_curTarget]],
+      targetSN: order[_curTarget],
+      avatarYou: _curTarget === 'service' ? service.avatar : order[`${counterpart}Info`]['avatar'],
+    }, () => {
+      this.scrollToBottom();
+    });
+  }
+
   render() {
     const { orderSN, showOd, toggleOrderDetail } = this.props;
-    const { targetSN, title } = this.state;
+    const { counterpart, curTargetCn, otherTarget, targetSN } = this.state;
 
     return (
       <Container show={showOd}>
         <Mask show={showOd} onClick={() => toggleOrderDetail({showOd: false})} />
         <Main show={showOd}>
           <Head>
-            {title}
+            与{curTargetCn}聊天中
+
+            {!!otherTarget && <button onClick={this.handleTargetChange}
+            className={otherTarget === 'service' ? 'service' : ''}>
+              {otherTarget === 'service' ? '联系客服' : `联系${counterpart === 'buyer' ? '买家' : '卖家'}`}
+            </button>}
           </Head>
           <Messages ref={node => this.msgEl = node}>
             {this.renderMsgs()}
