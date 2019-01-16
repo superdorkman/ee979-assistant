@@ -35,6 +35,11 @@ export const Container = styled.div`
                 color: #e41314;
                 margin-left: 20px;
             }
+
+            i {
+                color: red;
+                cursor: pointer;
+            }
         }
         em {
             font-size: 36px;

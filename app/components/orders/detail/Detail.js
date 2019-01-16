@@ -68,7 +68,7 @@ class Detail extends Component {
       .then(res => {
         const { data, error } = res.data;
         if (data) {
-          console.log(data);
+          // console.log(data);
           const { imHistory, order, yourRole, service } = data;
           this.setState({
             imHistory,

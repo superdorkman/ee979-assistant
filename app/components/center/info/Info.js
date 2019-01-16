@@ -35,7 +35,7 @@ export class Info extends Component {
         <div className="info-top">
             <div className="avail">
                 <em>{toFixed(balance)}</em>
-                <span className="label">我的可用余额</span>
+                <span className="label">我的可用余额 <i onClick={() => this.browse('/personal/finance/topup')}>充值</i></span> 
             </div>
             <div className="total">
                 <div>全部余额：
@@ -56,7 +56,7 @@ export class Info extends Component {
                     <span>未读消息</span>
                     {/* <span className="badge" *ngIf="messages > 0">{{ messages }}</span> */}
                 </li>
-                <li onClick={() => this.browse('/personal/purchased')}>
+                <li onClick={() => this.navTo('/shouhuo')}>
                     <div className="thumb buy">
                         <OrdersIcon />
                     </div>

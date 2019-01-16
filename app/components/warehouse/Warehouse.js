@@ -141,7 +141,7 @@ export class Center extends Component {
   }
 
   render() {
-    const { showDialog, selectedCross, cnt, price, remark, chu, shou, balance } = this.state;
+    const { showDialog, selectedCross, cnt, price, remark, chu, shou, balance, tradeType } = this.state;
 
     return (
       <Container>
@@ -169,7 +169,7 @@ export class Center extends Component {
         <History />
 
         <Popover show={showDialog} isLocal={true} dismiss={this.hideDialog}>
-          <MyDialog title="【入库】金币数量" extra={`跨${selectedCross}`}>
+          <MyDialog title={`【${tradeType === 'chu' ? '出库' : '入库'}】金币数量`} extra={`跨${selectedCross}`}>
             <Form>
               <div className="ipt-wrap">
                 <span className="label">金币数：</span>
@@ -189,7 +189,7 @@ export class Center extends Component {
                 <em>{price ? toFixed(cnt/price) : ''}</em>
               </div>
               <div className="btn-group">
-                <MyButton style={{width: 120, height: 40}} theme="yellow" onClick={this.onRuku}>入库</MyButton>
+                <MyButton style={{width: 120, height: 40}} theme="yellow" onClick={this.onRuku}>{tradeType === 'chu' ? '出库' : '入库'}</MyButton>
                 <MyButton style={{width: 120, height: 40}} onClick={this.hideDialog}>取消</MyButton>
               </div>
             </Form>
