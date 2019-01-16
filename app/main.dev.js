@@ -151,6 +151,7 @@ function prepareChatWin() {
     if (gallaryWin) {
       gallaryWin.setOpacity(1);
       gallaryWin.focus();
+      gallaryWin.webContents.send('gallary:reopen', images);
       return;
     }
     const { width: sw, height: sh } = require('electron').screen.getPrimaryDisplay().workAreaSize;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, CloseWrap, ImgWrap, Left, Right, Widgets } from './Gallary.styled';
+import { Container, CloseWrap, ImgWrap, Left, Right, Widgets, Count } from './Gallary.styled';
 import Button from '../libs/button/Button';
 import SectionHeader from '../common/section-header/SectionHeader';
 import Close from '../common/icons/Close';
@@ -20,25 +20,30 @@ export class Gallary extends Component {
 
   componentWillMount() {
     const args = ipcRenderer.sendSync('gallary:images');
-    this.setState({ ...args }, () => {
-      this.loadImg(0);
-    });
-    
+    this.setImages(args);
   }
 
-  loadImg(idx) {
-    const { images } = this.state;
+  componentDidMount() {
+    ipcRenderer.on('gallary:reopen', (event, images) => {
+      this.setImages(images);
+    });
+  }
+
+  setImages(args) {
+    this.setState({ ...args }, () => {
+      this.loadImg();
+    });
+  }
+
+  loadImg() {
+    const { images, curIdx } = this.state;
     const img = new Image();
     img.onload = () => {
       // console.log(img.width, img.height);
       this.setState({ curImg: img.src, deg: 0 });
       // ipcRenderer.send('gallary:resize', {width: img.width + 40, height: img.height + 40});
     }
-    img.src = images[0];
-  }
-
-  handleClick = () => {
-  
+    img.src = images[curIdx];
   }
 
   handleClose = () => {
@@ -88,6 +93,8 @@ export class Gallary extends Component {
         <Right onClick={this.handleRightClick}>
           <ChevronLeft fill="#fff" />
         </Right>
+
+        <Count>{curIdx + 1} / {images.length}</Count>
 
         <Widgets>
           <div onClick={this.handleRotate}>

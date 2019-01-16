@@ -57,6 +57,15 @@ export const Right = styled(Arrow)`
   transform: rotate(180deg);
 `;
 
+export const Count = styled.div`
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 18px;
+`;
+
 export const Widgets = styled.div`
   position: absolute;
   right: 0;
