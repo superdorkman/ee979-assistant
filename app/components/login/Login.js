@@ -50,6 +50,7 @@ export class Login extends Component {
       password,
       isAssistant: true,
     };
+    
     axios.post(`${API_URL}/Members/loginx`, body)
       .then(
         res => {

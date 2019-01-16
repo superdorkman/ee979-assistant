@@ -160,6 +160,7 @@ function prepareChatWin() {
       height: sh - 100,
       frame: false,
       transparent: true,
+      skipTaskbar: true,
     });
 
     gallaryWin.loadURL(`file://${__dirname}/app.html#/gallary`);
