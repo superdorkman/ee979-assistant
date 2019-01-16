@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 class ContextMenu extends Component {
 
   componentWillMount() {
-    console.log(this.props.contextMenu)
+    // console.log(this.props.contextMenu)
   }
   
   render() {

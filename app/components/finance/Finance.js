@@ -177,7 +177,8 @@ export class Finace extends Component {
 
   handleReset = () => {
     if (!this.state.filter.type && !this.state.filter.created) {
-      return console.log('no need to reload');
+      console.log('no need to reload');
+      return;
     }
 
     this.setState({

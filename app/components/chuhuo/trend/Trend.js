@@ -38,7 +38,7 @@ export class Trend extends Component {
         res => {
           const { data, error } = res.data;
           if (data) {
-            console.log(data);
+            // console.log(data);
             this.setState({ list: data });
           }
         }

@@ -38,7 +38,7 @@ class ChatWrap extends Component {
         res => {
           const { data } = res.data;
           if (data) {
-            console.log(data);
+            // console.log(data);
             // this.setState({
             //   messages: data,
             // })

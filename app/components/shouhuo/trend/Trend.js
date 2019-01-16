@@ -29,6 +29,7 @@ export class Trend extends Component {
       goodsType: '游戏币',
       filter: {
         cross: `DNF${this.state.selectedCross}`,
+        orderBy: 'ratio-asc',
       },
       page: 1,
       size: 10000,
