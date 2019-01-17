@@ -31,7 +31,7 @@ class Updater extends Component {
         const percentage = parseInt(text.split('已下载')[1]);
         this.setState({ percentage, message: text });
       } else if (text === '下载完成') {
-        this.setState({ show: true, message: '下载完成，可以关闭程序并更新', done: true });
+        this.setState({ show: true, percentage: 100, message: '下载完成，可以关闭程序并更新', done: true });
       }
     });
   }
