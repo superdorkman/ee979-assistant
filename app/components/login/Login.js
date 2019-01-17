@@ -48,10 +48,10 @@ export class Login extends Component {
     const body = {
       name: username,
       password,
-      isAssistant: true,
+      // isAssistant: true,
     };
     
-    axios.post(`${API_URL}/Members/loginx`, body)
+    axios.post('Members/loginx', body)
       .then(
         res => {
           const { data, error } = res.data;
@@ -60,8 +60,13 @@ export class Login extends Component {
             localStorage.setItem('password', password);
             sessionStorage.session = JSON.stringify(data);
             ipcRenderer.send('auth:login');
-            this.props.login(data);
-            this.props.history.replace('/');
+
+            setTimeout(() => {
+              this.props.login(data);
+              this.props.history.replace('/');
+            }, 1000);
+            // this.props.login(data);
+            // this.props.history.replace('/');
           } else if (error) {
             this.setState({ isSubmitting: false });
             alert(error);

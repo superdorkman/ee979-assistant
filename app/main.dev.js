@@ -53,6 +53,7 @@ function createLoginWin() {
       height: 328,
       frame: false,
       icon: path.join(__dirname, 'logo.png'),
+      show: false,
       // skipTaskbar: true,
       // webPreferences: {
       //   devTools: true
@@ -87,8 +88,12 @@ function createLoginWin() {
   
   win.loadURL(startUrl);
 
+  win.once('ready-to-show', () => {
+    win.show();
+  });
+
   if (process.env.NODE_ENV !== 'production') {
-    win.webContents.openDevTools({mode: 'detach'});
+    // win.webContents.openDevTools({mode: 'detach'});
   }
 
   setTray();

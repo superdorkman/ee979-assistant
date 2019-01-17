@@ -3,76 +3,6 @@
   <head>
     <meta charset="utf-8">
     <title>ee979商家助手</title>
-    <style>
-      /* * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      } */
-      body {
-        /* background-color: #4c4c4c; */
-      }
-      .root-loading {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 8em;
-        height: 8em;
-        margin: -4em 0 0 -4em;
-        overflow: hidden;
-        background: rgba(0, 0, 0, 0.35);
-      }
-      .root-loading > div {
-        position: absolute;
-        width: 8em;
-        height: 8em;
-        animation: alpha 2.25s linear infinite forwards;
-        background: rgba(231, 76, 60, 0.75);
-      }
-      .root-loading > div:nth-child(1) {
-        top: -50%;
-        left: -50%;
-      }
-      .root-loading > div:nth-child(2) {
-        top: -50%;
-        right: -50%;
-      }
-      .root-loading > div:nth-child(3) {
-        bottom: -50%;
-        right: -50%;
-      }
-      .root-loading > div:nth-child(4) {
-        bottom: -50%;
-        left: -50%;
-      }
-
-      @keyframes alpha {
-        0% {
-          transform: rotate(0);
-          background: rgba(231, 76, 60, 0.75);
-        }
-        25% {
-          background: rgba(230, 126, 34, 0.75);
-        }
-        50% {
-          border-radius: 50%;
-          background: rgba(142, 68, 173, 0.75);
-        }
-        75% {
-          background: rgba(41, 128, 185, 0.75);
-        }
-        100% {
-          transform: rotate(360deg);
-          background: rgba(231, 76, 60, 0.75);
-        }
-      }
-
-      .top {
-        height: 126px;
-        padding-top: 20px;
-        background-image: linear-gradient(#8868f1, #6a4cce);
-      }
-    </style>
     <script>
       (function() {
         if (!process.env.HOT) {
@@ -86,15 +16,7 @@
     </script>
   </head>
   <body>
-    <div id="root">
-      <div class="root-loading">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <!-- <div class="top"></div> -->
-    </div>
+    <div id="root"></div>
     <script>
       {
         const scripts = [];
