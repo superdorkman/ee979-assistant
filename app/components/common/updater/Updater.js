@@ -21,6 +21,7 @@ class Updater extends Component {
 
   componentWillMount() {
     ipcRenderer.on('update', (event, text) => {
+      console.log(text)
       if (text === '有新版本') {
         this.setState({ show: true, message: '正在下载新版本', done: false, percentage: 0 });
       } else if (text === '更新出错') {
