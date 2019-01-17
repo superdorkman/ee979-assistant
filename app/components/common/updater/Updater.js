@@ -27,7 +27,7 @@ class Updater extends Component {
         this.setState({ message: '更新出错' });
       } else if (text === '已是最新版本') {
         openSnack(text);
-      } else if (text.indexOf('已下载')) {
+      } else if (text.indexOf('已下载') > -1) {
         const percentage = parseInt(text.split('已下载')[1]);
         this.setState({ percentage });
       } else if (text === '下载完成') {
