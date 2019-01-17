@@ -5,6 +5,8 @@ import { Container, Info, Btns, CloseWrap } from "./Updater.styled";
 import UpdateIcon from '../icons/update';
 import CloseIcon from '../icons/close';
 
+import { openSnack } from '../../../services/SnackbarService';
+
 const { ipcRenderer } = window.require('electron'); 
 
 class Updater extends Component {
@@ -23,6 +25,8 @@ class Updater extends Component {
         this.setState({ show: true, message: '正在下载新版本', done: false, percentage: 0 });
       } else if (text === '更新出错') {
         this.setState({ message: '更新出错' });
+      } else if (text === '已是最新版本') {
+        openSnack(text);
       } else if (text.indexOf('已下载')) {
         const percentage = parseInt(text.split('已下载')[1]);
         this.setState({ percentage });
