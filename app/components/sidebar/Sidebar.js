@@ -32,18 +32,11 @@ const menus = [
 
 export class Sidebar extends Component {
 
-  state = {
-    updateMsg: '',
-  }
-
   componentWillMount() {
     this.getInfo();
   }
 
   componentDidMount() {
-    ipcRenderer.on('update', (event, text) => {
-      this.setState({ updateMsg: text });
-    });
     ipcRenderer.on('online:toggle', (event, status) => {
       this.toggleOnline(status);
     });
@@ -158,9 +151,9 @@ export class Sidebar extends Component {
 
         <Logo>
         </Logo>
-        <div className="update" title={this.state.updateMsg}>
+        {/* <div className="update" title={this.state.updateMsg}>
           {this.state.updateMsg}
-        </div>
+        </div> */}
       </Container>
     )
   }

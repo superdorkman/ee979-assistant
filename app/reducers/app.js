@@ -20,7 +20,19 @@ const initialSetting = {
   notices: null,
 }
 
-const session = sessionStorage.session && JSON.parse(sessionStorage.session);
+let session;
+
+if (sessionStorage.session) {
+  session = JSON.parse(sessionStorage.session);
+} else {
+  const { ipcRenderer } = window.require('electron');
+  const _session = ipcRenderer.sendSync('auth:check');
+  if (_session) {
+    session = _session;
+    sessionStorage.setItem('session', JSON.stringify(_session))
+  }
+}
+
 if (session) {
   initialSetting.isLoggedIn = true;
   initialSetting.session = session;

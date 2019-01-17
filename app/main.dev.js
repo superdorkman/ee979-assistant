@@ -6,22 +6,23 @@ import path from 'path';
 let tray = null;
 
 let isLoggedIn = false;
+let session = null;
 let win = null;
+let mainWin = null;
+let menuWin = null;
 let gallaryWin = null;
+
+let targetWin = null;
 
 // 系统托盘跳动
 let blinkTimer;
 let count = 0;
-
-let menuWin = null;
-let msgWin = null;
 
 const trayIconPath = path.join(__dirname, 'logo.png');
 let trayIcon = nativeImage.createFromPath(trayIconPath);
 trayIcon = trayIcon.resize({ width: 16, height: 16 });
 
 const startUrl = `file://${__dirname}/app.html`;
-// const startUrl = '192.168.2.106:3000';
 
 app.on('ready', createLoginWin);
 
@@ -32,12 +33,13 @@ app.on('will-quit', () => {
 })
 
 app.on('browser-window-blur', () => {
-  globalShortcut.unregister('f5')
+  globalShortcut.unregister('ctrl+F5')
 });
 
 app.on('browser-window-focus', () => {
-  globalShortcut.register('F5', () => {
-    win.loadURL(startUrl);
+  globalShortcut.register('ctrl+F5', () => {
+    let _win = win || mainWin;
+    _win.loadURL(startUrl);
   });
 });
 
@@ -54,89 +56,104 @@ function createLoginWin() {
       frame: false,
       icon: path.join(__dirname, 'logo.png'),
       show: false,
-      // skipTaskbar: true,
-      // webPreferences: {
-      //   devTools: true
-      // }
     }
   );
-
-  globalShortcut.register('F5', () => {
-    win.loadURL(startUrl);
-  });
 
   globalShortcut.register('ctrl+alt+i', () => {
     win.webContents.openDevTools({mode: 'detach'});
   });
 
   ipcMain.on('app:extract', (event) => {
-    win.minimize();
+    let _win = win || mainWin;
+    _win.minimize();
   });
 
   ipcMain.on('app:hide', (event) => {
-    win.hide();
+    let _win = win || mainWin;
+    _win.hide();
   });
 
   ipcMain.on('app:close', (event) => {
-    win.close();
+    let _win = win || mainWin;
+    _win.close();
     app.quit();
   });
 
-  ipcMain.on('auth:check', (event) => {
-    event.returnValue = isLoggedIn;
-  });
-  
   win.loadURL(startUrl);
 
   win.once('ready-to-show', () => {
     win.show();
   });
 
-  if (process.env.NODE_ENV !== 'production') {
-    // win.webContents.openDevTools({mode: 'detach'});
-  }
-
   setTray();
   
-  ipcMain.on('auth:login', (event) => {
+  ipcMain.on('auth:login', (event, data) => {
     isLoggedIn = true;
+    session = data;
     prepareChatWin();
   });
 
-  win.on('focus', () => {
-    clearInterval(blinkTimer);
-    tray.setImage(trayIcon);
+  ipcMain.on('auth:check', (event) => {
+    event.returnValue = session;
   });
-  
 }
+
 
 function prepareChatWin() {
   // console.log(win.getBounds())
-  const { width: sw, height: sh } = require('electron').screen.getPrimaryDisplay().workAreaSize;
+  // const { width: sw, height: sh } = require('electron').screen.getPrimaryDisplay().workAreaSize;
   // win.setSkipTaskbar(false);
   // win.loadURL(startUrl);
-  const _x = (sw - 1300) / 2;
-  const _y = (sh - 810) / 2;
-  win.setMinimumSize(1300, 810);
-  win.setBounds({
-    x: 100,
-    y: 20,
+  // const _x = (sw - 1300) / 2;
+  // const _y = (sh - 810) / 2;
+  // win.setMinimumSize(1300, 810);
+  // win.setBounds({
+  //   x: 100,
+  //   y: 20,
+  //   width: 1300,
+  //   height: 810,
+  // }, true);
+  // win.center();
+
+  // win.destroy();
+  // win = null;
+
+  mainWin = new BrowserWindow({
     width: 1300,
     height: 810,
-  }, true);
-  win.center();
-  // win.setSize(1208, 796, true);
-  
+    center: true,
+    show: false,
+    frame: false,
+    icon: path.join(__dirname, 'logo.png'),
+  });
+
+  mainWin.loadURL(startUrl);
+
+  mainWin.once('ready-to-show', () => {
+    mainWin.show();
+    win.destroy();
+    win = null;
+  });
+
+  if (process.env.NODE_ENV !== 'production') {
+    mainWin.webContents.openDevTools({mode: 'detach'});
+  }
+
+  mainWin.on('focus', () => {
+    clearInterval(blinkTimer);
+    tray.setImage(trayIcon);
+  });
+
   const iconPath = path.join(__dirname, 'logo.png');
   let trayIcon = nativeImage.createFromPath(iconPath);
   trayIcon = trayIcon.resize({ width: 16, height: 16 });
   tray.setImage(trayIcon);
 
   ipcMain.on('app:expand', (event) => {
-    if (win.isMaximized()) {
-      win.unmaximize();
+    if (mainWin.isMaximized()) {
+      mainWin.unmaximize();
     } else {
-      win.maximize();
+      mainWin.maximize();
     }
   });
 
@@ -176,7 +193,6 @@ function prepareChatWin() {
 
     gallaryWin.on('closed', () => {
       gallaryWin = null;
-      // gallaryWin.setOpacity(0);
     });
 
     ipcMain.on('gallary:images', (event) => {
@@ -185,30 +201,29 @@ function prepareChatWin() {
 
     ipcMain.on('gallary:close', (event, arg) => {
       if (!gallaryWin) return;
-      // gallaryWin.close();
       gallaryWin.setOpacity(0);
-      // gallaryWin = null;
-      // event.returnValue = images;
     });
+
   });
 
   // 检查更新
   autoUpdater.checkForUpdatesAndNotify();
+  // autoUpdater.checkForUpdates();
+  
+  ipcMain.on('app:update', (event) => {
+    autoUpdater.quitAndInstall();
+  });
+
   createdMenuWin();
 }
 
 function notifyUser() {
-  const isVisible = win.isVisible();  // 是否托盘中
-  const isFocused = win.isFocused();  // 是否当前选中
-  // console.log(isVisible, isFocused);
+  const isVisible = mainWin.isVisible();  // 是否托盘中
+  const isFocused = mainWin.isFocused();  // 是否当前选中
+  if (!isVisible) return blink();
   if (!isFocused) {
-    if (isVisible) {
-      win.flashFrame(true);
-      blink();
-    } else {
-      // console.log('should blink the tray')
-      // blink();
-    }
+    mainWin.flashFrame(true);
+    blink();
   }
 }
 
@@ -227,11 +242,11 @@ function setTray() {
   tray.setContextMenu(contextMenu);
 
   tray.on('click', () => {
-    if (win) {
-      if (win.isDestroyed()) {
-        // restoreWin();
+    let _win = win || mainWin;
+    if (_win) {
+      if (_win.isDestroyed()) {
       } else {
-        win.show();
+        _win.show();
       }
     } else {
       restoreWin();
@@ -242,18 +257,6 @@ function setTray() {
       tray.setImage(trayIcon);
     }
   });
-}
-
-function restoreWin() {
-  win = new BrowserWindow({
-    width: 1300,
-    height: 810,
-    frame: false,
-    icon: path.join(__dirname, 'logo.png'),
-  });
-  win.center();
-
-  win.loadURL(startUrl);
 }
 
 function blink() {
@@ -275,7 +278,7 @@ function blink() {
 // 菜单win
 function createdMenuWin() {
   tray.setContextMenu(null);
-  const { width: sw, height: sh } = require('electron').screen.getPrimaryDisplay().workAreaSize;
+  // const { width: sw, height: sh } = require('electron').screen.getPrimaryDisplay().workAreaSize;
   menuWin = new BrowserWindow({
     width: 160,
     height: 178,
@@ -297,10 +300,10 @@ function createdMenuWin() {
     menuWin.setOpacity(0);
     switch (args.type) {
       case 'online':
-        win.webContents.send('online:toggle', true);
+        mainWin.webContents.send('online:toggle', true);
         break;
       case 'offline':
-        win.webContents.send('online:toggle', false);
+        mainWin.webContents.send('online:toggle', false);
         break;
       case 'update':
         autoUpdater.checkForUpdatesAndNotify();
@@ -325,7 +328,7 @@ function createdMenuWin() {
     // tray.setImage(trayIcon);
   });
 
-  win.on('closed', () => {
+  mainWin.on('closed', () => {
     tray.destroy();
     menuWin.destroy();
   });
@@ -333,31 +336,35 @@ function createdMenuWin() {
 
 // 升级通信
 function sendStatusToWindow(text) {
-  win.webContents.send('update', text);
+  mainWin.webContents.send('update', text);
 }
 
 autoUpdater.on('checking-for-update', () => {
-  sendStatusToWindow('检查更新...');
+  sendStatusToWindow('检查更新');
 });
 
 autoUpdater.on('update-available', (info) => {
   sendStatusToWindow('有新版本');
-})
+});
+
 autoUpdater.on('update-not-available', (info) => {
   sendStatusToWindow('已是最新版本');
-})
+});
+
 autoUpdater.on('error', (err) => {
-  sendStatusToWindow('更新出错' + err);
-})
+  sendStatusToWindow('更新出错');
+});
+
 autoUpdater.on('download-progress', (progressObj) => {
   // let log_message = "下载速度" + progressObj.bytesPerSecond;
   // log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
   // log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
   let log_message = `已下载${parseInt(progressObj.percent)}%`;
   sendStatusToWindow(log_message);
-})
+});
+
 autoUpdater.on('update-downloaded', (info) => {
-  sendStatusToWindow('下载完成，可以关闭程序进行更新');
+  sendStatusToWindow('下载完成');
 });
 
 // Auto updates - Option 1 - Simplest version

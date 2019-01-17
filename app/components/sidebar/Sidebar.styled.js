@@ -14,16 +14,16 @@ export const Container = styled.div`
   flex-direction: column;
   background-image: linear-gradient(#7261f2, #4530df);
 
-  .update {
-    width: 100%;
-    position: absolute;
-    bottom: 10px;
-    height: 16px;
-    overflow: hidden;
-    color: #fff;
-    text-align: center;
-    padding: 0 5px;
-  }
+  // .update {
+  //   width: 100%;
+  //   position: absolute;
+  //   bottom: 10px;
+  //   height: 16px;
+  //   overflow: hidden;
+  //   color: #fff;
+  //   text-align: center;
+  //   padding: 0 5px;
+  // }
 `;
 
 export const Info = styled.div`

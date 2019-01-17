@@ -21,6 +21,7 @@ import Snackbar from '../components/libs/snackbar/Snackbar';
 import OrderDetail from '../components/orders/detail/Detail';
 
 import Messages from '../components/messages/Messages';
+import Updater from '../components/common/updater/Updater';
 
 axios.defaults.baseURL = API_URL;
 
@@ -74,6 +75,8 @@ class Home extends Component {
           <Snackbar />
           <OrderDetail />
           <Messages />
+
+          <Updater />
         </Container>
       </Fragment>
     );

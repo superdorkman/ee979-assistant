@@ -58,13 +58,8 @@ export class Login extends Component {
           if (data) {
             localStorage.setItem('username', username);
             localStorage.setItem('password', password);
-            sessionStorage.session = JSON.stringify(data);
-            ipcRenderer.send('auth:login');
-
-            setTimeout(() => {
-              this.props.login(data);
-              this.props.history.replace('/');
-            }, 1000);
+            // sessionStorage.session = JSON.stringify(data);
+            ipcRenderer.send('auth:login', data);
             // this.props.login(data);
             // this.props.history.replace('/');
           } else if (error) {
