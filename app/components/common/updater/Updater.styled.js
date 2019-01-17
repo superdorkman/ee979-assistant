@@ -26,6 +26,7 @@ export const Container = styled.div`
   padding: 20px;
   opacity: 0;
   pointer-events: none;
+  transition: opacity .2s;
 
   ${props => props.show && css`
     opacity: 1;

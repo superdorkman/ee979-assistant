@@ -29,7 +29,7 @@ class Updater extends Component {
         openSnack(text);
       } else if (text.indexOf('已下载') > -1) {
         const percentage = parseInt(text.split('已下载')[1]);
-        this.setState({ percentage });
+        this.setState({ percentage, message: text });
       } else if (text === '下载完成') {
         this.setState({ show: true, message: '下载完成，可以关闭程序并更新', done: true });
       }
