@@ -17,17 +17,22 @@ class Updater extends Component {
     show: false,
     message: '',
     done: false,
+    checkCount: 0,
   }
 
   componentWillMount() {
     ipcRenderer.on('update', (event, text) => {
-      console.log(text)
+      // console.log(text);
       if (text === '有新版本') {
         this.setState({ show: true, message: '正在下载新版本', done: false, percentage: 0 });
       } else if (text === '更新出错') {
         this.setState({ message: '更新出错' });
       } else if (text === '已是最新版本') {
-        openSnack(text);
+        if (this.state.checkCount > 0) {
+          openSnack(text);
+        } else {
+          this.setState({ checkCount: this.state.checkCount + 1 });
+        }
       } else if (text.indexOf('已下载') > -1) {
         const percentage = parseInt(text.split('已下载')[1]);
         this.setState({ percentage, message: text });
