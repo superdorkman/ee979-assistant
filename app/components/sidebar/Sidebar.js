@@ -32,27 +32,11 @@ const menus = [
 
 export class Sidebar extends Component {
 
-  componentWillMount() {
-    this.getInfo();
-  }
-
   componentDidMount() {
     ipcRenderer.on('online:toggle', (event, status) => {
       this.toggleOnline(status);
     });
     initMqtt();
-  }
-
-  getInfo() {
-    axios.get('Members/myAllInfo')
-      .then(
-        res => {
-          const { data } = res.data;
-          if (data) {
-            this.props.updateMyInfo(data);
-          }
-        }
-      ).catch(err => {})
   }
 
   checkIfActive({path}) {

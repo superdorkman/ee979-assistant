@@ -39,12 +39,12 @@ export class Center extends Component {
             </div>
           </div>
 
-          {!isPlatinumTrader && (
+          {/* {!isPlatinumTrader && (
             <div className="bojin">
               <img src={bojinIcon} />
               <button onClick={() => this.browse('/personal/enter')}>入住铂金商户</button>
             </div>
-          )}
+          )} */}
         </div>
 
         <div className="wd-fee">

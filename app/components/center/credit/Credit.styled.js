@@ -14,7 +14,7 @@ export const Container = styled.div`
 
   .credit-bottom {
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
   }
 
   .as-buyer, .as-seller {
