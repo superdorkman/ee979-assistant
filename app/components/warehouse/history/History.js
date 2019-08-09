@@ -52,7 +52,7 @@ export class History extends Component {
   getHistory() {
     const phone = localStorage.getItem('username');
     const { page, size, date, tradeType, cross } = this.state;
-    axios.get(`http://47.98.249.177:3333/api/SelfAllots/history?page=${page}&size=${size}&date=${date}&tradeType=${tradeType}&phone=${phone}&cross=${cross ? `cross_${cross.slice(1)}` : ''}`)
+    axios.get(`http://tongjiapi.ee979.com/api/SelfAllots/history?page=${page}&size=${size}&date=${date}&tradeType=${tradeType}&phone=${phone}&cross=${cross ? `cross_${cross.slice(1)}` : ''}`)
       .then(
         res => {
           const { msg, data } = res.data;

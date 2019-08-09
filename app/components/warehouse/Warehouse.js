@@ -40,8 +40,8 @@ export class Center extends Component {
   getStock() {
     if (this.props.notices) return;
     const phone = localStorage.getItem('username');
-    const body = { phone: parseInt(phone), time: new Date() };
-    axios.post('http://47.98.249.177:3333/api/SelfAllots/dailyInfo', body)
+    const body = { phone, time: new Date() };
+    axios.post('http://tongjiapi.ee979.com/api/SelfAllots/dailyInfo', body)
       .then(
         res => {
           const { msg } = res.data;
@@ -113,7 +113,7 @@ export class Center extends Component {
       cross: `cross_${selectedCross}`,
       cnt: parseFloat(cnt), price: parseFloat(price), remark,
     };
-    axios.post('http://47.98.249.177:3333/api/SelfAllots/turnover', body)
+    axios.post('http://tongjiapi.ee979.com/api/SelfAllots/turnover', body)
       .then(
         res => {
           if (res.data) {

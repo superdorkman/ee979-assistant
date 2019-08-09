@@ -53,8 +53,8 @@ export class Center extends Component {
 
   getStock() {
     const phone = localStorage.getItem('username');
-    const body = { phone: Number(phone), time: new Date() };
-    axios.post('http://47.98.249.177:3333/api/SelfAllots/dailyInfo', body)
+    const body = { phone, time: new Date() };
+    axios.post('http://tongjiapi.ee979.com/api/SelfAllots/dailyInfo', body)
       .then(
         res => {
           const { msg } = res.data;
